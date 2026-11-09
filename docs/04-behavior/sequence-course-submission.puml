@@ -1,0 +1,41 @@
+@startuml sequence-course-submission
+title Ирсоли курси эҷодшуда ба модератсия
+
+actor "Муаллиф\n(author)" as Author
+participant "Браузер" as Browser
+participant "Laravel Router &\nCourseController" as Controller
+participant "CourseRepository" as Repo
+database "MariaDB\n(kurskhoi_online)" as DB
+
+Author -> Browser : Тугмаи «Ирсол ба модератсия»-ро пахш мекунад
+Browser -> Controller : POST /author/courses\n(_token CSRF, course_data)
+activate Controller
+
+Controller -> Controller : Санҷиши нақши корбар (auth check: role == 'author')\nва санҷиши CSRF токен
+
+alt #MistyRose Нақш author нест (Unauthorized)
+  Controller --> Browser : 403 Forbidden
+  Browser --> Author : Намоиши паёми хатогии дастрасӣ (403)
+else #LavenderBlush Маълумоти ҳатмӣ нопурра аст (Validation error)
+  Controller -> Controller : Валидатсияи майдонҳо (ном, модул, дарс)
+  Controller --> Browser : 422 Unprocessable Entity\n(хатогиҳои валидатсия)
+  Browser --> Author : Нишон додани майдонҳои хатогии форма
+else #Honeydew Маълумот дуруст ва иҷозат тасдиқшуда (Муваффақ)
+  Controller -> Repo : createOrSubmit(courseData, status='pending')
+  activate Repo
+
+  Repo -> DB : INSERT INTO courses\n(title, description, author_id, status)\nVALUES (?, ?, ?, 'pending')
+  activate DB
+  DB --> Repo : ID-и сабтшудаи курс
+  deactivate DB
+
+  Repo --> Controller : Объекти курс бо ҳолати pending
+  deactivate Repo
+
+  Controller --> Browser : 302 Found → /author/courses\n(Паёми муваффақият)
+  deactivate Controller
+
+  Browser --> Author : Саҳифаи курсҳо бо нишони «pending»
+end
+
+@enduml

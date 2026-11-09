@@ -1,0 +1,73 @@
+@startuml use-case
+left to right direction
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+title Biyomuz Academy: Вариантҳои истифода (Use Case)
+
+actor "Меҳмон\n(guest)" as Guest
+actor "Донишҷӯ\n(student)" as Student
+actor "Муаллиф\n(author)" as Author
+actor "Маъмур\n(admin)" as Admin
+
+rectangle "Biyomuz Academy" {
+  ' FR-01: Феҳристи курсҳо бо ҷустуҷӯ ва категорияҳо
+  usecase "Дидани феҳристи курсҳо" as UC01
+
+  ' FR-02: Бақайдгирӣ бо почта ва рамз
+  usecase "Бақайдгирии донишҷӯ" as UC02
+
+  ' FR-03: Воридшавӣ ва идоракунии дастрасӣ
+  usecase "Ворид шудан ба платформа" as UC03
+
+  ' FR-04: Номнавис шудани донишҷӯ ба курс
+  usecase "Номнавис шудан ба курс" as UC04
+
+  ' FR-05: Кушодани пайдарпайи дарсҳо ва сабти пешрафт
+  usecase "Омӯзиши пайдарпайи дарсҳо" as UC05
+
+  ' FR-06: Ирсоли супориши амалӣ бо файл
+  usecase "Ирсоли супориши амалӣ" as UC06
+  usecase "Санҷиши навъ ва ҳаҷми файл" as UC_Validate
+
+  ' Раванди хатми курс ва шаҳодатнома
+  usecase "Анҷом додани курс" as UC_Complete
+  ' FR-10: Шаҳодатномаи PDF бо рамзи санҷишӣ (Should)
+  usecase "Гирифтани шаҳодатнома" as UC10
+
+  ' FR-07: Идоракунии курс, модул ва дарсҳо (CRUD)
+  usecase "Идоракунии мундариҷаи курс" as UC07
+
+  ' FR-08: Санҷиши супориш ва баҳогузорӣ
+  usecase "Санҷиш ва баҳогузории супориш" as UC08
+
+  ' FR-09: Модератсияи курс
+  usecase "Модератсияи курс" as UC09
+}
+
+' Робитаҳои Меҳмон (guest)
+Guest --> UC01
+Guest --> UC02
+
+' Робитаҳои Донишҷӯ (student)
+Student --> UC01
+Student --> UC03
+Student --> UC04
+Student --> UC05
+Student --> UC06
+Student --> UC_Complete
+
+' Робитаҳои Муаллиф (author)
+Author --> UC03
+Author --> UC07
+Author --> UC08
+
+' Робитаҳои Маъмур (admin)
+Admin --> UC03
+Admin --> UC09
+
+' Муносибатҳои Include ва Extend
+UC06 ..> UC_Validate : <<include>>
+UC10 ..> UC_Complete : <<extend>>
+
+@enduml
