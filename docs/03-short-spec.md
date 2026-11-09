@@ -1,4 +1,4 @@
-# Ҳуҷҷати кӯтоҳи техникӣ (Short Technical Specification): Biyomuz
+# Супориши кӯтоҳи техникӣ: Biyomuz Academy
 
 **Лоиҳа:** «Biyomuz Academy»<br>
 **Сана:** 09.11.2026 | **Муаллиф:** Ғаффоров З. Ҳ. | **Ҳолат:** Лоиҳакашӣ
