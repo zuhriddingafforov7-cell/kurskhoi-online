@@ -1,0 +1,60 @@
+@startuml component
+title Biyomuz Academy: Диаграммаи ҷузъҳо (Component Diagram - MVC ва 3 сатҳ)
+skinparam componentStyle uml2
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+node "Мизоҷ (Client Node)" {
+  [Браузер\n(HTML5, Tailwind CSS 4, JavaScript)] as Browser
+}
+
+node "Веб-сервер (Apache дар XAMPP / PHP 8.5)" {
+
+  package "Сатҳи пешниҳод (Presentation Layer)" {
+    [public/index.php\n(Front Controller)] as FrontController
+    [resources/views/\n(Blade Templates)] as BladeViews
+    [Illuminate\\View\n(View Engine)] as ViewEngine
+  }
+
+  package "Сатҳи мантиқи бизнес (Application / Logic Layer)" {
+    [routes/web.php\n(Laravel Router)] as Router
+    [Controllers\n(CourseController, Controller)] as Controllers
+    [Middleware & Core Services\n(Auth, CSRF, Session, Validator)] as Middleware
+  }
+
+  package "Сатҳи дастрасӣ ба додаҳо (Data Access Layer)" {
+    [Repositories\n(CourseRepository)] as Repositories
+    [Eloquent Models\n(User, Course, Category)] as EloquentModels
+    [Laravel Database Connection\n(PDO / Query Builder)] as DBConnection
+  }
+}
+
+database "MariaDB 10.4\n(kurskhoi_online)" as MariaDB
+
+' Интерфейс ва алоқаҳои муошират
+interface "HTTP (HTML/JSON)" as HTTP
+
+Browser --> HTTP : дархости корбар (GET/POST)
+HTTP - FrontController
+
+FrontController --> Router : PHP handle(Request)
+Router --> Middleware : тафтиши Auth / CSRF токен
+Middleware --> Controllers : ирсол ба Controller
+
+Controllers --> BladeViews : интиқоли маълумот барои render
+BladeViews --> ViewEngine : тавлиди HTML
+ViewEngine ..> Browser : посухи HTTP (HTML / Redirect 302)
+
+Controllers --> Repositories : даъвати метод (createOrSubmit)
+Repositories --> EloquentModels : амалиётҳои Eloquent ORM
+EloquentModels --> DBConnection : Query Builder / PDO
+DBConnection --> MariaDB : дархостҳои SQL (TCP 3306)
+
+legend right
+  **Тақсимоти MVC (Model-View-Controller):**
+  • **Model:** Repositories (CourseRepository) + Eloquent Models + Database Connection
+  • **View:** Blade Templates (resources/views/) + View Engine
+  • **Controller:** Laravel Controllers (CourseController) + Router (routes/web.php)
+endlegend
+
+@enduml

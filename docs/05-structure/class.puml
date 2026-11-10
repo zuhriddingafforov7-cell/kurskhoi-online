@@ -1,0 +1,166 @@
+@startuml class
+title Biyomuz Academy: Диаграммаи синфҳо (Class Diagram)
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+skinparam shadowing false
+hide empty members
+
+package "Модели предметӣ (Domain Model)" {
+
+  enum Role {
+    admin
+    author
+    student
+  }
+
+  enum CourseStatus {
+    draft
+    pending
+    published
+    rejected
+  }
+
+  enum SubmissionStatus {
+    submitted
+    approved
+    rejected
+  }
+
+  enum EnrollmentStatus {
+    active
+    completed
+    cancelled
+  }
+
+  class User <<entity>> {
+    - id: int
+    - name: string
+    - email: string
+    - password: string
+    - role: Role
+    - createdAt: datetime
+    + isAuthor(): bool
+  }
+
+  class Category <<entity>> {
+    - id: int
+    - title: string
+    - slug: string
+    - description: ?string
+    - createdAt: datetime
+  }
+
+  class Course <<entity>> {
+    - id: int
+    - title: string
+    - description: ?string
+    - status: CourseStatus
+    - createdAt: datetime
+    + submitForReview(): void
+    + publish(): void
+  }
+
+  class Module <<entity>> {
+    - id: int
+    - title: string
+    - description: ?string
+    - orderIndex: int
+  }
+
+  class Lesson <<entity>> {
+    - id: int
+    - title: string
+    - content: string
+    - videoUrl: ?string
+    - orderIndex: int
+  }
+
+  class Enrollment <<entity>> {
+    - id: int
+    - enrolledAt: datetime
+    - status: EnrollmentStatus
+    + complete(): void
+  }
+
+  class Assignment <<entity>> {
+    - id: int
+    - title: string
+    - description: string
+    - dueDate: ?datetime
+    - maxScore: int
+  }
+
+  class AssignmentSubmission <<entity>> {
+    - id: int
+    - submissionText: ?string
+    - filePath: ?string
+    - score: ?int
+    - status: SubmissionStatus
+    + grade(score: int, feedback: string): void
+  }
+
+  class Certificate <<entity>> {
+    - id: int
+    - certificateCode: string
+    - issueDate: date
+    - fileUrl: string
+  }
+}
+
+' Робитаҳои модели предметӣ бо кратностҳои дақиқ
+Category "1" o-- "0..*" Course : гурӯҳбандӣ мекунад >
+User "1" -- "0..*" Course : эҷод мекунад (муаллиф) >
+Course "1" *-- "0..*" Module : дар бар мегирад >
+Module "1" *-- "0..*" Lesson : ташкил медиҳад >
+Lesson "1" *-- "0..1" Assignment : супориш дорад >
+
+User "1" -- "0..*" Enrollment : номнавис мешавад (донишҷӯ) >
+Course "1" -- "0..*" Enrollment : қабул мекунад >
+
+Assignment "1" -- "0..*" AssignmentSubmission : санҷида мешавад >
+User "1" -- "0..*" AssignmentSubmission : мефиристад (донишҷӯ) >
+
+Enrollment "1" -- "0..1" Certificate : дода мешавад >
+
+' Вобастагӣ ба Enum-ҳо
+User ..> Role
+Course ..> CourseStatus
+AssignmentSubmission ..> SubmissionStatus
+Enrollment ..> EnrollmentStatus
+
+package "Синфҳои барномавӣ (Application Classes)" {
+
+  class CourseController {
+    # courseRepository: CourseRepository
+    + index(request: Request): Response
+    + store(request: Request): Response
+  }
+
+  class CourseRepository {
+    + createOrSubmit(data: array, status: string = 'pending'): Course
+  }
+
+  class "Database (DB Facade / PDO)" as Database <<Laravel Abstraction>> {
+    + {static} connection(): Connection
+    + {static} table(name: string): QueryBuilder
+    + getPdo(): PDO
+  }
+}
+
+' Робитаҳои синфҳои барномавӣ
+CourseController --> CourseRepository : даъват мекунад >
+CourseRepository --> Database : дархости SQL >
+CourseRepository ..> Course : месозад / бармегардонад >
+
+note bottom of CourseRepository
+  Дар коди воқеӣ (app/Repositories/CourseRepository.php)
+  методи createOrSubmit() амалӣ шудааст.
+endnote
+
+note bottom of Database
+  Синфи сохташудаи нав нест:
+  абстраксияи қабати Illuminate\Support\Facades\DB
+  ва драйвери PDO-и Laravel мебошад.
+endnote
+
+@enduml
