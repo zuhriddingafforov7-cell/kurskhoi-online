@@ -1,0 +1,181 @@
+@startuml 06-er-diagram
+!define PK <color:#E67E22><b>PK</b></color>
+!define FK <color:#1F6FEB><b>FK</b></color>
+!define UQ <color:#6B7280><b>UQ</b></color>
+
+title <size:30><b>ER-диаграмма</b></size>\n<size:16>Biyomuz Academy — логическая модель базы данных (Crow's Foot)</size>
+
+hide circle
+hide empty members
+skinparam dpi 130
+skinparam defaultFontName DejaVu Sans
+skinparam defaultFontSize 13
+skinparam backgroundColor white
+skinparam linetype ortho
+skinparam nodesep 110
+skinparam ranksep 130
+skinparam shadowing false
+skinparam roundCorner 0
+skinparam class {
+  BackgroundColor white
+  BorderColor #1B3A6B
+  BorderThickness 2
+  FontStyle bold
+  FontSize 15
+  AttributeFontColor black
+}
+skinparam entity {
+  BackgroundColor white
+  BorderColor #1B3A6B
+  BorderThickness 2
+  FontStyle bold
+  FontSize 15
+}
+skinparam ArrowColor #1F6FEB
+skinparam ArrowThickness 1.6
+skinparam ArrowFontSize 12
+skinparam ArrowFontColor #1B3A6B
+
+entity categories {
+  * id : BIGINT UNSIGNED PK
+  --
+  * name : VARCHAR(100)
+  * slug : VARCHAR(120) UQ
+  description : TEXT
+  created_at : TIMESTAMP
+  updated_at : TIMESTAMP
+}
+
+entity courses {
+  * id : BIGINT UNSIGNED PK
+  --
+  * author_id : BIGINT UNSIGNED FK
+  category_id : BIGINT UNSIGNED FK
+  * title : VARCHAR(200)
+  * slug : VARCHAR(220) UQ
+  * description : TEXT
+  thumbnail_url : VARCHAR(255)
+  * status : ENUM(draft,pending,published,rejected,archived)
+  created_at : TIMESTAMP
+  updated_at : TIMESTAMP
+}
+
+entity modules {
+  * id : BIGINT UNSIGNED PK
+  --
+  * course_id : BIGINT UNSIGNED FK
+  * title : VARCHAR(200)
+  description : TEXT
+  * order_index : INT UNSIGNED
+  created_at : TIMESTAMP
+  updated_at : TIMESTAMP
+}
+
+entity lessons {
+  * id : BIGINT UNSIGNED PK
+  --
+  * module_id : BIGINT UNSIGNED FK
+  * title : VARCHAR(200)
+  * content_type : ENUM
+  body_text : LONGTEXT
+  video_url : VARCHAR(255)
+  file_path : VARCHAR(255)
+  * order_index : INT UNSIGNED
+  created_at : TIMESTAMP
+  updated_at : TIMESTAMP
+}
+
+entity assignments {
+  * id : BIGINT UNSIGNED PK
+  --
+  * lesson_id : BIGINT UNSIGNED FK UQ
+  * title : VARCHAR(200)
+  description : TEXT
+  due_date : DATETIME
+  * max_score : SMALLINT UNSIGNED
+  created_at : TIMESTAMP
+  updated_at : TIMESTAMP
+}
+
+entity users {
+  * id : BIGINT UNSIGNED PK
+  --
+  * name : VARCHAR(255)
+  * email : VARCHAR(255) UQ
+  email_verified_at : TIMESTAMP
+  * password : VARCHAR(255)
+  * role : ENUM
+  remember_token : VARCHAR(100)
+  created_at : TIMESTAMP
+  updated_at : TIMESTAMP
+}
+
+entity enrollments {
+  * id : BIGINT UNSIGNED PK
+  --
+  * user_id : BIGINT UNSIGNED FK
+  * course_id : BIGINT UNSIGNED FK
+  * enrolled_at : DATETIME
+  * status : ENUM
+  completed_at : DATETIME
+  created_at : TIMESTAMP
+  updated_at : TIMESTAMP
+  --
+  UQ (user_id, course_id)
+}
+
+entity certificates {
+  * id : BIGINT UNSIGNED PK
+  --
+  * enrollment_id : BIGINT UNSIGNED FK UQ
+  * certificate_code : VARCHAR(50) UQ
+  * issue_date : DATE
+  * pdf_path : VARCHAR(255)
+  created_at : TIMESTAMP
+  updated_at : TIMESTAMP
+}
+
+entity assignment_submissions {
+  * id : BIGINT UNSIGNED PK
+  --
+  * assignment_id : BIGINT UNSIGNED FK
+  * user_id : BIGINT UNSIGNED FK
+  submission_text : TEXT
+  file_path : VARCHAR(255)
+  score : SMALLINT UNSIGNED
+  feedback : TEXT
+  * status : ENUM
+  created_at : TIMESTAMP
+  updated_at : TIMESTAMP
+  --
+  UQ (assignment_id, user_id)
+}
+
+entity lesson_progress {
+  * id : BIGINT UNSIGNED PK
+  --
+  * user_id : BIGINT UNSIGNED FK
+  * lesson_id : BIGINT UNSIGNED FK
+  * is_completed : BOOLEAN
+  completed_at : DATETIME
+  created_at : TIMESTAMP
+  updated_at : TIMESTAMP
+  --
+  UQ (user_id, lesson_id)
+}
+
+categories |o-right-o{ courses : category_id
+courses ||-right-o{ modules : course_id
+modules ||-right-o{ lessons : module_id
+lessons ||-right-o| assignments : lesson_id
+
+users ||-up-o{ courses : author_id
+courses ||-down-o{ enrollments : course_id
+users ||-left-o{ enrollments : user_id
+enrollments ||-down-o| certificates : enrollment_id
+
+users ||-right-o{ lesson_progress : user_id
+lessons ||-down-o{ lesson_progress : lesson_id
+users ||-down-o{ assignment_submissions : user_id
+assignments ||-down--o{ assignment_submissions : assignment_id
+@enduml
