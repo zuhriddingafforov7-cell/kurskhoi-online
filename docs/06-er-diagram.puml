@@ -1,22 +1,70 @@
 @startuml er-diagram
-title Biyomuz Academy: Модели мантиқии пойгоҳи додаҳо (ER-диаграмма)
-
-hide circle
-skinparam linetype ortho
+skinparam backgroundColor #FDFCFB
+skinparam roundcorner 10
 skinparam shadowing false
-skinparam roundcorner 5
+skinparam linetype ortho
+skinparam defaultFontName "Segoe UI", Helvetica, Arial, sans-serif
+skinparam defaultFontSize 11
+skinparam defaultFontColor #1E293B
+
+header
+<font size="12" color="#D97706"><b>Лоиҳа: Biyomuz Academy</b></font><font size="12" color="#64748B">  |  Платформаи курсҳои онлайн</font>
+endheader
+
+title
+<font size="24" color="#0F172A"><b>ER-диаграмма</b></font>
+<font size="12" color="#475569">Модели мантиқии пойгоҳи додаҳо (Нотатсияи Crow's Foot / IE) — 10 ҷадвал</font>
+endtitle
 
 skinparam entity {
-    BackgroundColor #FFFFFF
-    BorderColor #2C3E50
-    HeaderBackgroundColor #EEF2F7
+  BackgroundColor #FFFFFF
+  BorderColor #1E3A8A
+  BorderThickness 1.8
+  HeaderBackgroundColor #F1F5F9
+  HeaderFontColor #0F172A
+  HeaderFontSize 13
+  HeaderFontStyle bold
+}
+
+skinparam arrow {
+  Color #2563EB
+  Thickness 1.5
+  FontColor #334155
+  FontSize 10
+}
+
+' ==========================================
+' ҚИСМИ БОЛО: Категорияҳо, Курсҳо ва Корбарон
+' ==========================================
+
+entity categories {
+  * id : BIGINT UNSIGNED <color:#EA580C><b>PK</b></color>
+  --
+  * title : VARCHAR(255)
+  * slug : VARCHAR(255) <color:#64748B><b>UQ</b></color>
+  description : TEXT
+  * created_at : TIMESTAMP
+  * updated_at : TIMESTAMP
+}
+
+entity courses {
+  * id : BIGINT UNSIGNED <color:#EA580C><b>PK</b></color>
+  --
+  category_id : BIGINT UNSIGNED <color:#2563EB><b>FK</b></color>
+  * author_id : BIGINT UNSIGNED <color:#2563EB><b>FK</b></color>
+  * title : VARCHAR(255)
+  * slug : VARCHAR(255) <color:#64748B><b>UQ</b></color>
+  description : TEXT
+  * status : ENUM('draft','pending','published','rejected')
+  * created_at : TIMESTAMP
+  * updated_at : TIMESTAMP
 }
 
 entity users {
-  * id : BIGINT UNSIGNED <<PK>>
+  * id : BIGINT UNSIGNED <color:#EA580C><b>PK</b></color>
   --
   * name : VARCHAR(255)
-  * email : VARCHAR(255) <<UQ>>
+  * email : VARCHAR(255) <color:#64748B><b>UQ</b></color>
   * password : VARCHAR(255)
   * role : ENUM('student','author','admin')
   email_verified_at : TIMESTAMP
@@ -25,33 +73,14 @@ entity users {
   * updated_at : TIMESTAMP
 }
 
-entity categories {
-  * id : BIGINT UNSIGNED <<PK>>
-  --
-  * title : VARCHAR(255)
-  * slug : VARCHAR(255) <<UQ>>
-  description : TEXT
-  * created_at : TIMESTAMP
-  * updated_at : TIMESTAMP
-}
-
-entity courses {
-  * id : BIGINT UNSIGNED <<PK>>
-  --
-  category_id : BIGINT UNSIGNED <<FK>>
-  * author_id : BIGINT UNSIGNED <<FK>>
-  * title : VARCHAR(255)
-  * slug : VARCHAR(255) <<UQ>>
-  description : TEXT
-  * status : ENUM('draft','pending','published','rejected')
-  * created_at : TIMESTAMP
-  * updated_at : TIMESTAMP
-}
+' ==========================================
+' ҚИСМИ МИЁНА: Модулҳо, Дарсҳо ва Супоришҳо
+' ==========================================
 
 entity modules {
-  * id : BIGINT UNSIGNED <<PK>>
+  * id : BIGINT UNSIGNED <color:#EA580C><b>PK</b></color>
   --
-  * course_id : BIGINT UNSIGNED <<FK>>
+  * course_id : BIGINT UNSIGNED <color:#2563EB><b>FK</b></color>
   * title : VARCHAR(255)
   description : TEXT
   * order_index : INT UNSIGNED
@@ -60,9 +89,9 @@ entity modules {
 }
 
 entity lessons {
-  * id : BIGINT UNSIGNED <<PK>>
+  * id : BIGINT UNSIGNED <color:#EA580C><b>PK</b></color>
   --
-  * module_id : BIGINT UNSIGNED <<FK>>
+  * module_id : BIGINT UNSIGNED <color:#2563EB><b>FK</b></color>
   * title : VARCHAR(255)
   * content : LONGTEXT
   video_url : VARCHAR(255)
@@ -71,21 +100,10 @@ entity lessons {
   * updated_at : TIMESTAMP
 }
 
-entity enrollments {
-  * id : BIGINT UNSIGNED <<PK>>
-  --
-  * user_id : BIGINT UNSIGNED <<FK>>
-  * course_id : BIGINT UNSIGNED <<FK>>
-  * enrolled_at : TIMESTAMP
-  * status : ENUM('active','completed','cancelled')
-  * created_at : TIMESTAMP
-  * updated_at : TIMESTAMP
-}
-
 entity assignments {
-  * id : BIGINT UNSIGNED <<PK>>
+  * id : BIGINT UNSIGNED <color:#EA580C><b>PK</b></color>
   --
-  * lesson_id : BIGINT UNSIGNED <<FK>>
+  * lesson_id : BIGINT UNSIGNED <color:#2563EB><b>FK</b></color>, <color:#64748B><b>UQ</b></color>
   * title : VARCHAR(255)
   * description : TEXT
   due_date : DATETIME
@@ -94,11 +112,37 @@ entity assignments {
   * updated_at : TIMESTAMP
 }
 
-entity assignment_submissions {
-  * id : BIGINT UNSIGNED <<PK>>
+' ==========================================
+' ҚИСМИ ПОЁН: Номнависӣ, Сертификат, Корҳо ва Пешрафт
+' ==========================================
+
+entity enrollments {
+  * id : BIGINT UNSIGNED <color:#EA580C><b>PK</b></color>
   --
-  * assignment_id : BIGINT UNSIGNED <<FK>>
-  * user_id : BIGINT UNSIGNED <<FK>>
+  * user_id : BIGINT UNSIGNED <color:#2563EB><b>FK</b></color>
+  * course_id : BIGINT UNSIGNED <color:#2563EB><b>FK</b></color>
+  * enrolled_at : TIMESTAMP
+  * status : ENUM('active','completed','cancelled')
+  * created_at : TIMESTAMP
+  * updated_at : TIMESTAMP
+}
+
+entity certificates {
+  * id : BIGINT UNSIGNED <color:#EA580C><b>PK</b></color>
+  --
+  * enrollment_id : BIGINT UNSIGNED <color:#2563EB><b>FK</b></color>, <color:#64748B><b>UQ</b></color>
+  * certificate_code : VARCHAR(50) <color:#64748B><b>UQ</b></color>
+  * issue_date : DATE
+  * file_url : VARCHAR(255)
+  * created_at : TIMESTAMP
+  * updated_at : TIMESTAMP
+}
+
+entity assignment_submissions {
+  * id : BIGINT UNSIGNED <color:#EA580C><b>PK</b></color>
+  --
+  * assignment_id : BIGINT UNSIGNED <color:#2563EB><b>FK</b></color>
+  * user_id : BIGINT UNSIGNED <color:#2563EB><b>FK</b></color>
   submission_text : TEXT
   file_path : VARCHAR(255)
   score : INT UNSIGNED
@@ -108,48 +152,64 @@ entity assignment_submissions {
   * updated_at : TIMESTAMP
 }
 
-entity certificates {
-  * id : BIGINT UNSIGNED <<PK>>
-  --
-  * enrollment_id : BIGINT UNSIGNED <<FK, UQ>>
-  * certificate_code : VARCHAR(50) <<UQ>>
-  * issue_date : DATE
-  * file_url : VARCHAR(255)
-  * created_at : TIMESTAMP
-  * updated_at : TIMESTAMP
-}
-
 entity lesson_progress {
-  * id : BIGINT UNSIGNED <<PK>>
+  * id : BIGINT UNSIGNED <color:#EA580C><b>PK</b></color>
   --
-  * user_id : BIGINT UNSIGNED <<FK>>
-  * lesson_id : BIGINT UNSIGNED <<FK>>
+  * user_id : BIGINT UNSIGNED <color:#2563EB><b>FK</b></color>
+  * lesson_id : BIGINT UNSIGNED <color:#2563EB><b>FK</b></color>
   * is_completed : TINYINT(1)
   completed_at : TIMESTAMP
   * created_at : TIMESTAMP
   * updated_at : TIMESTAMP
 }
 
-' Робитаҳои байни ҷадвалҳо (Нотатсияи Crow's Foot)
-categories ||--o{ courses : "category_id"
+' ==========================================
+' РОБИТАҲО БО НОТАТСИЯИ CROW'S FOOT
+' ==========================================
+
+' Категорияҳо ва Корбарон ба Курсҳо
+categories |o--o{ courses : "category_id"
 users ||--o{ courses : "author_id"
+
+' Иерархияи таълим: Курсҳо -> Модулҳо -> Дарсҳо -> Супоришҳо
 courses ||--o{ modules : "course_id"
 modules ||--o{ lessons : "module_id"
-lessons ||--o| assignments : "lesson_id"
+lessons ||--o| assignments : "lesson_id (1:1)"
 
-' Ҳалли муносибати M:N байни users ва courses тавассути enrollments
+' Робитаи бисёр ба бисёр (M:N) байни users ва courses тавассути enrollments
 users ||--o{ enrollments : "user_id"
 courses ||--o{ enrollments : "course_id"
 
-' Супоришҳо ва ҷавобҳои фиристодашуда
+' Супоришҳо ва ҷавобҳои ирсолшуда
 assignments ||--o{ assignment_submissions : "assignment_id"
 users ||--o{ assignment_submissions : "user_id"
 
-' Муносибати 1:1 ихтиёрӣ (ҳар як номнависӣ ҳадди аксар 1 сертификат мегирад)
+' Шаҳодатнома (муносибати 1:1 ихтиёрӣ барои хатми курс)
 enrollments ||--o| certificates : "enrollment_id (1:1)"
 
 ' Пешрафти омӯзиши дарсҳо
 users ||--o{ lesson_progress : "user_id"
 lessons ||--o{ lesson_progress : "lesson_id"
+
+' ==========================================
+' ТАРҲБАНДИИ 3-ҚАТОРӢ (LANDSCAPE GRID)
+' ==========================================
+
+categories -[hidden]right- courses
+courses -[hidden]right- users
+
+courses -[hidden]down- modules
+modules -[hidden]right- lessons
+lessons -[hidden]right- assignments
+
+modules -[hidden]down- enrollments
+enrollments -[hidden]right- certificates
+certificates -[hidden]right- assignment_submissions
+assignment_submissions -[hidden]right- lesson_progress
+
+legend bottom right
+  <font color="#475569"><b>Қоидаи меъморӣ:</b> FK — ҳамеша дар тарафи «лапка» (шоха). Робитаи M:N (users ↔ courses) тавассути enrollments амалӣ шудааст.</font>
+  <color:#EA580C><b>PK</b></color> - Калиди ибтидоӣ (Primary Key)  |  <color:#2563EB><b>FK</b></color> - Калиди хориҷӣ (Foreign Key)  |  <color:#64748B><b>UQ</b></color> - Маҳдудияти беназирӣ (UNIQUE)  |  * - NOT NULL
+endlegend
 
 @enduml

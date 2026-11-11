@@ -71,18 +71,18 @@
 
 ### Ҷадвали 3.1. Натиҷаи гузариш ба 1НФ (`student_courses_1nf`)
 
-| student_id | student_name | student_email | student_phone | course_title | category_title | author_name | enrolled_at | enrollment_status |
-|:---:|:---|:---|:---|:---|:---|:---|:---:|:---:|
-| **101** | Раҳимов Фарҳод | farhod@example.tj | +992927001122 | Асосҳои Laravel 13 | Веб-барномасозӣ | Устод Аҳмад | 2026-09-01 | active |
-| **101** | Раҳимов Фарҳод | farhod@example.tj | +992927001122 | Frontend бо Tailwind | Тарроҳии веб | Шаҳром Саидов | 2026-09-15 | completed |
-| **102** | Назарова Мадина | madina@example.tj | +992935006677 | Frontend бо Tailwind | Тарроҳии веб | Шаҳром Саидов | 2026-09-10 | active |
-| **103** | Абдуллоев Шариф | sharif@example.tj | +992900123456 | Асосҳои Laravel 13 | Веб-барномасозӣ | Устод Аҳмад | 2026-09-05 | completed |
-| **103** | Абдуллоев Шариф | sharif@example.tj | +992900123456 | Пойгоҳи MariaDB | Пойгоҳи додаҳо | Синои Ҳасан | 2026-09-20 | active |
-| **104** | Қосимов Зафар | zafar@example.tj | +992918445566 | Асосҳои Laravel 13 | Веб-барномасозӣ | Устод Аҳмад | 2026-09-12 | active |
+| student_id | student_name | student_email | student_phone | course_id | course_title | category_title | author_name | enrolled_at | enrollment_status |
+|:---:|:---|:---|:---|:---:|:---|:---|:---|:---:|:---:|
+| **101** | Раҳимов Фарҳод | farhod@example.tj | +992927001122 | **1** | Асосҳои Laravel 13 | Веб-барномасозӣ | Устод Аҳмад | 2026-09-01 | active |
+| **101** | Раҳимов Фарҳод | farhod@example.tj | +992927001122 | **2** | Frontend бо Tailwind | Тарроҳии веб | Шаҳром Саидов | 2026-09-15 | completed |
+| **102** | Назарова Мадина | madina@example.tj | +992935006677 | **2** | Frontend бо Tailwind | Тарроҳии веб | Шаҳром Саидов | 2026-09-10 | active |
+| **103** | Абдуллоев Шариф | sharif@example.tj | +992900123456 | **1** | Асосҳои Laravel 13 | Веб-барномасозӣ | Устод Аҳмад | 2026-09-05 | completed |
+| **103** | Абдуллоев Шариф | sharif@example.tj | +992900123456 | **3** | Пойгоҳи MariaDB | Пойгоҳи додаҳо | Синои Ҳасан | 2026-09-20 | active |
+| **104** | Қосимов Зафар | zafar@example.tj | +992918445566 | **1** | Асосҳои Laravel 13 | Веб-барномасозӣ | Устод Аҳмад | 2026-09-12 | active |
 
 #### Вазъияти 1НФ:
 * Қиматҳо атомарӣ шуданд.
-* Калиди ибтидоии эҳтимолии ҷадвал таркибӣ (Composite Primary Key) гардид: **`(student_id, course_title)`**.
+* Калиди ибтидоии таркибии ҷадвал гардид: **`(student_id, course_id)`**. `course_title` ҳамчун хусусияти тавсифии курс нигоҳ дошта мешавад.
 * **Камбудӣ:** Зиёдатии додаҳо якбора афзоиш ёфт! Номи донишҷӯ, телефон ва почтаи ӯ барои ҳар як курс такрор мешавад. Номи муаллиф ва категория барои курси «Laravel 13» се бор такрор шудааст.
 
 ---
@@ -96,7 +96,7 @@
 #### Таҳлили вобастагиҳои функсионалӣ дар ҷадвали 1НФ бо калиди таркибии `(student_id, course_id)`:
 * **`student_id → student_name, student_email, student_phone`**
   Ин атрибутҳо танҳо ба қисми якуми калид (`student_id`) вобастаанд. Барои донистани номи донишҷӯ донистани курси ӯ шарт нест. Ин **вобастагии қисмакӣ (partial dependency)** аст.
-* **`course_id → course_title, category_title, author_name`**
+* **`course_id → course_title, category_id, author_id`**
   Ин атрибутҳо танҳо ба қисми дуюми калид (`course_id`) вобастаанд. Ин низ **вобастагии қисмакӣ** мебошад.
 * **`(student_id, course_id) → enrolled_at, enrollment_status`**
   Ин атрибутҳо танҳо ҳангоми якҷоя будани ҳар ду калид маъно доранд (донишҷӯи мушаххас ба курси мушаххас дар кадом сана номнавис шуд ва дар кадом ҳолат қарор дорад). Ин **вобастагии пурраи функсионалӣ (full dependency)** аст.
@@ -292,7 +292,7 @@
 | Атрибут | Тип | Калид | NULL | Тавсиф |
 |---|---|---|:---:|---|
 | `id` | BIGINT UNSIGNED | PK | Не | Идентификатори супориш |
-| `lesson_id` | BIGINT UNSIGNED | FK → lessons.id | Не | Дарсе, ки ин супориш ба он вобаста аст |
+| `lesson_id` | BIGINT UNSIGNED | FK → lessons.id, UQ | Не | Дарсе, ки ин супориш ба он вобаста аст (муносибати 1:1) |
 | `title` | VARCHAR(255) | — | Не | Сарлавҳаи супориши амалӣ |
 | `description` | TEXT | — | Не | Шарҳи шартҳо ва талаботи иҷрои вазифа |
 | `due_date` | DATETIME | — | Ҳа | Мӯҳлати охирини супоридани кор (Deadline) |
@@ -354,7 +354,7 @@
 | **`modules`** | Қисмҳои сохтории курсҳо барои ташкили пайдарпайии дарсҳо | **PK:** `id`<br>**FK:** `course_id → courses.id` |
 | **`lessons`** | Дарсҳои мушаххаси дорои матн, видео ва супориш | **PK:** `id`<br>**FK:** `module_id → modules.id` |
 | **`enrollments`** | Қайди шомилшавии донишҷӯ ба курс (ҳалли M:N) ва ҳолати омӯзиш | **PK:** `id`<br>**UQ:** `(user_id, course_id)`<br>**FK:** `user_id → users.id`, `course_id → courses.id` |
-| **`assignments`** | Супоришҳои амалии вобаста ба дарс бо меъёри хол | **PK:** `id`<br>**FK:** `lesson_id → lessons.id` |
+| **`assignments`** | Супоришҳои амалии вобаста ба дарс бо меъёри хол | **PK:** `id`<br>**UQ:** `lesson_id`<br>**FK:** `lesson_id → lessons.id` (1:1) |
 | **`assignment_submissions`** | Вазифаҳои иҷрокардаи донишҷӯ бо файл ва баҳои муаллиф | **PK:** `id`<br>**FK:** `assignment_id → assignments.id`, `user_id → users.id` |
 | **`certificates`** | Шаҳодатномаҳои электронии тасдиқшудаи хатми курс | **PK:** `id`<br>**UQ:** `certificate_code`, `enrollment_id`<br>**FK:** `enrollment_id → enrollments.id` (1:1) |
 | **`lesson_progress`** | Қайди ҳолати дарсҳои гузаштаи донишҷӯ (кушодани дарси навбатӣ) | **PK:** `id`<br>**UQ:** `(user_id, lesson_id)`<br>**FK:** `user_id → users.id`, `lesson_id → lessons.id` |
@@ -367,11 +367,11 @@
 
 | Ҷадвалҳои алоқаманд | Навъи алоқа | Калиди хориҷӣ (FK) | Нотатсияи Crow's Foot | Шарҳ ва мантиқи соҳавӣ |
 |:---|:---:|:---|:---:|:---|
-| **categories — courses** | 1:N | `courses.category_id` | `categories ||--o{ courses` | Як категория метавонад дорои сифр ё якчанд курс бошад; ҳар як курс метавонад ба як категория тааллуқ дошта бошад (ихтиёрӣ). |
+| **categories — courses** | 1:N (ихтиёрӣ барои курс) | `courses.category_id` | `categories |o--o{ courses` | Як курс метавонад 0 ё 1 категория дошта бошад (`courses.category_id` ихтиёрӣ / NULL-допустимый); як категория метавонад дорои 0 ё якчанд курс бошад. |
 | **users — courses** | 1:N | `courses.author_id` | `users ||--o{ courses` | Як корбари дорои нақши муаллиф метавонад соҳиби сифр ё якчанд курс бошад; ҳар як курс ҳатман ба як муаллиф тааллуқ дорад. |
 | **courses — modules** | 1:N | `modules.course_id` | `courses ||--o{ modules` | Курс аз сифр ё якчанд модул иборат аст; модул бе курс вуҷуд дошта наметавонад (композитсия). |
 | **modules — lessons** | 1:N | `lessons.module_id` | `modules ||--o{ lessons` | Модул дорои сифр ё якчанд дарс аст; дарс ҳатман ба як модул тааллуқ дорад (композитсия). |
-| **lessons — assignments** | 1:1 (ихтиёрӣ) / 1:N | `assignments.lesson_id` | `lessons ||--o| assignments` | Дарс метавонад як супориши амалӣ дошта бошад ё умуман бе супориш бошад (дарси назариявӣ). |
+| **lessons — assignments** | **1:1** (ихтиёрӣ) | `assignments.lesson_id` | `lessons ||--o| assignments` | Муносибати 1:1 ихтиёрӣ (мувофиқ ба Class Diagram: `Lesson "1" *-- "0..1" Assignment`). Ҳар як дарс метавонад 0 ё маҳз 1 супориш дошта бошад. Сутуни `assignments.lesson_id` дорои маҳдудияти FK + UNIQUE мебошад, ки зиёда аз як супоришро барои як дарс манъ мекунад. |
 | **users ↔ courses** | **M:N** (тавассути `enrollments`) | `enrollments.user_id`<br>`enrollments.course_id` | `users ||--o{ enrollments`<br>`courses ||--o{ enrollments` | Робитаи бисёр ба бисёр: як донишҷӯ метавонад ба якчанд курс номнавис шавад ва ҳар курс метавонад садҳо донишҷӯ дошта бошад. |
 | **assignments — assignment_submissions** | 1:N | `assignment_submissions.assignment_id` | `assignments ||--o{ assignment_submissions` | Ба як супориш метавонад якчанд донишҷӯ ҷавоб фиристад. |
 | **users — assignment_submissions** | 1:N | `assignment_submissions.user_id` | `users ||--o{ assignment_submissions` | Донишҷӯ метавонад барои супоришҳои мухталиф корҳои худро ирсол намояд. |
@@ -410,6 +410,7 @@
 5. **`certificates.certificate_code` (UQ):** Рамзи беназири давлатӣ/оммавӣ барои санҷиши саҳеҳии шаҳодатнома (QR/код).
 6. **`certificates.enrollment_id` (UQ):** Таъмини маҳдудияти 1:1 байни номнависӣ ва шаҳодатнома.
 7. **`lesson_progress(user_id, lesson_id)` (UQ):** Индекси таркибӣ барои пешгирӣ аз сабти такрории пешрафти як дарс аз ҷониби як донишҷӯ.
+8. **`assignments.lesson_id` (UQ):** Таъмини маҳдудияти қатъии 1:1 ихтиёрӣ байни дарс ва супориш (як дарс наметавонад зиёда аз як супориш дошта бошад).
 
 ### 7.2. Маҳдудиятҳои санҷишӣ (`CHECK`)
 Барои кафолати саҳеҳии мантиқии қиматҳо маҳдудиятҳои зерини сатҳи СУБД истифода мешаванд:
@@ -470,7 +471,7 @@
 | `Assignment` | `assignments` | **Пурра мутобиқ:** `lesson_id` (FK), `title`, `due_date`, `max_score`. |
 | `AssignmentSubmission`| `assignment_submissions` | **Пурра мутобиқ:** `assignment_id` (FK), `user_id` (FK), `submission_text`, `file_path`, `score`, `feedback`, `status`. |
 | `Certificate` | `certificates` | **Пурра мутобиқ:** Муносибати 1:1 бо `enrollments` тавассути `enrollment_id` (UQ), `certificate_code` (UQ). |
-| *Синфи иловагӣ аз ТЗ* | `lesson_progress` | **Иловаи муҳим:** Барои таъмини талаботи FR-05 (омӯзиши пайдарпайи дарсҳо) ҷадвали пешрафт илова карда шуд. |
+| `LessonProgress` | `lesson_progress` | **Пурра мутобиқ:** Синфи `LessonProgress` дар Class Diagram ва ҷадвали `lesson_progress` дар модели мантиқӣ барои татбиқи талаботи FR-05 (омӯзиши пайдарпайи дарсҳо) пурра ҳамоҳанг ва инъикос гардиданд. |
 
 Ҳамин тариқ, байни модели консептуалии синфҳо ва модели мантиқии пойгоҳи додаҳо ҳеҷ гуна зиддият вуҷуд надорад.
 

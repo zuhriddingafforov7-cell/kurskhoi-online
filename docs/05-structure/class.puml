@@ -105,6 +105,12 @@ package "Модели предметӣ (Domain Model)" {
     - issueDate: date
     - fileUrl: string
   }
+
+  class LessonProgress <<entity>> {
+    - id: int
+    - isCompleted: bool
+    - completedAt: ?datetime
+  }
 }
 
 ' Робитаҳои модели предметӣ бо кратностҳои дақиқ
@@ -121,6 +127,9 @@ Assignment "1" -- "0..*" AssignmentSubmission : санҷида мешавад >
 User "1" -- "0..*" AssignmentSubmission : мефиристад (донишҷӯ) >
 
 Enrollment "1" -- "0..1" Certificate : дода мешавад >
+
+User "1" -- "0..*" LessonProgress : пешрафт дорад >
+Lesson "1" -- "0..*" LessonProgress : қайди омӯзиш >
 
 ' Вобастагӣ ба Enum-ҳо
 User ..> Role
