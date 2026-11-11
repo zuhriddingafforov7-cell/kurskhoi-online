@@ -1,0 +1,155 @@
+@startuml er-diagram
+title Biyomuz Academy: Модели мантиқии пойгоҳи додаҳо (ER-диаграмма)
+
+hide circle
+skinparam linetype ortho
+skinparam shadowing false
+skinparam roundcorner 5
+
+skinparam entity {
+    BackgroundColor #FFFFFF
+    BorderColor #2C3E50
+    HeaderBackgroundColor #EEF2F7
+}
+
+entity users {
+  * id : BIGINT UNSIGNED <<PK>>
+  --
+  * name : VARCHAR(255)
+  * email : VARCHAR(255) <<UQ>>
+  * password : VARCHAR(255)
+  * role : ENUM('student','author','admin')
+  email_verified_at : TIMESTAMP
+  remember_token : VARCHAR(100)
+  * created_at : TIMESTAMP
+  * updated_at : TIMESTAMP
+}
+
+entity categories {
+  * id : BIGINT UNSIGNED <<PK>>
+  --
+  * title : VARCHAR(255)
+  * slug : VARCHAR(255) <<UQ>>
+  description : TEXT
+  * created_at : TIMESTAMP
+  * updated_at : TIMESTAMP
+}
+
+entity courses {
+  * id : BIGINT UNSIGNED <<PK>>
+  --
+  category_id : BIGINT UNSIGNED <<FK>>
+  * author_id : BIGINT UNSIGNED <<FK>>
+  * title : VARCHAR(255)
+  * slug : VARCHAR(255) <<UQ>>
+  description : TEXT
+  * status : ENUM('draft','pending','published','rejected')
+  * created_at : TIMESTAMP
+  * updated_at : TIMESTAMP
+}
+
+entity modules {
+  * id : BIGINT UNSIGNED <<PK>>
+  --
+  * course_id : BIGINT UNSIGNED <<FK>>
+  * title : VARCHAR(255)
+  description : TEXT
+  * order_index : INT UNSIGNED
+  * created_at : TIMESTAMP
+  * updated_at : TIMESTAMP
+}
+
+entity lessons {
+  * id : BIGINT UNSIGNED <<PK>>
+  --
+  * module_id : BIGINT UNSIGNED <<FK>>
+  * title : VARCHAR(255)
+  * content : LONGTEXT
+  video_url : VARCHAR(255)
+  * order_index : INT UNSIGNED
+  * created_at : TIMESTAMP
+  * updated_at : TIMESTAMP
+}
+
+entity enrollments {
+  * id : BIGINT UNSIGNED <<PK>>
+  --
+  * user_id : BIGINT UNSIGNED <<FK>>
+  * course_id : BIGINT UNSIGNED <<FK>>
+  * enrolled_at : TIMESTAMP
+  * status : ENUM('active','completed','cancelled')
+  * created_at : TIMESTAMP
+  * updated_at : TIMESTAMP
+}
+
+entity assignments {
+  * id : BIGINT UNSIGNED <<PK>>
+  --
+  * lesson_id : BIGINT UNSIGNED <<FK>>
+  * title : VARCHAR(255)
+  * description : TEXT
+  due_date : DATETIME
+  * max_score : INT UNSIGNED
+  * created_at : TIMESTAMP
+  * updated_at : TIMESTAMP
+}
+
+entity assignment_submissions {
+  * id : BIGINT UNSIGNED <<PK>>
+  --
+  * assignment_id : BIGINT UNSIGNED <<FK>>
+  * user_id : BIGINT UNSIGNED <<FK>>
+  submission_text : TEXT
+  file_path : VARCHAR(255)
+  score : INT UNSIGNED
+  feedback : TEXT
+  * status : ENUM('submitted','approved','rejected')
+  * created_at : TIMESTAMP
+  * updated_at : TIMESTAMP
+}
+
+entity certificates {
+  * id : BIGINT UNSIGNED <<PK>>
+  --
+  * enrollment_id : BIGINT UNSIGNED <<FK, UQ>>
+  * certificate_code : VARCHAR(50) <<UQ>>
+  * issue_date : DATE
+  * file_url : VARCHAR(255)
+  * created_at : TIMESTAMP
+  * updated_at : TIMESTAMP
+}
+
+entity lesson_progress {
+  * id : BIGINT UNSIGNED <<PK>>
+  --
+  * user_id : BIGINT UNSIGNED <<FK>>
+  * lesson_id : BIGINT UNSIGNED <<FK>>
+  * is_completed : TINYINT(1)
+  completed_at : TIMESTAMP
+  * created_at : TIMESTAMP
+  * updated_at : TIMESTAMP
+}
+
+' Робитаҳои байни ҷадвалҳо (Нотатсияи Crow's Foot)
+categories ||--o{ courses : "category_id"
+users ||--o{ courses : "author_id"
+courses ||--o{ modules : "course_id"
+modules ||--o{ lessons : "module_id"
+lessons ||--o| assignments : "lesson_id"
+
+' Ҳалли муносибати M:N байни users ва courses тавассути enrollments
+users ||--o{ enrollments : "user_id"
+courses ||--o{ enrollments : "course_id"
+
+' Супоришҳо ва ҷавобҳои фиристодашуда
+assignments ||--o{ assignment_submissions : "assignment_id"
+users ||--o{ assignment_submissions : "user_id"
+
+' Муносибати 1:1 ихтиёрӣ (ҳар як номнависӣ ҳадди аксар 1 сертификат мегирад)
+enrollments ||--o| certificates : "enrollment_id (1:1)"
+
+' Пешрафти омӯзиши дарсҳо
+users ||--o{ lesson_progress : "user_id"
+lessons ||--o{ lesson_progress : "lesson_id"
+
+@enduml
