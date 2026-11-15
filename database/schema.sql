@@ -2,7 +2,7 @@
 -- Лоиҳа: Biyomuz Academy (Платформаи курсҳои онлайн)
 -- Лабораторияи №7: Физическая модель базы данных
 -- Файл: database/schema.sql
--- СУБД: MySQL 8.0+ / MariaDB 10.4+
+-- СУБД: MariaDB 10.4.32 (XAMPP for Windows, utf8mb4, InnoDB)
 -- Кодировка: utf8mb4, Collation: utf8mb4_unicode_ci, Муҳаррик: InnoDB
 -- =====================================================================
 

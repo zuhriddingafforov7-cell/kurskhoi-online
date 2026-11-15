@@ -56,43 +56,55 @@
 ## 5. Маҷмӯи технологияҳо (Tech Stack)
 | Қисмат | Технология |
 |---|---|
-| **Backend** | PHP 8.5, Laravel 13 |
-| **Пойгоҳи додаҳо** | MySQL *(версияи дақиқи сервери маҳаллӣ санҷида мешавад)* |
-| **Frontend** | Blade, HTML5, CSS3, JavaScript |
+| **Backend** | PHP 8.5.10 (CLI), PHP 8.2.12 (Apache mod_php), Laravel 13 |
+| **Пойгоҳи додаҳо** | MariaDB 10.4.32 (XAMPP for Windows, порт 3306, utf8mb4) |
+| **Frontend** | Blade Templates, HTML5, CSS3, JavaScript, Tailwind CSS |
 | **Идоракунии версияҳо** | Git, GitHub |
-| **Муҳити маҳаллӣ** | Windows, PowerShell, Composer |
+| **Муҳити маҳаллӣ** | Windows 11, Apache 2.4.58, Composer |
 
 ---
 
 ## 6. Сохтори репозитория
 ```text
 kurskhoi-online/
-├── README.md                          # Муаррифии лоиҳа
+├── README.md                          # Муаррифии расмии лоиҳа
 ├── docs/                              # Ҳуҷҷатҳои таҳлил ва лоиҳакашӣ
-│   └── 01-domain-analysis.md          # Лаб 1: Таҳлили соҳаи предметӣ
-├── app/                               # Моделҳо ва контроллерҳо (Laravel)
-├── database/                          # Мигратсияҳо ва сидерҳо
-├── public/                            # index.php, CSS, JS
-├── resources/                         # Шаблонҳои Blade
-└── routes/                            # Хатсайрҳо (web.php)
+│   ├── 01-domain-analysis.md          # Лаб 1: Таҳлили соҳаи предметӣ
+│   ├── 02-comparison-matrix.md        # Лаб 2: Матритсаи муқоисавии аналогҳо
+│   ├── 03-short-spec.md               # Лаб 3: Мушаххасоти кӯтоҳи техникӣ
+│   ├── 04-behavior/                   # Лаб 4: Моделсозии рафтор (Use Case, Activity, Sequence)
+│   ├── 05-structure/                  # Лаб 5: Моделсозии сохтор (Class diagram)
+│   ├── 06-er-diagram.puml / .png      # Лаб 6: Лоиҳакашии пойгоҳи додаҳо (ERD)
+│   ├── 06-logical-model.md            # Лаб 6: Модели мантиқии пойгоҳи додаҳо
+│   ├── 07-deployment.puml / .png      # Лаб 7: Диаграммаи ҷойгиршавӣ (Deployment)
+│   ├── 07-screens/                    # Лаб 7: Далелҳои скриншотии phpMyAdmin ва README
+│   └── 08-technical-specification.md  # Лаб 8: Супориши пурраи техникӣ (СТ ва Р-1)
+├── database/                          # Модели физикӣ, мигратсияҳо ва сидерҳо
+│   ├── schema.sql                     # Лаб 7: Сохтори 10 ҷадвали СУБД MariaDB
+│   ├── seed.sql                       # Лаб 7: Додаҳои ибтидоии воқеӣ бо забони тоҷикӣ
+│   └── queries.sql                    # Лаб 7: 6 дархости назоратӣ, EXPLAIN ва utf8mb4
+├── app/                               # Моделҳо ва контроллерҳо (Laravel 13)
+├── public/                            # index.php, assets, storage symlink
+├── resources/                         # Шаблонҳои Blade ва намудҳо
+└── routes/                            # Хатсайрҳои система (web.php)
 ```
 
 ---
 
 ## 7. Ҷадвали иҷрои корҳои лабораторӣ
 
-| № | Номи кори лабораторӣ | Файл | Тег | Ҳолат |
+| № | Номи кори лабораторӣ | Файлҳои асосӣ | Тег | Ҳолат |
 |:---:|---|---|:---:|:---:|
-| 01 | Таҳлили соҳаи предметӣ | `docs/01-domain-analysis.md` | `lab-01` | Дар санҷиш |
-| 02 | Матритсаи муқоисавии аналогҳо | `docs/02-comparison-matrix.md` | `lab-02` | Дар навбат |
-| 03 | Мушаххасоти кӯтоҳи техникӣ | `docs/03-short-spec.md` | `lab-03` | Дар навбат |
-| 04 | Моделсозии рафтор (UML) | `docs/04-behavior/` | `lab-04` | Дар навбат |
-| 05 | Моделсозии сохтор (UML) | `docs/05-structure/` | `lab-05` | Дар навбат |
-| 06 | Лоиҳакашии пойгоҳи додаҳо | `docs/06-er-diagram.puml` | `lab-06` | Дар навбат |
-| 07 | Скриптҳои SQL | `database/schema.sql` | `lab-07` | Дар навбат |
-| 08 | Супориши пурраи техникӣ | `docs/08-technical-specification.md` | `lab-08` | Дар навбат |
+| 01 | Таҳлили соҳаи предметӣ | `docs/01-domain-analysis.md` | `lab-01` | Иҷро шуд (PASS) |
+| 02 | Матритсаи муқоисавии аналогҳо | `docs/02-comparison-matrix.md` | `lab-02` | Иҷро шуд (PASS) |
+| 03 | Мушаххасоти кӯтоҳи техникӣ | `docs/03-short-spec.md` | `lab-03` | Иҷро шуд (PASS) |
+| 04 | Моделсозии рафтор (UML) | `docs/04-behavior/` | `lab-04` | Иҷро шуд (PASS) |
+| 05 | Моделсозии сохтор (UML) | `docs/05-structure/` | `lab-05` | Иҷро шуд (PASS) |
+| 06 | Лоиҳакашии пойгоҳи додаҳо | `docs/06-er-diagram.puml`, `docs/06-logical-model.md` | `lab-06` | Иҷро шуд (PASS) |
+| 07 | Модели физикӣ ва ҷойгиркунӣ | `database/*.sql`, `docs/07-deployment.*`, `docs/07-screens/` | `lab-07` | Иҷро шуд (PASS) |
+| 08 | Супориши пурраи техникӣ | `docs/08-technical-specification.md` | `lab-08` | Иҷро шуд (PASS) |
 | 09 | Тарроҳии интерфейс | `docs/09-design/` | `lab-09` | Дар навбат |
-| 10–14 | Коркарди барнома | Рамзи асосӣ | `lab-10`..`lab-14` | Дар навбат |
+| 10–14 | Коркарди барнома | Рамзи асосии Laravel | `lab-10`..`lab-14` | Дар навбат |
 | 15 | Санҷиши система | `docs/15-test-cases.md` | `lab-15` | Дар навбат |
 | 16 | Ҷойгиркунӣ ва нашр | `docs/16-deploy.md` | `lab-16` | Дар навбат |
 
