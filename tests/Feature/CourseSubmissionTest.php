@@ -17,10 +17,16 @@ class CourseSubmissionTest extends TestCase
     public function test_authenticated_author_can_submit_course(): void
     {
         $author = User::factory()->author()->create();
+        $category = \App\Models\Category::create([
+            'title' => 'Барномасозӣ',
+            'slug' => 'programming',
+            'description' => 'Курсҳои барномасозӣ',
+        ]);
 
         $response = $this->actingAs($author)->post('/author/courses', [
             'title' => 'Асосҳои барномасозӣ бо PHP ва Laravel',
             'description' => 'Курси амалӣ оид ба таҳияи сомонаҳои муосир',
+            'category_id' => $category->id,
         ]);
 
         // Санҷиши ҷавоби 302 ва масири бозгашт ба /author/courses
@@ -38,10 +44,16 @@ class CourseSubmissionTest extends TestCase
     public function test_submitted_course_is_saved_with_pending_status(): void
     {
         $author = User::factory()->author()->create();
+        $category = \App\Models\Category::create([
+            'title' => 'Веб-дизайн',
+            'slug' => 'web-design',
+            'description' => 'Курсҳои дизайн',
+        ]);
 
         $this->actingAs($author)->post('/author/courses', [
             'title' => 'Frontend бо Tailwind CSS ва JavaScript',
             'description' => 'Тарроҳии интерфейсҳои мутобиқшаванда',
+            'category_id' => $category->id,
         ]);
 
         $this->assertDatabaseHas('courses', [

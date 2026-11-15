@@ -1,9 +1,51 @@
 @import 'tailwindcss';
 
+@source '../views';
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 
+/* ═══════════════════════════════════════════════════════
+   BIYOMUZ ACADEMY — DESIGN SYSTEM & RESPONSIVE FOUNDATION
+   Палитраи расмӣ ва мутобиқшавии комил ба ҳамаи экранҳо
+   ═══════════════════════════════════════════════════════ */
+
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: 'Inter', 'Instrument Sans', ui-sans-serif, system-ui, sans-serif,
+        'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+
+    /* Primary Brand Colors */
+    --color-brand-50:  #ECFDF5;
+    --color-brand-100: #D1FAE5;
+    --color-brand-200: #A7F3D0;
+    --color-brand-300: #6EE7B7;
+    --color-brand-400: #34D399;
+    --color-brand-500: #10B981;
+    --color-brand-600: #00875A;
+    --color-brand-700: #047857;
+    --color-brand-800: #065F46;
+    --color-brand-900: #064E3B;
+    --color-brand-950: #022C22;
+}
+
+/* Пешгирии ҳаракати уфуқӣ (No Horizontal Overflow) дар ҳамаи экранҳо */
+html {
+    max-width: 100vw;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    max-width: 100vw;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Smooth transitions for interactive elements */
+@layer base {
+    *, *::before, *::after {
+        transition-property: color, background-color, border-color, box-shadow, opacity, transform;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-duration: 150ms;
+    }
 }

@@ -13,6 +13,14 @@ class Category extends Model
     use HasFactory;
 
     /**
+     * Get the name attribute as an alias for title.
+     */
+    public function getNameAttribute(): string
+    {
+        return $this->attributes['title'] ?? '';
+    }
+
+    /**
      * Courses belonging to this category.
      *
      * @return HasMany<Course, $this>

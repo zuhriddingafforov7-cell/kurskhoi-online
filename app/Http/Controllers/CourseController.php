@@ -2,80 +2,58 @@
 
 namespace App\Http\Controllers;
 
-use App\Repositories\CourseRepository;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
+use App\Models\Category;
+use App\Models\Course;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
 
 class CourseController extends Controller
 {
-    public function __construct(
-        protected CourseRepository $courseRepository = new CourseRepository()
-    ) {}
-
     /**
-     * Display a listing of courses authored by the authenticated author.
+     * Саҳифаи каталоги оммавии курсҳо.
      */
-    public function index(Request $request): JsonResponse|Response
+    public function index(Request $request): View
     {
-        $user = Auth::user();
-        if (!$user) {
-            abort(401, 'Барои дидани курсҳо бояд аввал ба система ворид шавед.');
+        $query = Course::published()
+            ->with(['author', 'category'])
+            ->withCount(['enrollments', 'modules']);
+
+        if ($request->filled('category')) {
+            $query->where('category_id', $request->category);
         }
 
-        if ($user->role !== 'author') {
-            abort(403, 'Фақат муаллифон (author) ба ин саҳифа дастрасӣ доранд.');
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%");
+            });
         }
 
-        $courses = $user->courses()->latest()->get();
+        $courses = $query->latest()->paginate(12)->withQueryString();
+        $categories = Category::withCount(['courses' => fn ($q) => $q->where('status', 'published')])->get();
 
-        if ($request->wantsJson()) {
-            return response()->json([
-                'courses' => $courses,
-            ]);
-        }
-
-        return response('Саҳифаи курсҳои муаллиф (author/courses)', 200);
+        return view('courses.index', compact('courses', 'categories'));
     }
 
     /**
-     * Store a newly created course submitted for moderation.
+     * Муфассали курс барои омма / меҳмонон.
      */
-    public function store(Request $request): JsonResponse|RedirectResponse
+    public function show(Course $course): View
     {
-        // 1. Authenticated user check
-        $user = Auth::user();
-        if (!$user) {
-            abort(401, 'Барои ирсоли курс бояд аввал ба система ворид шавед.');
+        if ($course->status !== Course::STATUS_PUBLISHED && (!auth()->check() || (auth()->id() !== $course->author_id && !auth()->user()->isAdmin()))) {
+            abort(404);
         }
 
-        // 2. Author role check
-        if ($user->role !== 'author') {
-            abort(403, 'Фақат муаллифон (author) ҳуқуқи пешниҳоди курсро доранд.');
+        $course->load(['author', 'category', 'modules.lessons']);
+        $isEnrolled = false;
+        $enrollment = null;
+
+        if (auth()->check()) {
+            $enrollment = auth()->user()->enrollments()->where('course_id', $course->id)->first();
+            $isEnrolled = $enrollment !== null;
         }
 
-        // 3. Validation of required and optional fields
-        $validated = $request->validate([
-            'title' => ['required', 'string', 'max:255'],
-            'description' => ['nullable', 'string'],
-            'category_id' => ['nullable', 'exists:categories,id'],
-        ]);
-
-        // 4. Set author_id from authenticated user (not from client input)
-        $validated['author_id'] = $user->id;
-
-        // 5. Create or submit course via CourseRepository with status='pending'
-        $course = $this->courseRepository->createOrSubmit($validated, 'pending');
-
-        if ($request->wantsJson()) {
-            return response()->json([
-                'message' => 'Курс бомуваффақият сабт шуда, барои модератсия ирсол гардид.',
-                'course' => $course,
-            ], 201);
-        }
-
-        return redirect()->to('/author/courses')->with('success', 'Курс барои модератсия ирсол гардид.');
+        return view('courses.show', compact('course', 'isEnrolled', 'enrollment'));
     }
 }
