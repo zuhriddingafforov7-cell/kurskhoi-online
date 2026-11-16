@@ -24,7 +24,7 @@ class Assignment extends Model
     }
 
     /**
-     * Супоришти талабаи мушаххас.
+     * Супориши донишҷӯи мушаххас.
      */
     public function submissionBy(int $userId): ?AssignmentSubmission
     {

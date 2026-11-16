@@ -31,7 +31,8 @@ class Certificate extends Model
 
     public function getIssuedAtAttribute()
     {
-        return $this->attributes['issue_date'] ?? $this->attributes['issued_at'] ?? null;
+        $val = $this->attributes['issue_date'] ?? $this->attributes['issued_at'] ?? null;
+        return $val ? \Illuminate\Support\Carbon::parse($val) : null;
     }
 
     public function setIssuedAtAttribute($value): void

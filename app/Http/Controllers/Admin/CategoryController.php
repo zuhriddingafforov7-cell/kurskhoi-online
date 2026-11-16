@@ -57,7 +57,12 @@ class CategoryController extends Controller
 
     public function destroy(Category $category): RedirectResponse
     {
+        if ($category->courses()->exists()) {
+            return back()->with('error', 'Категория дорои курсҳо мебошад ва нест карда намешавад.');
+        }
+
         $category->delete();
+
         return redirect()->route('admin.categories.index')->with('success', 'Категория нест карда шуд.');
     }
 }

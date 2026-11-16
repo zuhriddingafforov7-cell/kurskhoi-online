@@ -18,44 +18,44 @@
         <!-- Ҷадвали корбарон -->
         <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
             <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse text-xs">
+                <table class="w-full text-left border-collapse text-sm">
                     <thead>
-                        <tr class="bg-slate-50/80 border-b border-slate-200 text-slate-500 uppercase tracking-wider font-semibold">
-                            <th class="p-4 px-6">ID</th>
-                            <th class="p-4 px-6">Ному насаб</th>
-                            <th class="p-4 px-6">Почтаи электронӣ</th>
-                            <th class="p-4 px-6">Нақш</th>
-                            <th class="p-4 px-6">Санаи сабтином</th>
-                            <th class="p-4 px-6 text-right">Амалҳо</th>
+                        <tr class="bg-slate-50/90 border-b border-slate-200 text-slate-600 text-xs uppercase tracking-wider font-bold">
+                            <th class="px-4 py-3.5">ID</th>
+                            <th class="px-4 py-3.5">Ному насаб</th>
+                            <th class="px-4 py-3.5">Почтаи электронӣ</th>
+                            <th class="px-4 py-3.5 whitespace-nowrap">Нақш</th>
+                            <th class="px-4 py-3.5 whitespace-nowrap">Санаи сабтином</th>
+                            <th class="px-4 py-3.5 text-right whitespace-nowrap">Амалҳо</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100">
                         @foreach($users as $u)
                             <tr class="hover:bg-slate-50/60 transition">
-                                <td class="p-4 px-6 font-mono text-slate-400">#{{ $u->id }}</td>
-                                <td class="p-4 px-6 font-bold text-sm text-[#1E293B]">
+                                <td class="px-4 py-4 font-mono text-xs text-slate-400">#{{ $u->id }}</td>
+                                <td class="px-4 py-4 font-bold text-sm text-[#1E293B]">
                                     {{ $u->name }}
                                 </td>
-                                <td class="p-4 px-6 font-mono text-slate-600">
+                                <td class="px-4 py-4 font-mono text-xs sm:text-sm text-slate-600">
                                     {{ $u->email }}
                                 </td>
-                                <td class="p-4 px-6">
-                                    <span class="inline-flex items-center px-2.5 py-1 rounded-full text-[11px] font-bold
+                                <td class="px-4 py-4 whitespace-nowrap">
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold whitespace-nowrap
                                         @if($u->role === 'admin') bg-rose-100 text-rose-700 border border-rose-200
                                         @elseif($u->role === 'author') bg-amber-100 text-amber-700 border border-amber-200
                                         @else bg-[#ECFDF5] text-[#00875A] border border-[#A7F3D0] @endif">
                                         {{ ucfirst($u->role) }}
                                     </span>
                                 </td>
-                                <td class="p-4 px-6 text-slate-500">
+                                <td class="px-4 py-4 text-xs sm:text-sm text-slate-500 whitespace-nowrap">
                                     {{ $u->created_at ? $u->created_at->format('d.m.Y H:i') : '-' }}
                                 </td>
-                                <td class="p-4 px-6 text-right">
+                                <td class="px-4 py-4 text-right whitespace-nowrap">
                                     <div class="flex items-center justify-end gap-2">
-                                        <a href="{{ route('admin.users.show', $u) }}" class="px-2.5 py-1 text-slate-600 hover:text-[#00875A] font-medium transition">
+                                        <a href="{{ route('admin.users.show', $u) }}" class="px-3 py-1.5 text-xs font-semibold text-slate-700 hover:text-[#00875A] hover:bg-slate-100 rounded-xl transition whitespace-nowrap">
                                             Профил
                                         </a>
-                                        <a href="{{ route('admin.users.edit', $u) }}" class="px-2.5 py-1 text-[#00875A] hover:bg-[#ECFDF5] rounded-lg font-semibold transition">
+                                        <a href="{{ route('admin.users.edit', $u) }}" class="px-3 py-1.5 text-xs font-semibold text-[#00875A] bg-[#ECFDF5] hover:bg-[#D1FAE5] rounded-xl transition whitespace-nowrap">
                                             Ивази нақш
                                         </a>
                                     </div>

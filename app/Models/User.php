@@ -78,7 +78,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Санҷед, ки оё истифодабаранда ба курси мушаххас ёзнашинӣ кардааст.
+     * Санҷед, ки оё истифодабаранда ба курси мушаххас номнавис шудааст.
      */
     public function isEnrolledIn(int $courseId): bool
     {
@@ -90,6 +90,7 @@ class User extends Authenticatable
      */
     public function progressInCourse(Course $course): int
     {
+        $course->loadMissing('modules.lessons');
         $totalLessons = $course->modules->flatMap->lessons->count();
         if ($totalLessons === 0) {
             return 0;

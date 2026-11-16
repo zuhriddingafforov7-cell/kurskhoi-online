@@ -6,8 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Category;
 use App\Models\Course;
 use App\Models\Enrollment;
+use App\Models\User;
+use App\Support\ModelMeta;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\View\View;
 
 class CourseController extends Controller
@@ -19,20 +22,62 @@ class CourseController extends Controller
     {
         $query = Course::published()
             ->with(['author', 'category'])
-            ->withCount('enrollments');
+            ->withCount(['enrollments', 'modules']);
 
         if ($request->filled('category')) {
             $query->where('category_id', $request->category);
         }
 
-        if ($request->filled('search')) {
-            $query->where('title', 'like', '%' . $request->search . '%');
+        if ($request->filled('author')) {
+            $query->where('author_id', $request->author);
         }
 
-        $courses    = $query->latest()->paginate(12)->withQueryString();
-        $categories = Category::orderBy('title')->get();
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function ($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
 
-        return view('student.courses.index', compact('courses', 'categories'));
+        $sort = $request->input('sort', 'latest');
+        if ($sort === 'popular') {
+            $query->orderByDesc('enrollments_count')->latest();
+        } elseif ($sort === 'title') {
+            $query->orderBy('title');
+        } else {
+            $query->latest();
+        }
+
+        $level = $request->input('level');
+        if (in_array($level, ['beginner', 'intermediate', 'advanced'], true)) {
+            $filtered = $query->get()->filter(
+                fn (Course $course) => ModelMeta::inferCourseLevel($course->title ?? '', $course->id) === $level
+            )->values();
+
+            $perPage = 12;
+            $page = LengthAwarePaginator::resolveCurrentPage();
+            $courses = new LengthAwarePaginator(
+                $filtered->forPage($page, $perPage)->values(),
+                $filtered->count(),
+                $perPage,
+                $page,
+                ['path' => $request->url(), 'query' => $request->query()]
+            );
+        } else {
+            $courses = $query->paginate(12)->withQueryString();
+        }
+
+        $categories = Category::withCount(['courses' => fn ($q) => $q->where('status', 'published')])
+            ->orderBy('title')
+            ->get();
+
+        $authors = User::where('role', 'author')
+            ->whereHas('courses', fn ($q) => $q->where('status', Course::STATUS_PUBLISHED))
+            ->orderBy('name')
+            ->get();
+
+        return view('student.courses.index', compact('courses', 'categories', 'authors'));
     }
 
     /**
@@ -44,7 +89,7 @@ class CourseController extends Controller
             abort(404);
         }
 
-        $course->load(['author', 'category', 'modules.lessons']);
+        $course->load(['author', 'category', 'modules.lessons'])->loadCount('enrollments');
         $isEnrolled = auth()->check() && auth()->user()->isEnrolledIn($course->id);
         $enrollment = null;
 
@@ -56,7 +101,7 @@ class CourseController extends Controller
     }
 
     /**
-     * Ёзнашинии талаба ба курс.
+     * Номнависии донишҷӯ ба курс.
      */
     public function enroll(Course $course): RedirectResponse
     {
@@ -67,7 +112,7 @@ class CourseController extends Controller
         $user = auth()->user();
 
         if ($user->isEnrolledIn($course->id)) {
-            return back()->with('info', 'Шумо аллакай ба ин курс ёзнашинӣ кардаед.');
+            return back()->with('info', 'Шумо аллакай ба ин курс номнавис шудаед.');
         }
 
         Enrollment::create([
@@ -78,11 +123,11 @@ class CourseController extends Controller
 
         return redirect()
             ->route('student.courses.show', $course)
-            ->with('success', 'Шумо ба курс муваффақона ёзнашинӣ кардед!');
+            ->with('success', 'Шумо ба курс бомуваффақият номнавис шудед!');
     }
 
     /**
-     * Курсҳои ёзнашинишудаи талаба.
+     * Курсҳои номнависшудаи донишҷӯ.
      */
     public function myCourses(): View
     {
@@ -93,11 +138,8 @@ class CourseController extends Controller
             ->latest()
             ->get();
 
-        // Ҳисоби пешрафт барои ҳар курс
         $enrollments->each(function ($enrollment) use ($user) {
-            $course = $enrollment->course;
-            $course->load('modules.lessons');
-            $enrollment->progress = $user->progressInCourse($course);
+            $enrollment->progress = $user->progressInCourse($enrollment->course);
         });
 
         return view('student.my-courses', compact('enrollments'));

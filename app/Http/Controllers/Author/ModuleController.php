@@ -17,6 +17,7 @@ class ModuleController extends Controller
     public function create(Course $course): View
     {
         $this->authorizeOwner($course);
+
         return view('author.modules.create', compact('course'));
     }
 
@@ -29,6 +30,7 @@ class ModuleController extends Controller
 
         $data = $request->validate([
             'title'       => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string', 'max:2000'],
             'order_index' => ['required', 'integer', 'min:1'],
         ]);
 
@@ -37,7 +39,7 @@ class ModuleController extends Controller
 
         return redirect()
             ->route('author.courses.show', $course)
-            ->with('success', 'Модул иловa шуд!');
+            ->with('success', 'Модул илова шуд!');
     }
 
     /**
@@ -47,6 +49,7 @@ class ModuleController extends Controller
     {
         $course = $module->course;
         $this->authorizeOwner($course);
+
         return view('author.modules.edit', compact('module', 'course'));
     }
 
@@ -60,6 +63,7 @@ class ModuleController extends Controller
 
         $data = $request->validate([
             'title'       => ['required', 'string', 'max:255'],
+            'description' => ['nullable', 'string', 'max:2000'],
             'order_index' => ['required', 'integer', 'min:1'],
         ]);
 
@@ -77,7 +81,12 @@ class ModuleController extends Controller
     {
         $course = $module->course;
         $this->authorizeOwner($course);
-        $module->delete();
+
+        try {
+            $module->delete();
+        } catch (\Throwable $e) {
+            return back()->with('error', 'Модулро нест кардан ғайриимкон аст, зеро супоришҳои супоридашуда дорад.');
+        }
 
         return redirect()
             ->route('author.courses.show', $course)

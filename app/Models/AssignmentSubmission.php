@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Support\ModelMeta;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -59,5 +60,15 @@ class AssignmentSubmission extends Model
     public function isRejected(): bool
     {
         return $this->status === 'rejected';
+    }
+
+    /**
+     * Таърихи баҳогузорӣ ва тақризҳо.
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    public function getGradingHistoryAttribute(): array
+    {
+        return $this->id ? (array) ModelMeta::get('submission', $this->id, 'history', []) : [];
     }
 }

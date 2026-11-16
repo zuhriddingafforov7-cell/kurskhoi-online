@@ -71,6 +71,22 @@ class LessonMaterial extends Model
 
     public function getIsExternalVideoAttribute(): bool
     {
-        return $this->is_video && str_starts_with($this->file_path, 'http');
+        return $this->is_video && str_starts_with((string) $this->file_path, 'http');
+    }
+
+    public function getIsLinkAttribute(): bool
+    {
+        return $this->file_type === 'link'
+            || str_starts_with((string) $this->file_path, 'http://')
+            || str_starts_with((string) $this->file_path, 'https://');
+    }
+
+    public function getEmbedUrlAttribute(): ?string
+    {
+        if (!str_starts_with((string) $this->file_path, 'http')) {
+            return null;
+        }
+
+        return Lesson::toEmbedUrl($this->file_path);
     }
 }

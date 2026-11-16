@@ -20,35 +20,35 @@
         <!-- Ҷадвал -->
         <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
             <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse text-xs">
+                <table class="w-full text-left border-collapse text-sm">
                     <thead>
-                        <tr class="bg-slate-50/80 border-b border-slate-200 text-slate-500 uppercase tracking-wider font-semibold">
-                            <th class="p-4 px-6">ID</th>
-                            <th class="p-4 px-6">Номи категория</th>
-                            <th class="p-4 px-6">Slug (URL)</th>
-                            <th class="p-4 px-6">Шумораи курсҳо</th>
-                            <th class="p-4 px-6 text-right">Амалҳо</th>
+                        <tr class="bg-slate-50/90 border-b border-slate-200 text-slate-600 text-xs uppercase tracking-wider font-bold">
+                            <th class="px-4 py-3.5">ID</th>
+                            <th class="px-4 py-3.5">Номи категория</th>
+                            <th class="px-4 py-3.5">Slug (URL)</th>
+                            <th class="px-4 py-3.5 whitespace-nowrap">Шумораи курсҳо</th>
+                            <th class="px-4 py-3.5 text-right whitespace-nowrap">Амалҳо</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-slate-100">
                         @forelse($categories as $category)
                             <tr class="hover:bg-slate-50/60 transition">
-                                <td class="p-4 px-6 font-mono text-slate-400">#{{ $category->id }}</td>
-                                <td class="p-4 px-6 font-bold text-sm text-[#1E293B]">
+                                <td class="px-4 py-4 font-mono text-xs text-slate-400">#{{ $category->id }}</td>
+                                <td class="px-4 py-4 font-bold text-sm sm:text-base text-[#1E293B]">
                                     {{ $category->title ?? $category->name }}
                                     @if($category->description)
-                                        <div class="text-[11px] text-slate-400 font-normal line-clamp-1 mt-0.5">{{ $category->description }}</div>
+                                        <div class="text-xs text-slate-500 font-normal line-clamp-2 mt-1 leading-relaxed">{{ $category->description }}</div>
                                     @endif
                                 </td>
-                                <td class="p-4 px-6 font-mono text-slate-500">{{ $category->slug ?? '-' }}</td>
-                                <td class="p-4 px-6">
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-[#ECFDF5] text-[#00875A]">
+                                <td class="px-4 py-4 font-mono text-xs sm:text-sm text-slate-500 whitespace-nowrap">{{ $category->slug ?? '-' }}</td>
+                                <td class="px-4 py-4 whitespace-nowrap">
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-[#ECFDF5] text-[#00875A] whitespace-nowrap">
                                         {{ $category->courses_count ?? 0 }} курс
                                     </span>
                                 </td>
-                                <td class="p-4 px-6 text-right">
+                                <td class="px-4 py-4 text-right whitespace-nowrap">
                                     <div class="flex items-center justify-end gap-2">
-                                        <a href="{{ route('admin.categories.edit', $category) }}" class="px-2.5 py-1 text-slate-600 hover:text-[#00875A] font-medium transition">
+                                        <a href="{{ route('admin.categories.edit', $category) }}" class="px-3 py-1.5 text-xs font-semibold text-slate-700 hover:text-[#00875A] hover:bg-slate-100 rounded-xl transition whitespace-nowrap">
                                             Таҳрир
                                         </a>
 
@@ -56,19 +56,19 @@
                                             <form method="POST" action="{{ route('admin.categories.destroy', $category) }}" onsubmit="return confirm('Ин категорияро нест мекунед?');">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="px-2.5 py-1 text-rose-500 hover:text-rose-700 font-medium transition">
+                                                <button type="submit" class="px-3 py-1.5 text-xs font-semibold text-rose-600 hover:bg-rose-50 rounded-xl transition whitespace-nowrap">
                                                     Нест кардан
                                                 </button>
                                             </form>
                                         @else
-                                            <span class="text-[11px] text-slate-300 italic" title="Категория дорои курсҳо аст ва нест карда намешавад">Баста</span>
+                                            <span class="text-xs text-slate-400 italic whitespace-nowrap" title="Категория дорои курсҳо аст ва нест карда намешавад">Баста</span>
                                         @endif
                                     </div>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="5" class="p-8 text-center text-slate-400">
+                                <td colspan="5" class="p-8 text-center text-sm text-slate-400">
                                     Ягон категория вуҷуд надорад.
                                 </td>
                             </tr>

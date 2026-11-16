@@ -23,7 +23,7 @@ class DashboardController extends Controller
 
         $pendingSubmissions = AssignmentSubmission::query()
             ->whereHas('assignment.lesson.module.course', fn ($q) => $q->where('author_id', $user->id))
-            ->where('status', 'pending')
+            ->whereIn('status', ['submitted', 'pending'])
             ->count();
 
         return view('author.dashboard', compact('courses', 'totalStudents', 'pendingSubmissions'));

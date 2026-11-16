@@ -1,23 +1,21 @@
-<x-app-layout title="Эҷоди курси нав — Biyomuz Academy">
+<x-app-layout :title="'Эҷоди курси нав — Biyomuz Academy'">
     <div class="max-w-3xl mx-auto space-y-6">
-        <!-- Сарлавҳа -->
-        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center justify-between">
+        <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs flex items-center justify-between gap-4">
             <div>
                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#ECFDF5] text-[#00875A] border border-[#A7F3D0] mb-2">
                     Кабинети муаллиф
                 </span>
                 <h1 class="text-2xl font-bold text-[#1E293B]">Эҷоди курси нав</h1>
-                <p class="text-xs text-slate-500 mt-1">Курсро бо маълумотҳои асосӣ пур карда, барои модератсия пешниҳод намоед.</p>
+                <p class="text-xs text-slate-500 mt-1">Маълумоти курсро пур карда, ҳамчун лоиҳа захира кунед ё ба модератсия фиристед.</p>
             </div>
 
-            <a href="{{ route('author.courses.index') }}" class="px-4 py-2 border border-slate-200 text-xs font-semibold rounded-xl text-slate-600 hover:bg-slate-50 transition">
+            <a href="{{ route('author.courses.index') }}" class="px-4 py-2 border border-slate-200 text-xs font-semibold rounded-xl text-slate-600 hover:bg-slate-50 transition shrink-0">
                 ← Бозгашт
             </a>
         </div>
 
-        <!-- Форма -->
-        <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-sm">
-            <form method="POST" action="{{ route('author.courses.store') }}" class="space-y-5">
+        <div class="bg-white p-6 sm:p-8 rounded-2xl border border-slate-200 shadow-xs">
+            <form method="POST" action="{{ route('author.courses.store') }}" enctype="multipart/form-data" class="space-y-5">
                 @csrf
 
                 <div>
@@ -38,26 +36,43 @@
                     @enderror
                 </div>
 
-                <div>
-                    <label for="category_id" class="block text-xs font-bold text-slate-700 mb-1">
-                        Категория <span class="text-rose-500">*</span>
-                    </label>
-                    <select
-                        id="category_id"
-                        name="category_id"
-                        required
-                        class="w-full text-sm p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#00875A] focus:outline-none bg-white"
-                    >
-                        <option value="">-- Категорияро интихоб кунед --</option>
-                        @foreach($categories as $category)
-                            <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
-                                {{ $category->name ?? $category->title }}
-                            </option>
-                        @endforeach
-                    </select>
-                    @error('category_id')
-                        <p class="text-xs text-rose-500 mt-1">{{ $message }}</p>
-                    @enderror
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label for="category_id" class="block text-xs font-bold text-slate-700 mb-1">
+                            Категория <span class="text-rose-500">*</span>
+                        </label>
+                        <select
+                            id="category_id"
+                            name="category_id"
+                            required
+                            class="w-full text-sm p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#00875A] focus:outline-none bg-white"
+                        >
+                            <option value="">-- Категорияро интихоб кунед --</option>
+                            @foreach($categories as $category)
+                                <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                                    {{ $category->name ?? $category->title }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('category_id')
+                            <p class="text-xs text-rose-500 mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label for="level" class="block text-xs font-bold text-slate-700 mb-1">
+                            Сатҳи омӯзиш
+                        </label>
+                        <select
+                            id="level"
+                            name="level"
+                            class="w-full text-sm p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#00875A] focus:outline-none bg-white"
+                        >
+                            <option value="beginner" {{ old('level', 'beginner') === 'beginner' ? 'selected' : '' }}>Ибтидоӣ</option>
+                            <option value="intermediate" {{ old('level') === 'intermediate' ? 'selected' : '' }}>Миёна</option>
+                            <option value="advanced" {{ old('level') === 'advanced' ? 'selected' : '' }}>Пешрафта</option>
+                        </select>
+                    </div>
                 </div>
 
                 <div>
@@ -77,11 +92,43 @@
                     @enderror
                 </div>
 
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label for="cover_image" class="block text-xs font-bold text-slate-700 mb-1">
+                            Сурати муқова (JPG, PNG, WEBP — то 5 МБ, ихтиёрӣ):
+                        </label>
+                        <input
+                            type="file"
+                            id="cover_image"
+                            name="cover_image"
+                            accept=".jpg,.jpeg,.png,.webp"
+                            class="block w-full text-xs text-slate-500 file:mr-3 file:py-2 file:px-3 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-[#ECFDF5] file:text-[#00875A]"
+                        >
+                        @error('cover_image')
+                            <p class="text-xs text-rose-500 mt-1">{{ $message }}</p>
+                        @enderror
+                    </div>
+
+                    <div>
+                        <label for="status" class="block text-xs font-bold text-slate-700 mb-1">
+                            Ҳолати захиракунӣ
+                        </label>
+                        <select
+                            id="status"
+                            name="status"
+                            class="w-full text-sm p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#00875A] focus:outline-none bg-white"
+                        >
+                            <option value="pending" {{ old('status', 'pending') === 'pending' ? 'selected' : '' }}>Ирсол ба модератсия (Pending)</option>
+                            <option value="draft" {{ old('status') === 'draft' ? 'selected' : '' }}>Нигоҳдорӣ ҳамчун лоиҳа (Draft)</option>
+                        </select>
+                    </div>
+                </div>
+
                 <div class="pt-4 border-t border-slate-100 flex items-center justify-end gap-3">
                     <a href="{{ route('author.courses.index') }}" class="px-5 py-2.5 border border-slate-200 text-xs font-semibold rounded-xl text-slate-600 hover:bg-slate-50 transition">
                         Бекор кардан
                     </a>
-                    <button type="submit" class="px-6 py-2.5 bg-[#00875A] hover:bg-[#064E3B] text-white text-xs font-semibold rounded-xl shadow-sm transition">
+                    <button type="submit" class="px-6 py-2.5 bg-[#00875A] hover:bg-[#064E3B] text-white text-xs font-semibold rounded-xl shadow-xs transition">
                         Сохтан ва идома додан →
                     </button>
                 </div>

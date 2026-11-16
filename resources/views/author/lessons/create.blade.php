@@ -73,6 +73,44 @@
                         </div>
                     </div>
 
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label for="duration_minutes" class="block text-xs font-bold text-slate-700 mb-1">
+                                Давомнокии тахминӣ (дақиқа, ихтиёрӣ)
+                            </label>
+                            <input
+                                type="number"
+                                id="duration_minutes"
+                                name="duration_minutes"
+                                value="{{ old('duration_minutes') }}"
+                                min="1"
+                                max="600"
+                                placeholder="Масалан: 15"
+                                class="w-full text-sm p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#00875A] focus:outline-none"
+                            >
+                            @error('duration_minutes')
+                                <p class="text-xs text-rose-500 mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+
+                        <div>
+                            <label for="status" class="block text-xs font-bold text-slate-700 mb-1">
+                                Ҳолати дарс
+                            </label>
+                            <select
+                                id="status"
+                                name="status"
+                                class="w-full text-sm p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#00875A] focus:outline-none bg-white"
+                            >
+                                <option value="published" @selected(old('status', 'published') === 'published')>Нашршуда (барои донишҷӯён дастрас)</option>
+                                <option value="draft" @selected(old('status') === 'draft')>Сиёҳнавис (пинҳон)</option>
+                            </select>
+                            @error('status')
+                                <p class="text-xs text-rose-500 mt-1">{{ $message }}</p>
+                            @enderror
+                        </div>
+                    </div>
+
                     <!-- Пайванди видеои беруна -->
                     <div x-show="type === 'video'">
                         <label for="video_url" class="block text-xs font-bold text-slate-700 mb-1">
@@ -169,7 +207,7 @@
                                             <span class="px-2 py-1 rounded text-[10px] font-bold uppercase shrink-0" :class="getBadgeClass(file.ext)">
                                                 <span x-text="file.ext"></span>
                                             </span>
-                                            <div class="min-w-0 flex-1">
+                                            <div class="min-w-0 flex-1 space-y-1.5">
                                                 <input
                                                     type="text"
                                                     :name="'material_titles[' + index + ']'"
@@ -177,7 +215,14 @@
                                                     placeholder="Номи мавод..."
                                                     class="w-full text-xs font-semibold p-1.5 border border-slate-200 rounded-lg focus:ring-1 focus:ring-[#00875A] focus:outline-none"
                                                 >
-                                                <span class="text-[11px] text-slate-400 block mt-0.5" x-text="formatSize(file.size)"></span>
+                                                <input
+                                                    type="text"
+                                                    :name="'material_descriptions[' + index + ']'"
+                                                    x-model="file.description"
+                                                    placeholder="Тавсифи кӯтоҳи мавод (ихтиёрӣ)..."
+                                                    class="w-full text-[11px] p-1.5 border border-slate-200 rounded-lg focus:ring-1 focus:ring-[#00875A] focus:outline-none"
+                                                >
+                                                <span class="text-[11px] text-slate-400 block" x-text="formatSize(file.size)"></span>
                                             </div>
                                         </div>
 
@@ -194,6 +239,73 @@
                             </div>
                         </div>
                     </template>
+
+                    <!-- Пайвандҳои беруна ва видеои иловагӣ -->
+                    <div class="pt-4 border-t border-slate-100 space-y-3">
+                        <div class="flex items-center justify-between gap-2">
+                            <div>
+                                <h4 class="text-xs font-bold text-[#1E293B]">Пайвандҳои беруна ва видеоҳои иловагӣ (YouTube / Vimeo / Мақолаҳо)</h4>
+                                <p class="text-[11px] text-slate-400">Метавонед барои дарс манбаъҳои иловагии онлайн илова кунед.</p>
+                            </div>
+                            <button
+                                type="button"
+                                @click="addLink()"
+                                class="px-3 py-1.5 bg-[#ECFDF5] hover:bg-[#D1FAE5] text-[#00875A] text-xs font-semibold rounded-lg border border-[#A7F3D0] transition shrink-0"
+                            >
+                                + Иловаи пайванд
+                            </button>
+                        </div>
+
+                        <template x-if="links.length > 0">
+                            <div class="space-y-3">
+                                <template x-for="(lnk, idx) in links" :key="idx">
+                                    <div class="p-3.5 rounded-xl border border-slate-200 bg-slate-50/70 space-y-2.5">
+                                        <div class="grid grid-cols-1 sm:grid-cols-4 gap-2.5">
+                                            <div>
+                                                <select name="link_types[]" x-model="lnk.type" class="w-full text-xs p-2 border border-slate-200 rounded-lg bg-white focus:ring-1 focus:ring-[#00875A] focus:outline-none">
+                                                    <option value="link">Пайванд / Мақола</option>
+                                                    <option value="video">Видео (YouTube/Vimeo)</option>
+                                                </select>
+                                            </div>
+                                            <div class="sm:col-span-3 flex items-center gap-2">
+                                                <input
+                                                    type="text"
+                                                    name="link_titles[]"
+                                                    x-model="lnk.title"
+                                                    placeholder="Унвони пайванд ё видео..."
+                                                    class="w-full text-xs p-2 border border-slate-200 rounded-lg bg-white focus:ring-1 focus:ring-[#00875A] focus:outline-none"
+                                                >
+                                                <button
+                                                    type="button"
+                                                    @click="removeLink(idx)"
+                                                    class="text-rose-500 hover:text-rose-700 p-1.5 rounded-lg hover:bg-rose-50 transition shrink-0"
+                                                    title="Хориҷ кардан"
+                                                >
+                                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                                            <input
+                                                type="url"
+                                                name="link_urls[]"
+                                                x-model="lnk.url"
+                                                placeholder="https://..."
+                                                class="w-full text-xs p-2 border border-slate-200 rounded-lg bg-white focus:ring-1 focus:ring-[#00875A] focus:outline-none"
+                                            >
+                                            <input
+                                                type="text"
+                                                name="link_descriptions[]"
+                                                x-model="lnk.description"
+                                                placeholder="Тавсифи кӯтоҳ (ихтиёрӣ)..."
+                                                class="w-full text-xs p-2 border border-slate-200 rounded-lg bg-white focus:ring-1 focus:ring-[#00875A] focus:outline-none"
+                                            >
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+                        </template>
+                    </div>
                 </div>
 
                 <div class="pt-4 border-t border-slate-100 flex items-center justify-end gap-3">
@@ -213,6 +325,22 @@
             return {
                 type: '{{ old('content_type', 'text') }}',
                 files: [],
+                links: [],
+                addLink() {
+                    this.links.push({ type: 'link', title: '', url: '', description: '' });
+                },
+                removeLink(index) {
+                    this.links.splice(index, 1);
+                },
+                syncInputFiles() {
+                    const input = document.getElementById('materials_input');
+                    if (!input || typeof DataTransfer === 'undefined') return;
+                    const dt = new DataTransfer();
+                    this.files.forEach(item => {
+                        if (item.file) dt.items.add(item.file);
+                    });
+                    input.files = dt.files;
+                },
                 handleFileSelect(event) {
                     const selected = Array.from(event.target.files);
                     selected.forEach(f => {
@@ -223,12 +351,15 @@
                             name: f.name,
                             size: f.size,
                             ext: ext,
-                            title: title
+                            title: title,
+                            description: ''
                         });
                     });
+                    this.syncInputFiles();
                 },
                 removeFile(index) {
                     this.files.splice(index, 1);
+                    this.syncInputFiles();
                 },
                 clearFiles() {
                     this.files = [];

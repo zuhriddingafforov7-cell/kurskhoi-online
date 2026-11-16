@@ -4,11 +4,16 @@
     <div class="max-w-5xl mx-auto">
         <!-- Сарлавҳаи курс (Мутобиқ ба ҳамаи экранҳо) -->
         <div class="bg-gradient-to-br from-[#064E3B] via-[#00875A] to-[#10B981] rounded-2xl p-6 sm:p-8 text-white mb-6 sm:mb-8 shadow-md relative overflow-hidden">
-            @if($course->category)
-                <span class="inline-flex px-3 py-1 rounded-full text-xs font-semibold bg-white/20 backdrop-blur-sm mb-3 sm:mb-4">
-                    {{ $course->category->name }}
+            <div class="flex flex-wrap items-center gap-2 mb-3 sm:mb-4">
+                @if($course->category)
+                    <span class="inline-flex px-3 py-1 rounded-full text-xs font-semibold bg-white/20 backdrop-blur-sm">
+                        {{ $course->category->name }}
+                    </span>
+                @endif
+                <span class="inline-flex px-3 py-1 rounded-full text-xs font-semibold bg-black/20 backdrop-blur-sm">
+                    Сатҳ: {{ $course->level_label }}
                 </span>
-            @endif
+            </div>
             <h1 class="text-2xl sm:text-3xl lg:text-4xl font-black mb-3 break-words leading-tight">
                 {{ $course->title }}
             </h1>
@@ -22,7 +27,7 @@
                 </span>
                 <span class="flex items-center gap-1.5">
                     <svg class="w-4 h-4 text-[#A7F3D0] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
-                    <span>{{ $course->enrollments_count ?? 0 }} талаба</span>
+                    <span>{{ $course->enrollments_count ?? 0 }} донишҷӯ</span>
                 </span>
                 <span class="flex items-center gap-1.5">
                     <svg class="w-4 h-4 text-[#A7F3D0] shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>

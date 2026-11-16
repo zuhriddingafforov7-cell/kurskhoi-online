@@ -6,13 +6,18 @@ use App\Http\Controllers\Controller;
 use App\Models\Enrollment;
 use App\Models\Lesson;
 use App\Models\LessonProgress;
+use App\Services\CourseCompletionService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
 class LessonController extends Controller
 {
+    public function __construct(private readonly CourseCompletionService $completionService)
+    {
+    }
+
     /**
-     * Нишон додани дарс ба талаба.
+     * Нишон додани дарс ба донишҷӯ.
      */
     public function show(Lesson $lesson): View
     {
@@ -20,26 +25,42 @@ class LessonController extends Controller
         $module = $lesson->module;
         $course = $module->course;
 
-        // Санҷиши ёзнашинӣ
+        // Санҷиши номнависӣ
         $enrollment = Enrollment::where('user_id', $user->id)
             ->where('course_id', $course->id)
-            ->where('status', 'active')
+            ->whereIn('status', ['active', 'completed'])
             ->firstOrFail();
 
-        // Санҷиши пешапаймоӣ: оё дарсҳои пешин анҷом ёфтаанд?
+        // Санҷиши пайдарпайии дарсҳо
         $this->checkSequentialAccess($lesson, $user->id);
 
         $lesson->load(['assignment', 'materials']);
+        $course->load(['modules.lessons.assignment']);
+
+        $allLessonIds = $course->modules->flatMap->lessons->pluck('id');
+        $completedLessonIds = LessonProgress::where('user_id', $user->id)
+            ->whereIn('lesson_id', $allLessonIds)
+            ->where('is_completed', true)
+            ->pluck('lesson_id')
+            ->all();
+
         $progress = LessonProgress::where('user_id', $user->id)
             ->where('lesson_id', $lesson->id)
             ->first();
 
-        $submission = null;
-        if ($lesson->assignment) {
-            $submission = $lesson->assignment->submissionBy($user->id);
-        }
+        $submission = $lesson->assignment ? $lesson->assignment->submissionBy($user->id) : null;
+        $isPreview = false;
 
-        return view('student.lessons.show', compact('lesson', 'module', 'course', 'progress', 'submission', 'enrollment'));
+        return view('student.lessons.show', compact(
+            'lesson',
+            'module',
+            'course',
+            'progress',
+            'submission',
+            'enrollment',
+            'completedLessonIds',
+            'isPreview'
+        ));
     }
 
     /**
@@ -51,11 +72,14 @@ class LessonController extends Controller
         $module = $lesson->module;
         $course = $module->course;
 
-        // Санҷиши ёзнашинӣ
+        // Санҷиши номнависӣ
         $enrollment = Enrollment::where('user_id', $user->id)
             ->where('course_id', $course->id)
-            ->where('status', 'active')
+            ->whereIn('status', ['active', 'completed'])
             ->firstOrFail();
+
+        // Пешгирии гузаштан аз дарси қулфшуда ба таври мустақим
+        $this->checkSequentialAccess($lesson, $user->id);
 
         // Нигоҳдорӣ ё навсозии пешрафт
         LessonProgress::updateOrCreate(
@@ -63,8 +87,8 @@ class LessonController extends Controller
             ['is_completed' => true, 'completed_at' => now()]
         );
 
-        // Санҷиши анҷоми тамоми курс
-        $this->checkCourseCompletion($enrollment);
+        // Санҷиши анҷоми тамоми курс (дарсҳо ва супоришҳои тасдиқшуда)
+        $this->completionService->checkAndComplete($enrollment);
 
         // Дарси навбатӣ
         $nextLesson = $this->getNextLesson($lesson);
@@ -85,81 +109,8 @@ class LessonController extends Controller
      */
     private function checkSequentialAccess(Lesson $lesson, int $userId): void
     {
-        $module  = $lesson->module;
-        $course  = $module->course;
-
-        // Дарсҳои пеш аз ин дарс дар ҳамин модул
-        $prevLessonsInModule = $module->lessons()
-            ->where('order_index', '<', $lesson->order_index)
-            ->pluck('id');
-
-        if ($prevLessonsInModule->isNotEmpty()) {
-            $completedCount = LessonProgress::where('user_id', $userId)
-                ->whereIn('lesson_id', $prevLessonsInModule)
-                ->where('is_completed', true)
-                ->count();
-
-            if ($completedCount < $prevLessonsInModule->count()) {
-                abort(403, 'Аввал дарсҳои пешинро анҷом диҳед.');
-            }
-        }
-
-        // Санҷиши модулҳои пеш аз ин модул
-        $prevModules = $module->course->modules()
-            ->where('order_index', '<', $module->order_index)
-            ->with('lessons')
-            ->get();
-
-        foreach ($prevModules as $prevModule) {
-            $lessonIds = $prevModule->lessons->pluck('id');
-            if ($lessonIds->isEmpty()) {
-                continue;
-            }
-            $completedCount = LessonProgress::where('user_id', $userId)
-                ->whereIn('lesson_id', $lessonIds)
-                ->where('is_completed', true)
-                ->count();
-
-            if ($completedCount < $lessonIds->count()) {
-                abort(403, 'Аввал модулҳои пешинро анҷом диҳед.');
-            }
-        }
-    }
-
-    /**
-     * Санҷиши анҷоми тамоми курс ва эҷоди сертификат.
-     */
-    private function checkCourseCompletion(Enrollment $enrollment): void
-    {
-        $course = $enrollment->course->load('modules.lessons');
-
-        $allLessonIds = $course->modules->flatMap->lessons->pluck('id');
-        if ($allLessonIds->isEmpty()) {
-            return;
-        }
-
-        $completedCount = LessonProgress::where('user_id', $enrollment->user_id)
-            ->whereIn('lesson_id', $allLessonIds)
-            ->where('is_completed', true)
-            ->count();
-
-        if ($completedCount >= $allLessonIds->count() && $enrollment->status !== 'completed') {
-            $enrollment->update([
-                'status'       => 'completed',
-                'completed_at' => now(),
-            ]);
-
-            // Эҷоди сертификат
-            if (!$enrollment->certificate) {
-                $code = 'BIYO-' . date('Y') . '-' . str_pad($enrollment->id, 5, '0', STR_PAD_LEFT);
-
-                \App\Models\Certificate::create([
-                    'enrollment_id'    => $enrollment->id,
-                    'certificate_code' => $code,
-                    'issue_date'       => now()->toDateString(),
-                    'pdf_path'         => 'certificates/' . $code . '.pdf',
-                ]);
-            }
+        if (!$lesson->isUnlockedFor($userId)) {
+            abort(403, 'Аввал дарсҳо ва модулҳои пешинро анҷом диҳед.');
         }
     }
 

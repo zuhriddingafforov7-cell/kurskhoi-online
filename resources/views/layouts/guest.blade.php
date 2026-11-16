@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="tg">
+<html lang="{{ app()->getLocale() }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ $title ?? 'Biyomuz Academy' }} — Платформаи курсҳои онлайн</title>
+    <title>{{ $title ?? 'Biyomuz Academy' }} — {{ __('Платформаи курсҳои онлайн') }}</title>
 
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700,800,900" rel="stylesheet" />
@@ -22,7 +22,7 @@
                 </span>
                 <div class="text-left">
                     <span class="text-xl sm:text-2xl font-extrabold tracking-tight text-[#1E293B] block leading-tight">Biyomuz Academy</span>
-                    <span class="text-[10px] sm:text-xs text-slate-500 font-medium">Платформаи миллии таълими онлайн</span>
+                    <span class="text-[10px] sm:text-xs text-slate-500 font-medium">{{ __('Платформаи миллии омӯзиши онлайн') }}</span>
                 </div>
             </a>
         </div>
@@ -32,9 +32,14 @@
             {{ $slot }}
         </div>
 
-        {{-- Поварақӣ --}}
-        <div class="mt-6 sm:mt-8 text-center text-xs text-slate-400">
-            &copy; {{ date('Y') }} Biyomuz Academy. Ҳамаи ҳуқуқҳо маҳфузанд.
+        {{-- Поварақӣ ва ивази забон --}}
+        <div class="mt-6 sm:mt-8 text-center text-xs text-slate-400 space-y-2">
+            <div class="flex items-center justify-center gap-3">
+                <a href="{{ route('locale.switch', 'tg') }}" class="{{ app()->getLocale() === 'tg' ? 'text-[#00875A] font-bold' : 'hover:text-slate-600' }}">🇹🇯 Тоҷикӣ</a>
+                <span>•</span>
+                <a href="{{ route('locale.switch', 'ru') }}" class="{{ app()->getLocale() === 'ru' ? 'text-[#00875A] font-bold' : 'hover:text-slate-600' }}">🇷🇺 Русский</a>
+            </div>
+            <div>&copy; {{ date('Y') }} Biyomuz Academy. Ҳамаи ҳуқуқҳо маҳфузанд.</div>
         </div>
     </div>
 </body>
