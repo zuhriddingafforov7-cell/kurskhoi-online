@@ -1,0 +1,19 @@
+# Рӯйхати экранҳои ниҳоӣ (`04 Mockups` · `docs/09-design/screens.md`)
+
+Дар саҳифаи **`04 Mockups`** тарҳи 8 экрани Desktop, 1 экрани Mobile ва 2 Overlay барои истифодаи танҳо **Component Instances** (`Button`, `Input`, `CourseCard`) ва **Figma Color / Text Styles** ба забони тоҷикӣ дар [`code.js`](file:///C:/Users/ZUHRIDDIN/Desktop/kurskhoi-online/tools/figma-biyomuz-plugin/code.js) пешбинӣ шудааст.
+
+| № | Номи фрейм дар `04 Mockups` | Номи файли PNG (`screens/`) | Намуд ва андоза | Шабака (`Layout Grid`) | Нақш ва маълумоти воқеии сомона (тоҷикӣ) |
+|---|---|---|---|---|---|
+| 1 | `/ (Саҳифаи асосӣ)` *(Нуқтаи оғози Flow)* | `home.png` | Desktop `1440 × 1024` | `12 сутун × 88, Center, Gutter 24` | Меҳмон / Ҳама — баннери Hero (`#064E3B`, *«Имрӯз биёмӯз, фардо муваффақ шав!»*), омори `8 / 4 / 16 / 3`, категорияҳо (`Барномасозӣ`, `Веб-дизайн`, `Пойгоҳи додаҳо`, `Амнияти иттилоотӣ`), `Курсҳои машҳур` ва поёни саҳифа (`Footer`) |
+| 2 | `/login` | `login.png` | Desktop `1440 × 1024` | `12 сутун × 88, Center, Gutter 24` | Меҳмон / Ҳама — воридшавӣ бо `farhod@example.tj`, тугмаи `Button (Primary)` `Ворид шудан`, пайванди `Бақайдгирӣ` |
+| 3 | `/courses` | `courses.png` | Desktop `1440 × 1024` | `12 сутун × 88, Center, Gutter 24` | Меҳмон / Донишҷӯ — `.col-3` филтрҳо (`312 px`) + `.col-9` ҷустуҷӯ, 4 корти воқеии `CourseCard` (бо давомнокӣ, `Ройгон` ва тугмаи `Курсро дидан`) ва поёни саҳифа (`Footer`) |
+| 4 | `/courses/{course}` | `course-details.png` | Desktop `1440 × 1024` | `12 сутун × 88, Center, Gutter 24` | Донишҷӯ — курси «Кор бо Laravel» (`Устод Аҳмад Раҳимов · 3 донишҷӯ · 2 модул · 18 дарс`), дарсҳо (`1.1 · Муқаддима ба Laravel 13 ва Artisan`), `← Бозгашт` (`Back`), `Ба курс номнавис шудан` ва `Супоридани вазифа` |
+| 5 | `/student/dashboard` | `student-dashboard.png` | Desktop `1440 × 1024` | `12 сутун × 88, Center, Gutter 24` | Донишҷӯ (`Фарҳод Раҳимов`) — `Пешрафти омӯзиш`, 3 KPI (`Курсҳои фаъол: 3`, `Курсҳои хатмшуда: 1`, `Шаҳодатнома: 1 · BIYO-2026-001`), курсҳои номнависшуда ва `Супоридани вазифа` |
+| 6 | `/student/assignments/{assignment}` | `assignment.png` | Desktop `1440 × 1024` | `12 сутун × 88, Center, Gutter 24` | Донишҷӯ — формаи супоридани вазифа (`100 хол`, `Focus`, `course-controller-rahimov.zip`, намунаи `Error` барои файли `7.8 МБ > 5 МБ`) ва тугмаи `Супоридани вазифа` (`Overlay`) |
+| 7 | `/author/dashboard` | `author-dashboard.png` | Desktop `1440 × 1024` | `12 сутун × 88, Center, Gutter 24` | Муаллиф (`Устод Аҳмад Раҳимов`) — `+ Сохтани курси нав`, KPI (`Курсҳои ман: 5`, `Донишҷӯён: 17`, `Вазифаҳо барои санҷиш: 3`), амалҳои фаврӣ (`Ирсоли курс ба модератсия`, `Санҷиши вазифаҳои донишҷӯён`) ва кортҳои курсҳо |
+| 8 | `/admin/courses` | `admin-courses.png` | Desktop `1440 × 1024` | `12 сутун × 88, Center, Gutter 24` | Маъмур (`Ғаффоров Зуҳриддин`) — филтрҳои `Ҳама / Мунтазир / Нашршуда / Радшуда`, курси «Амнияти веб» бо нишони `Мунтазир` (`color/warning` + `color/text`), тугмаҳои `Тасдиқ кардан` ва `Рад кардан` (`Danger`) |
+| 9 | `/courses — мобилӣ (390×844)` | `courses-mobile.png` | Mobile `390 × 844` | `4 сутун, Stretch, Margin 16, Gutter 16` | Нусхаи мобилии каталог бо `CourseCard (Size=Mobile)` + `Курсро дидан` + поёни саҳифа: филтрҳо дар болои рӯйхат, тугмаҳо ва майдонҳо `≥ 44 px` |
+| 10 | `Overlay · Вазифа супорида шуд` | *(Overlay дар Present)* | Overlay `520 px` | `Auto Layout` | Огоҳиномаи муваффақӣ (`TOP_CENTER`, `CLOSE_ON_CLICK_OUTSIDE`) бо тугмаҳои `Бозгашт ба кабинет` ва `Пӯшидан` |
+| 11 | `Overlay · Рад кардани курс` | *(Overlay дар Present)* | Overlay `520 px` | `Auto Layout` | Равзанаи модалӣ (`CENTER`, `CLOSE_ON_CLICK_OUTSIDE`) бо `Input` барои ворид кардани сабаби рад ва тугмаи `Тасдиқи рад кардан` (`Danger`) |
+
+**Вазъи воқеии диск (`docs/09-design/screens/`):** Ҳанӯз `0` файли PNG содир нашудааст (`BLOCKED` — пас аз иҷрои плагин дар Figma Desktop бо `Ctrl+Shift+E` ва `PNG 1x` содир мешаванд).

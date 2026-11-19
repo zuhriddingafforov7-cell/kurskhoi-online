@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="tg">
+<head>
+<meta charset="UTF-8">
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font: 13px/1.5 system-ui, -apple-system, 'Segoe UI', sans-serif;
+    margin: 0;
+    padding: 16px;
+    background: #F8FAFC;
+    color: #1E293B;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+  .mark {
+    width: 34px;
+    height: 34px;
+    border-radius: 8px;
+    background: #00875A;
+    color: #FFFFFF;
+    font-weight: 700;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  h1 {
+    font-size: 14px;
+    font-weight: 700;
+    margin: 0;
+    color: #064E3B;
+  }
+  .sub {
+    font-size: 11px;
+    color: #00875A;
+    margin: 1px 0 0;
+    font-weight: 500;
+  }
+  .card {
+    background: #FFFFFF;
+    border: 1px solid #DEE2E6;
+    border-radius: 10px;
+    padding: 12px;
+    margin-bottom: 12px;
+  }
+  p { margin: 0 0 6px; font-size: 12px; color: #475569; }
+  ul { margin: 0; padding-left: 16px; font-size: 11.5px; color: #334155; }
+  li { margin-bottom: 3px; }
+  .langs {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+  .lang-opt {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    border: 1px solid #DEE2E6;
+    border-radius: 8px;
+    background: #FFFFFF;
+    font-size: 12px;
+    cursor: pointer;
+  }
+  .lang-opt input { accent-color: #00875A; margin: 0; }
+  button {
+    width: 100%;
+    height: 44px;
+    margin-bottom: 8px;
+    border: 0;
+    border-radius: 6px;
+    background: #00875A;
+    color: #FFFFFF;
+    font: 600 13px system-ui, -apple-system, 'Segoe UI', sans-serif;
+    cursor: pointer;
+  }
+  button:hover { background: #006B47; }
+  button:disabled { opacity: 0.55; cursor: wait; }
+  .status {
+    margin-top: 4px;
+    font-size: 11px;
+    color: #64748B;
+    text-align: center;
+    min-height: 16px;
+  }
+</style>
+</head>
+<body>
+  <div class="brand">
+    <div class="mark">B</div>
+    <div>
+      <h1>Biyomuz Academy UI Generator</h1>
+      <div class="sub">Имрӯз биёмӯз, фардо муваффақ шав!</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <p><strong>Мутобиқи вебсайти воқеӣ ва ЛР №9 сохта мешавад:</strong></p>
+    <ul>
+      <li><code>01 Flow</code> — 2 User Flow (Донишҷӯ ва Муаллиф/Маъмур)</li>
+      <li><code>02 Wireframes</code> — 8 экрани Desktop (<code>1440×1024</code>, шабакаи <code>12×88</code>)</li>
+      <li><code>03 UI-kit</code> — 14 Color Styles, 5 Text Styles (<code>Noto Sans</code>), <code>Button</code>, <code>Input</code>, <code>CourseCard</code></li>
+      <li><code>04 Mockups</code> — 8 Desktop + 1 Mobile (<code>390×844</code>) + Footer + 2 Overlay + Прототип</li>
+    </ul>
+  </div>
+
+  <div class="langs">
+    <label class="lang-opt">
+      <input type="radio" name="lang" value="tg" checked>
+      <span>🇹🇯 <strong>Тоҷикӣ</strong> (Интерфейси асосӣ)</span>
+    </label>
+    <label class="lang-opt">
+      <input type="radio" name="lang" value="ru">
+      <span>🇷🇺 <strong>Русский</strong> (Варианти иловагии локализатсия)</span>
+    </label>
+  </div>
+
+  <button id="buildBtn">Сохтани дизайни Biyomuz Academy</button>
+  <div id="status" class="status">Омода барои сохтани дизайни вебсайти Biyomuz Academy</div>
+
+<script>
+  document.getElementById('buildBtn').onclick = function () {
+    var checked = document.querySelector('input[name="lang"]:checked');
+    var lang = checked ? checked.value : 'tg';
+    this.disabled = true;
+    document.getElementById('status').textContent = 'Дар ҳоли сохтани 01 Flow, 02 Wireframes, 03 UI-kit ва 04 Mockups...';
+    parent.postMessage({ pluginMessage: { type: 'build', lang: lang } }, '*');
+  };
+</script>
+</body>
+</html>
