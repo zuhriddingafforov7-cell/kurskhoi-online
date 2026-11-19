@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="tg">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Каталоги курсҳо — Biyomuz Academy</title>
+  <meta name="description" content="Каталоги мукаммали курсҳои онлайни барномасозӣ, веб-дизайн ва пойгоҳи додаҳо бо забони тоҷикӣ дар Biyomuz Academy.">
+
+  <!-- Google Fonts: Noto Sans бо дастгирии комили алифбои кириллии тоҷикӣ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap 5.3.3 CSS аз CDN бо кафолати integrity -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+  <!-- Стилҳои брендии Biyomuz Academy (ҳатман баъд аз Bootstrap пайваст мешавад) -->
+  <link href="../assets/css/app.css" rel="stylesheet">
+</head>
+<body>
+
+  <!-- ── 1. САРСАҲИФА / NAVBAR (Семантикаи <header> ва <nav>) ─────────────────── -->
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-dark app-navbar" aria-label="Сарлавҳаи асосии сомона">
+      <div class="container">
+        <!-- Бренд ва логотипи расмӣ -->
+        <a class="navbar-brand" href="layout.html">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iOCIgZmlsbD0iIzAwODc1QSIvPjx0ZXh0IHg9IjE2IiB5PSIyMSIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiI+QkE8L3RleHQ+PC9zdmc="
+               alt="Нишони Biyomuz Academy" width="32" height="32" class="d-inline-block align-text-top rounded me-2">
+          <span>Biyomuz Academy</span>
+        </a>
+
+        <!-- Тугмаи кушодани меню дар телефонҳои мобилӣ (Hamburger) -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
+                aria-controls="mainNav" aria-expanded="false" aria-label="Кушодани менюи навигатсия">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Менюи навигатсионӣ бо ҳолати фаъоли «Курсҳо» -->
+        <div class="collapse navbar-collapse" id="mainNav">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="layout.html">Асосӣ</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="courses.html">Курсҳо</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="layout.html#categories">Категорияҳо</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="layout.html#platform-stats">Омор</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="layout.html#about">Дар бораи мо</a>
+            </li>
+          </ul>
+
+          <!-- Бахши корбарӣ ва тугмаҳои амал -->
+          <div class="d-flex align-items-center gap-3">
+            <span class="role-badge">🇹🇯 Тоҷикӣ</span>
+            <a class="btn btn-sm btn-outline-light" href="courses.html">Ворид шудан</a>
+            <a class="btn btn-sm btn-primary" href="courses.html">Бақайдгирӣ</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ── 2. МУҲТАВОИ АСОСӢ (Семантикаи <main>) ───────────────────────────────── -->
+  <main class="container py-4 flex-grow-1">
+
+    <!-- ── 2.1. РОҲНАМОИ САҲИФА (Breadcrumb) ─────────────────────────────────── -->
+    <nav aria-label="Роҳнамои навигатсия" class="mb-3">
+      <ol class="breadcrumb mb-0">
+        <li class="breadcrumb-item"><a href="layout.html" class="text-decoration-none">Асосӣ</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Курсҳо</li>
+      </ol>
+    </nav>
+
+    <!-- ── 2.2. САРЛАВҲА ВА ТАВСИФИ КАТАЛОГ ──────────────────────────────────── -->
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4 pb-2 border-bottom">
+      <div>
+        <h1 class="h2 mb-1">Каталоги курсҳои таълимӣ</h1>
+        <p class="text-muted text-small mb-0">
+          Курсҳои касбии барномасозӣ, веб-дизайн ва пойгоҳи додаҳо бо забони тоҷикӣ
+        </p>
+      </div>
+      <div class="d-flex align-items-center gap-2">
+        <span class="badge bg-success-subtle text-success border px-3 py-2">
+          <strong>8</strong> курси фаъол
+        </span>
+      </div>
+    </div>
+
+    <!-- ── 2.3. СЕТКАИ АСОСӢ (Bootstrap бо 3 нуқтаи тағйирёбӣ) ──────────────── -->
+    <div class="row g-4">
+
+      <!-- ── СУТУНИ ЧАП: ФИЛТРҲОИ ҶУСТУҶӮ (Семантикаи <aside>) ────────────────── -->
+      <!-- Нуқтаҳои тағйирёбӣ: col-12 (мобилӣ), col-md-4 (планшет), col-lg-3 (компютер) -->
+      <aside class="col-12 col-md-4 col-lg-3" aria-label="Филтрҳои ҷустуҷӯ ва гурӯҳбандӣ">
+        <div class="filter-card">
+          <h2 class="h5 mb-3 border-bottom pb-2">Филтри курсҳо</h2>
+
+          <form method="get" action="courses.html">
+            <!-- Ҷустуҷӯ аз рӯйи матн -->
+            <div class="mb-3">
+              <label for="search-input" class="form-label fw-semibold">Ҷустуҷӯи курс</label>
+              <input type="search" id="search-input" name="q" class="form-control"
+                     placeholder="Номи курс ё калима..." aria-describedby="search-help">
+              <div id="search-help" class="form-text text-small">Аз рӯйи номи курс ва мундариҷа</div>
+            </div>
+
+            <!-- Интихоби категория -->
+            <div class="mb-3">
+              <label for="category-select" class="form-label fw-semibold">Категория</label>
+              <select id="category-select" name="category_id" class="form-select">
+                <option value="">Ҳамаи категорияҳо (4)</option>
+                <option value="1">Барномасозӣ (5)</option>
+                <option value="2">Веб-дизайн (2)</option>
+                <option value="3">Пойгоҳи додаҳо (1)</option>
+                <option value="4">Амнияти иттилоотӣ (1)</option>
+              </select>
+            </div>
+
+            <!-- Интихоби сатҳи дониш -->
+            <div class="mb-3">
+              <label for="level-select" class="form-label fw-semibold">Сатҳи дониш</label>
+              <select id="level-select" name="level" class="form-select">
+                <option value="">Ҳамаи сатҳҳо</option>
+                <option value="beginner">Барои навомӯзон</option>
+                <option value="intermediate">Сатҳи миёна</option>
+                <option value="advanced">Пешрафта</option>
+              </select>
+            </div>
+
+            <!-- Интихоби ҳолат -->
+            <div class="mb-4">
+              <label for="status-select" class="form-label fw-semibold">Ҳолати курс</label>
+              <select id="status-select" name="status" class="form-select">
+                <option value="">Ҳамаи ҳолатҳо</option>
+                <option value="published" selected>Нашршуда</option>
+                <option value="pending">Мунтазири тасдиқ</option>
+              </select>
+            </div>
+
+            <!-- Тугмаҳои амал -->
+            <button type="submit" class="btn btn-primary w-100 mb-2">Филтр кардан</button>
+            <a href="courses.html" class="btn btn-outline-secondary w-100">Тоза кардан</a>
+          </form>
+        </div>
+
+        <!-- Корти иттилоотии кӯмак -->
+        <div class="card p-3 shadow-sm bg-light border">
+          <h3 class="h6 mb-2">Омӯзиши ройгон</h3>
+          <p class="text-small text-muted mb-0">
+            Тамоми курсҳои платформа ройгон буда, барои такмили дониши касбии донишҷӯён равона гардидаанд.
+          </p>
+        </div>
+      </aside>
+
+      <!-- ── СУТУНИ РОСТ: РӮЙХАТИ КУРСҲО (Семантикаи <section>) ───────────────── -->
+      <!-- Нуқтаҳои тағйирёбӣ: col-12 (мобилӣ), col-md-8 (планшет), col-lg-9 (компютер) -->
+      <section class="col-12 col-md-8 col-lg-9" aria-labelledby="catalog-heading">
+        <h2 id="catalog-heading" class="visually-hidden">Рӯйхати курсҳои ёфтшуда</h2>
+
+        <!-- Сатри асбобҳо (Toolbar) ва тартибдиҳӣ -->
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3 bg-white p-3 rounded border shadow-sm">
+          <div>
+            <span class="fw-semibold">Намоиш:</span>
+            <span class="text-muted text-small">6 курси нашршуда аз 8</span>
+          </div>
+
+          <div class="d-flex align-items-center gap-2">
+            <label for="sort-select" class="text-small text-muted mb-0">Тартибдиҳӣ:</label>
+            <select id="sort-select" name="sort" class="form-select form-select-sm" style="width: auto;">
+              <option value="popular">Аз рӯйи талабот</option>
+              <option value="newest">Аз рӯйи навтарин</option>
+              <option value="lessons">Аз рӯйи шумораи дарсҳо</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- ── 6 КОРТИ ВОҚЕИИ КУРСҲО АЗ DATABASE/SEED.SQL ─────────────────────── -->
+
+        <!-- Корти 1: Кор бо Laravel -->
+        <article class="course-card">
+          <div class="course-thumb" aria-hidden="true">LAR</div>
+          <div class="course-body">
+            <h3 class="course-title">
+              <a href="course.html">Кор бо Laravel</a>
+            </h3>
+            <div class="course-meta">
+              <span><strong>Муаллиф:</strong> Устод Аҳмад Раҳимов</span>
+              <span>&bull;</span>
+              <span><strong>Категория:</strong> Барномасозӣ</span>
+              <span>&bull;</span>
+              <span>18 дарс</span>
+              <span>&bull;</span>
+              <span class="text-success fw-bold">Ройгон</span>
+            </div>
+            <p class="course-desc">
+              Таҳияи барномаҳои муосири веб бо истифодаи Laravel 13, Eloquent ва меъмории MVC.
+            </p>
+          </div>
+          <div class="course-actions">
+            <span class="badge-status status-published">Нашршуда</span>
+            <a class="btn btn-primary btn-sm" href="course.html">Курсро дидан</a>
+          </div>
+        </article>
+
+        <!-- Корти 2: Омӯзиши забони PHP -->
+        <article class="course-card">
+          <div class="course-thumb" aria-hidden="true">PHP</div>
+          <div class="course-body">
+            <h3 class="course-title">
+              <a href="course.html">Омӯзиши забони PHP</a>
+            </h3>
+            <div class="course-meta">
+              <span><strong>Муаллиф:</strong> Устод Аҳмад Раҳимов</span>
+              <span>&bull;</span>
+              <span><strong>Категория:</strong> Барномасозӣ</span>
+              <span>&bull;</span>
+              <span>16 дарс</span>
+              <span>&bull;</span>
+              <span class="text-success fw-bold">Ройгон</span>
+            </div>
+            <p class="course-desc">
+              Курси мукаммали забони PHP 8.5 аз сифр то сатҳи пешрафтаи веб-барномасозӣ.
+            </p>
+          </div>
+          <div class="course-actions">
+            <span class="badge-status status-published">Нашршуда</span>
+            <a class="btn btn-primary btn-sm" href="course.html">Курсро дидан</a>
+          </div>
+        </article>
+
+        <!-- Корти 3: Асосҳои барномасозӣ -->
+        <article class="course-card">
+          <div class="course-thumb" aria-hidden="true">DEV</div>
+          <div class="course-body">
+            <h3 class="course-title">
+              <a href="course.html">Асосҳои барномасозӣ</a>
+            </h3>
+            <div class="course-meta">
+              <span><strong>Муаллиф:</strong> Устод Аҳмад Раҳимов</span>
+              <span>&bull;</span>
+              <span><strong>Категория:</strong> Барномасозӣ</span>
+              <span>&bull;</span>
+              <span>12 дарс</span>
+              <span>&bull;</span>
+              <span class="text-success fw-bold">Ройгон</span>
+            </div>
+            <p class="course-desc">
+              Курси муқаддимавӣ барои шурӯъкунандагон оид ба мантиқи алгоритмҳо ва сохтори додаҳо.
+            </p>
+          </div>
+          <div class="course-actions">
+            <span class="badge-status status-published">Нашршуда</span>
+            <a class="btn btn-primary btn-sm" href="course.html">Курсро дидан</a>
+          </div>
+        </article>
+
+        <!-- Корти 4: Тарҳрезии вебсайт -->
+        <article class="course-card">
+          <div class="course-thumb" aria-hidden="true">UIX</div>
+          <div class="course-body">
+            <h3 class="course-title">
+              <a href="course.html">Тарҳрезии вебсайт</a>
+            </h3>
+            <div class="course-meta">
+              <span><strong>Муаллиф:</strong> Шаҳром Саидов</span>
+              <span>&bull;</span>
+              <span><strong>Категория:</strong> Веб-дизайн</span>
+              <span>&bull;</span>
+              <span>14 дарс</span>
+              <span>&bull;</span>
+              <span class="text-success fw-bold">Ройгон</span>
+            </div>
+            <p class="course-desc">
+              Асосҳои тарҳрезии графикӣ ва таҳияи интерфейсҳои корбарӣ (UI/UX) дар Figma ва веб.
+            </p>
+          </div>
+          <div class="course-actions">
+            <span class="badge-status status-published">Нашршуда</span>
+            <a class="btn btn-primary btn-sm" href="course.html">Курсро дидан</a>
+          </div>
+        </article>
+
+        <!-- Корти 5: Асосҳои HTML ва CSS -->
+        <article class="course-card">
+          <div class="course-thumb" aria-hidden="true">HTM</div>
+          <div class="course-body">
+            <h3 class="course-title">
+              <a href="course.html">Асосҳои HTML ва CSS</a>
+            </h3>
+            <div class="course-meta">
+              <span><strong>Муаллиф:</strong> Шаҳром Саидов</span>
+              <span>&bull;</span>
+              <span><strong>Категория:</strong> Веб-дизайн</span>
+              <span>&bull;</span>
+              <span>10 дарс</span>
+              <span>&bull;</span>
+              <span class="text-success fw-bold">Ройгон</span>
+            </div>
+            <p class="course-desc">
+              Қолаббандии саҳифаҳои муосири веб бо HTML5 ва Tailwind CSS барои дастгоҳҳои гуногун.
+            </p>
+          </div>
+          <div class="course-actions">
+            <span class="badge-status status-published">Нашршуда</span>
+            <a class="btn btn-primary btn-sm" href="course.html">Курсро дидан</a>
+          </div>
+        </article>
+
+        <!-- Корти 6: Пойгоҳи додаҳои MySQL -->
+        <article class="course-card">
+          <div class="course-thumb" aria-hidden="true">SQL</div>
+          <div class="course-body">
+            <h3 class="course-title">
+              <a href="course.html">Пойгоҳи додаҳои MySQL</a>
+            </h3>
+            <div class="course-meta">
+              <span><strong>Муаллиф:</strong> Синои Ҳасан</span>
+              <span>&bull;</span>
+              <span><strong>Категория:</strong> Пойгоҳи додаҳо</span>
+              <span>&bull;</span>
+              <span>10 дарс</span>
+              <span>&bull;</span>
+              <span class="text-success fw-bold">Ройгон</span>
+            </div>
+            <p class="course-desc">
+              Тарҳрезии пойгоҳи додаҳо, нормализатсия то 3НФ ва дархостҳои мураккаби SQL дар MariaDB.
+            </p>
+          </div>
+          <div class="course-actions">
+            <span class="badge-status status-published">Нашршуда</span>
+            <a class="btn btn-primary btn-sm" href="course.html">Курсро дидан</a>
+          </div>
+        </article>
+
+        <!-- ── 2.4. ҶАДВАЛИ СЕМАНТИКИИ КУРСҲО (Семантикаи <table> бо <th scope="col">) ─ -->
+        <div class="card shadow-sm mt-4">
+          <div class="card-header bg-white py-3">
+            <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
+              <h3 class="h6 mb-0">Муқоисаи фаврии курсҳои нашршуда</h3>
+              <span class="badge bg-light text-dark border">Формати ҷадвалӣ</span>
+            </div>
+          </div>
+          <div class="table-responsive">
+            <table class="table table-hover align-middle table-cards mb-0">
+              <thead>
+                <tr>
+                  <th scope="col">Номи курс</th>
+                  <th scope="col">Категория</th>
+                  <th scope="col">Муаллиф</th>
+                  <th scope="col">Дарсҳо</th>
+                  <th scope="col">Ҳолат</th>
+                  <th scope="col" class="text-end">Амал</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td data-label="Номи курс">
+                    <div class="d-flex align-items-center gap-2">
+                      <span class="badge bg-success-subtle text-success border">LAR</span>
+                      <a class="fw-semibold text-dark text-decoration-none" href="course.html">Кор бо Laravel</a>
+                    </div>
+                  </td>
+                  <td data-label="Категория">Барномасозӣ</td>
+                  <td data-label="Муаллиф">Устод Аҳмад Раҳимов</td>
+                  <td data-label="Дарсҳо">18 дарс</td>
+                  <td data-label="Ҳолат"><span class="badge-status status-published">Нашршуда</span></td>
+                  <td data-label="Амал" class="text-end cell-actions">
+                    <a class="btn btn-sm btn-outline-primary" href="course.html">Кушодан</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td data-label="Номи курс">
+                    <div class="d-flex align-items-center gap-2">
+                      <span class="badge bg-success-subtle text-success border">PHP</span>
+                      <a class="fw-semibold text-dark text-decoration-none" href="course.html">Омӯзиши забони PHP</a>
+                    </div>
+                  </td>
+                  <td data-label="Категория">Барномасозӣ</td>
+                  <td data-label="Муаллиф">Устод Аҳмад Раҳимов</td>
+                  <td data-label="Дарсҳо">16 дарс</td>
+                  <td data-label="Ҳолат"><span class="badge-status status-published">Нашршуда</span></td>
+                  <td data-label="Амал" class="text-end cell-actions">
+                    <a class="btn btn-sm btn-outline-primary" href="course.html">Кушодан</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td data-label="Номи курс">
+                    <div class="d-flex align-items-center gap-2">
+                      <span class="badge bg-success-subtle text-success border">DEV</span>
+                      <a class="fw-semibold text-dark text-decoration-none" href="course.html">Асосҳои барномасозӣ</a>
+                    </div>
+                  </td>
+                  <td data-label="Категория">Барномасозӣ</td>
+                  <td data-label="Муаллиф">Устод Аҳмад Раҳимов</td>
+                  <td data-label="Дарсҳо">12 дарс</td>
+                  <td data-label="Ҳолат"><span class="badge-status status-published">Нашршуда</span></td>
+                  <td data-label="Амал" class="text-end cell-actions">
+                    <a class="btn btn-sm btn-outline-primary" href="course.html">Кушодан</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td data-label="Номи курс">
+                    <div class="d-flex align-items-center gap-2">
+                      <span class="badge bg-success-subtle text-success border">UIX</span>
+                      <a class="fw-semibold text-dark text-decoration-none" href="course.html">Тарҳрезии вебсайт</a>
+                    </div>
+                  </td>
+                  <td data-label="Категория">Веб-дизайн</td>
+                  <td data-label="Муаллиф">Шаҳром Саидов</td>
+                  <td data-label="Дарсҳо">14 дарс</td>
+                  <td data-label="Ҳолат"><span class="badge-status status-published">Нашршуда</span></td>
+                  <td data-label="Амал" class="text-end cell-actions">
+                    <a class="btn btn-sm btn-outline-primary" href="course.html">Кушодан</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td data-label="Номи курс">
+                    <div class="d-flex align-items-center gap-2">
+                      <span class="badge bg-success-subtle text-success border">HTM</span>
+                      <a class="fw-semibold text-dark text-decoration-none" href="course.html">Асосҳои HTML ва CSS</a>
+                    </div>
+                  </td>
+                  <td data-label="Категория">Веб-дизайн</td>
+                  <td data-label="Муаллиф">Шаҳром Саидов</td>
+                  <td data-label="Дарсҳо">10 дарс</td>
+                  <td data-label="Ҳолат"><span class="badge-status status-published">Нашршуда</span></td>
+                  <td data-label="Амал" class="text-end cell-actions">
+                    <a class="btn btn-sm btn-outline-primary" href="course.html">Кушодан</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td data-label="Номи курс">
+                    <div class="d-flex align-items-center gap-2">
+                      <span class="badge bg-success-subtle text-success border">SQL</span>
+                      <a class="fw-semibold text-dark text-decoration-none" href="course.html">Пойгоҳи додаҳои MySQL</a>
+                    </div>
+                  </td>
+                  <td data-label="Категория">Пойгоҳи додаҳо</td>
+                  <td data-label="Муаллиф">Синои Ҳасан</td>
+                  <td data-label="Дарсҳо">10 дарс</td>
+                  <td data-label="Ҳолат"><span class="badge-status status-published">Нашршуда</span></td>
+                  <td data-label="Амал" class="text-end cell-actions">
+                    <a class="btn btn-sm btn-outline-primary" href="course.html">Кушодан</a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- ── 2.5. САҲИФАБАНДӢ (Pagination) ─────────────────────────────────── -->
+        <nav aria-label="Саҳифабандии каталог" class="mt-4">
+          <ul class="pagination justify-content-center">
+            <li class="page-item disabled">
+              <span class="page-link" aria-hidden="true">&laquo;</span>
+            </li>
+            <li class="page-item active" aria-current="page">
+              <span class="page-link">1</span>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="courses.html?page=2">2</a>
+            </li>
+            <li class="page-item">
+              <a class="page-link" href="courses.html?page=2" aria-label="Ба саҳифаи баъдӣ">&raquo;</a>
+            </li>
+          </ul>
+        </nav>
+
+      </section>
+    </div>
+
+  </main>
+
+  <!-- ── 3. ПОЁНИ САҲИФА (Семантикаи <footer>) ─────────────────────────────────── -->
+  <footer class="app-footer">
+    <div class="container">
+      <div class="row g-4">
+        <!-- Сутуни 1: Бренд ва шарҳи лоиҳа -->
+        <div class="col-12 col-md-4">
+          <div class="d-flex align-items-center gap-2 mb-2">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iOCIgZmlsbD0iIzAwODc1QSIvPjx0ZXh0IHg9IjE2IiB5PSIyMSIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiI+QkE8L3RleHQ+PC9zdmc="
+                 alt="Нишони Biyomuz Academy дар поёни саҳифа" width="32" height="32" class="rounded">
+            <span class="h5 mb-0 text-white">Biyomuz Academy</span>
+          </div>
+          <p class="text-small text-white-50 mb-3">
+            Платформаи миллии онлайн-омӯзиши барномасозӣ ва технологияҳои веб бо забони тоҷикӣ.
+          </p>
+          <p class="text-small text-white-50 mb-0">
+            <em>«Имрӯз биёмӯз, фардо муваффақ шав!»</em>
+          </p>
+        </div>
+
+        <!-- Сутуни 2: Пайвандҳои фаврӣ -->
+        <div class="col-6 col-md-2">
+          <h3 class="h5">Пайвандҳо</h3>
+          <ul class="list-unstyled text-small mb-0">
+            <li class="mb-2"><a href="layout.html">Асосӣ</a></li>
+            <li class="mb-2"><a href="courses.html">Каталоги курсҳо</a></li>
+            <li class="mb-2"><a href="layout.html#categories">Категорияҳо</a></li>
+            <li class="mb-2"><a href="layout.html#about">Дар бораи лоиҳа</a></li>
+          </ul>
+        </div>
+
+        <!-- Сутуни 3: Ихтисосҳо -->
+        <div class="col-6 col-md-3">
+          <h3 class="h5">Ихтисосҳо</h3>
+          <ul class="list-unstyled text-small mb-0">
+            <li class="mb-2"><a href="courses.html?category_id=1">Барномасозии веб</a></li>
+            <li class="mb-2"><a href="courses.html?category_id=2">Тарҳрезии интерфейсҳо (UI/UX)</a></li>
+            <li class="mb-2"><a href="courses.html?category_id=3">Пойгоҳи додаҳои MariaDB</a></li>
+            <li class="mb-2"><a href="courses.html?category_id=4">Амнияти барномаҳо</a></li>
+          </ul>
+        </div>
+
+        <!-- Сутуни 4: Маълумот ва тамос -->
+        <div class="col-12 col-md-3" id="footer-contact">
+          <h3 class="h5">Тамос ва локализатсия</h3>
+          <address class="text-small text-white-50 not-italic mb-2">
+            Ҷумҳурии Тоҷикистон, ш. Душанбе<br>
+            Почта: <a class="text-white-50 text-decoration-underline" href="mailto:admin@biyomuz.tj">admin@biyomuz.tj</a>
+          </address>
+          <div class="d-flex align-items-center gap-2 mt-2">
+            <span class="role-badge">🇹🇯 Забони интерфейс: Тоҷикӣ</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Сатри поёнии ҳуқуқи муаллиф -->
+      <div class="app-footer-bottom d-flex flex-wrap align-items-center justify-content-between gap-2">
+        <p class="mb-0 text-white-50">
+          &copy; 2026 Biyomuz Academy. Ҳамаи ҳуқуқҳо маҳфузанд.
+        </p>
+        <p class="mb-0 text-white-50">
+          Лоиҳаи дипломии Ғаффоров Зуҳриддин (ХПИ ТТУ)
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ── 4. BOOTSTRAP 5.3.3 BUNDLE JS (Бо муҳофизати integrity барои менюи мобилӣ) ── -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>

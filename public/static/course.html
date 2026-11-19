@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="tg">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Кор бо Laravel — Biyomuz Academy</title>
+  <meta name="description" content="Курси амалии «Кор бо Laravel» дар Biyomuz Academy. Таҳияи барномаҳои муосири веб бо истифодаи Laravel 13, Eloquent ва меъмории MVC бо забони тоҷикӣ.">
+
+  <!-- Google Fonts: Noto Sans бо дастгирии комили алифбои кириллии тоҷикӣ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap 5.3.3 CSS аз CDN бо кафолати integrity -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+  <!-- Стилҳои брендии Biyomuz Academy (ҳатман баъд аз Bootstrap пайваст мешавад) -->
+  <link href="../assets/css/app.css" rel="stylesheet">
+</head>
+<body>
+
+  <!-- ── 1. САРСАҲИФА / NAVBAR (Семантикаи <header> ва <nav>) ─────────────────── -->
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-dark app-navbar" aria-label="Сарлавҳаи асосии сомона">
+      <div class="container">
+        <!-- Бренд ва логотипи расмӣ -->
+        <a class="navbar-brand" href="layout.html">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iOCIgZmlsbD0iIzAwODc1QSIvPjx0ZXh0IHg9IjE2IiB5PSIyMSIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiI+QkE8L3RleHQ+PC9zdmc="
+               alt="Нишони Biyomuz Academy" width="32" height="32" class="d-inline-block align-text-top rounded me-2">
+          <span>Biyomuz Academy</span>
+        </a>
+
+        <!-- Тугмаи кушодани меню дар телефонҳои мобилӣ (Hamburger) -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
+                aria-controls="mainNav" aria-expanded="false" aria-label="Кушодани менюи навигатсия">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Менюи навигатсионӣ бо пайванди фаъоли «Курсҳо» -->
+        <div class="collapse navbar-collapse" id="mainNav">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="layout.html">Асосӣ</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="courses.html">Курсҳо</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="layout.html#categories">Категорияҳо</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="layout.html#platform-stats">Омор</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="layout.html#about">Дар бораи мо</a>
+            </li>
+          </ul>
+
+          <!-- Бахши корбарӣ ва тугмаҳои воридшавӣ -->
+          <div class="d-flex align-items-center gap-3">
+            <span class="role-badge">🇹🇯 Тоҷикӣ</span>
+            <a class="btn btn-sm btn-outline-light" href="courses.html">Ворид шудан</a>
+            <a class="btn btn-sm btn-primary" href="courses.html">Бақайдгирӣ</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ── 2. МУҲТАВОИ АСОСӢ (Семантикаи <main>) ───────────────────────────────── -->
+  <main class="container py-4 flex-grow-1">
+
+    <!-- ── 2.1. РОҲНАМОИ САҲИФА ВА ТУГМАИ БОЗГАШТ (Breadcrumb & Back) ────────── -->
+    <nav aria-label="Роҳнамои навигатсия" class="mb-3">
+      <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
+        <ol class="breadcrumb mb-0">
+          <li class="breadcrumb-item"><a href="layout.html" class="text-decoration-none">Асосӣ</a></li>
+          <li class="breadcrumb-item"><a href="courses.html" class="text-decoration-none">Курсҳо</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Кор бо Laravel</li>
+        </ol>
+        <a href="courses.html" class="btn btn-sm btn-outline-secondary">
+          <span aria-hidden="true">&larr;</span> Бозгашт ба каталог
+        </a>
+      </div>
+    </nav>
+
+    <!-- ── 2.2. БАННЕРИ САРЛАВҲАИ КУРС (Hero Banner) ─────────────────────────── -->
+    <section class="hero-section mb-4" aria-labelledby="course-hero-title">
+      <div class="row align-items-center">
+        <div class="col-12 col-lg-8">
+          <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
+            <span class="badge bg-success-subtle text-success border">Барномасозӣ</span>
+            <span class="badge bg-light text-dark border">Нашршуда</span>
+            <span class="badge bg-warning-subtle text-warning-emphasis border">Сатҳи миёна</span>
+          </div>
+          <h1 id="course-hero-title" class="hero-title">
+            Кор бо Laravel
+          </h1>
+          <p class="hero-slogan">
+            Таҳияи барномаҳои муосири веб бо истифодаи Laravel 13, Eloquent ва меъмории MVC.
+          </p>
+          <div class="d-flex flex-wrap align-items-center gap-3 text-white-50 text-small">
+            <span><strong>Муаллиф:</strong> Устод Аҳмад Раҳимов</span>
+            <span>&bull;</span>
+            <span><strong>Ҳаҷм:</strong> 2 модул · 18 дарс</span>
+            <span>&bull;</span>
+            <span><strong>Шунавандагон:</strong> 3 донишҷӯ</span>
+            <span>&bull;</span>
+            <span class="text-white fw-bold">Арзиш: Ройгон</span>
+          </div>
+        </div>
+        <div class="col-12 col-lg-4 text-lg-end mt-3 mt-lg-0">
+          <a class="btn btn-primary btn-lg" href="#enroll-action">
+            Ба курс номнавис шудан &rarr;
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── 2.3. СЕТКАИ МУҲТАВО ВА ПАНЕЛИ ПАҲЛӮӢ (Bootstrap бо 3 нуқтаи тағйирёбӣ) ─ -->
+    <div class="row g-4">
+
+      <!-- ── СУТУНИ ЧАП: ШАРҲИ КУРС ВА СИЛЛАБУС (Семантикаи <article>) ──────────── -->
+      <!-- Нуқтаҳои тағйирёбӣ: col-12 (мобилӣ), col-md-12 (планшет), col-lg-8 (компютер) -->
+      <article class="col-12 col-lg-8" aria-labelledby="course-content-title">
+        <h2 id="course-content-title" class="visually-hidden">Мундариҷаи курси Кор бо Laravel</h2>
+
+        <!-- Шарҳ ва ҳадафҳои таълимӣ -->
+        <section class="card p-4 mb-4 shadow-sm" aria-labelledby="overview-title">
+          <h2 id="overview-title" class="h4 mb-3 border-bottom pb-2">Дар бораи курс</h2>
+          <p class="text-muted mb-3">
+            Курси «Кор бо Laravel» ба шумо имкон медиҳад, ки меъмории муосиртарин ва серталабтарин фреймворки PHP-ро аз сифр омӯзед. Ин курс барои донишҷӯёне пешбинӣ шудааст, ки асосҳои забони PHP-ро медонанд ва мехоҳанд лоиҳаҳои мураккаби тиҷоратӣ ва порталҳои миллиро таҳия намоянд.
+          </p>
+          <h3 class="h6 mb-2">Шумо чӣ меомӯзед:</h3>
+          <ul class="text-muted text-small ps-3 mb-0">
+            <li class="mb-1">Насби муҳити кории Laravel 13 тавассути Composer ва истифодаи Artisan CLI.</li>
+            <li class="mb-1">Маршрутизатсия (Routing), Middleware ва сохтани контроллерҳои захиравӣ (Resource Controllers).</li>
+            <li class="mb-1">Тарҳбандии саҳифаҳо бо истифодаи шаблонизатори Blade ва компонентҳои такроршаванда.</li>
+            <li class="mb-1">Тарҳрезии пойгоҳи додаҳо тавассути Migrations, Seeders ва кор бо Eloquent ORM.</li>
+            <li class="mb-1">Амнияти барнома: муҳофизат аз ҳамлаҳои CSRF, SQL Injection ва XSS.</li>
+          </ul>
+        </section>
+
+        <!-- Барномаи таълимӣ (Силлабуси модулҳо ва дарсҳо) -->
+        <section class="mb-4" aria-labelledby="syllabus-title">
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <h2 id="syllabus-title" class="h4 mb-0">Барномаи таълимии курс</h2>
+            <span class="text-muted text-small">2 модул · 18 дарс</span>
+          </div>
+
+          <!-- Модули 1: Насб ва танзими Laravel (Мутобиқи seed.sql) -->
+          <div class="syllabus-module">
+            <div class="syllabus-header">
+              <div>
+                <span class="badge bg-success me-2">Модули 1</span>
+                <span>Насб ва танзими Laravel</span>
+              </div>
+              <span class="text-muted text-small">9 дарс · Назария ва амал</span>
+            </div>
+            <ul class="syllabus-list">
+              <li class="syllabus-item">
+                <div class="d-flex align-items-center gap-2">
+                  <span class="text-muted text-small">1.1</span>
+                  <span>Муқаддима ба Laravel 13 ва Artisan</span>
+                </div>
+                <span class="badge bg-light text-dark border text-small">Видеодарс</span>
+              </li>
+              <li class="syllabus-item">
+                <div class="d-flex align-items-center gap-2">
+                  <span class="text-muted text-small">1.2</span>
+                  <span>Сохтори директорияҳо ва файли танзимоти .env</span>
+                </div>
+                <span class="badge bg-light text-dark border text-small">Матн ва код</span>
+              </li>
+              <li class="syllabus-item">
+                <div class="d-flex align-items-center gap-2">
+                  <span class="text-muted text-small">1.3</span>
+                  <span>Маршрутизатсия (Routes) ва контроллерҳо</span>
+                </div>
+                <span class="badge bg-light text-dark border text-small">Амалӣ</span>
+              </li>
+              <li class="syllabus-item">
+                <div class="d-flex align-items-center gap-2">
+                  <span class="text-muted text-small">1.4</span>
+                  <span>Шаблонизатори Blade: қолабҳо ва директиваҳо</span>
+                </div>
+                <span class="badge bg-light text-dark border text-small">Амалӣ</span>
+              </li>
+              <li class="syllabus-item">
+                <div class="d-flex align-items-center gap-2">
+                  <span class="text-muted text-small">1.5</span>
+                  <span>Санҷиши аввалин ва супоридани вазифаи хонагӣ</span>
+                </div>
+                <span class="badge bg-primary-subtle text-primary border text-small">Вазифа</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Модули 2: Пойгоҳи додаҳо ва Eloquent (Мутобиқи seed.sql) -->
+          <div class="syllabus-module">
+            <div class="syllabus-header">
+              <div>
+                <span class="badge bg-success me-2">Модули 2</span>
+                <span>Пойгоҳи додаҳо ва Eloquent ORM</span>
+              </div>
+              <span class="text-muted text-small">9 дарс · Лоиҳаи амалӣ</span>
+            </div>
+            <ul class="syllabus-list">
+              <li class="syllabus-item">
+                <div class="d-flex align-items-center gap-2">
+                  <span class="text-muted text-small">2.1</span>
+                  <span>Мигратсияҳо (Migrations) ва сохтори ҷадвалҳо</span>
+                </div>
+                <span class="badge bg-light text-dark border text-small">Амалӣ</span>
+              </li>
+              <li class="syllabus-item">
+                <div class="d-flex align-items-center gap-2">
+                  <span class="text-muted text-small">2.2</span>
+                  <span>Моделҳои Eloquent ва дархостҳои асосии CRUD</span>
+                </div>
+                <span class="badge bg-light text-dark border text-small">Амалӣ</span>
+              </li>
+              <li class="syllabus-item">
+                <div class="d-flex align-items-center gap-2">
+                  <span class="text-muted text-small">2.3</span>
+                  <span>Муносибатҳои релятсионӣ: One-to-Many ва Many-to-Many</span>
+                </div>
+                <span class="badge bg-light text-dark border text-small">Амалӣ</span>
+              </li>
+              <li class="syllabus-item">
+                <div class="d-flex align-items-center gap-2">
+                  <span class="text-muted text-small">2.4</span>
+                  <span>Формаҳои веб ва санҷиши эътиборнокӣ (Validation)</span>
+                </div>
+                <span class="badge bg-light text-dark border text-small">Амалӣ</span>
+              </li>
+              <li class="syllabus-item">
+                <div class="d-flex align-items-center gap-2">
+                  <span class="text-muted text-small">2.5</span>
+                  <span>Лоиҳаи ниҳоии курс: Сохтани системаи блог бо Laravel</span>
+                </div>
+                <span class="badge bg-warning-subtle text-warning-emphasis border text-small">Лоиҳаи дипломӣ</span>
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Талаботи пешакӣ ва таҷҳизот -->
+        <section class="card p-3 bg-light border shadow-sm">
+          <h3 class="h6 mb-2">Талаботи пешакӣ барои шурӯъ:</h3>
+          <p class="text-small text-muted mb-0">
+            Барои гузаштани бомуваффақияти ин курс дониши заминавии забони барномасозии PHP (тағйирёбандаҳо, функсияҳо, массивҳо ва асосҳои ООП) ва қолаббандии HTML/CSS зарур аст.
+          </p>
+        </section>
+      </article>
+
+      <!-- ── СУТУНИ РОСТ: МУШАХХАСОТ ВА МУАЛЛИФ (Семантикаи <aside>) ────────────── -->
+      <!-- Нуқтаҳои тағйирёбӣ: col-12 (мобилӣ), col-md-12 (планшет), col-lg-4 (компютер) -->
+      <aside class="col-12 col-lg-4" aria-label="Мушаххасоти курс ва муаллиф">
+
+        <!-- Корти 1: Маълумоти курс бо истифодаи CSS Grid ва <dl class="details"> -->
+        <div class="card p-3 mb-4 shadow-sm" id="enroll-action">
+          <h2 class="h5 border-bottom pb-2 mb-3">Хусусиятҳои курс</h2>
+
+          <dl class="details mb-4">
+            <dt>Арзиши курс</dt>
+            <dd class="text-success fw-bold">Ройгон</dd>
+
+            <dt>Муаллим</dt>
+            <dd>Устод Аҳмад Раҳимов</dd>
+
+            <dt>Категория</dt>
+            <dd>Барномасозӣ</dd>
+
+            <dt>Сатҳи дониш</dt>
+            <dd>Сатҳи миёна</dd>
+
+            <dt>Ҳаҷми курс</dt>
+            <dd>2 модул · 18 дарс</dd>
+
+            <dt>Забони дарс</dt>
+            <dd>Тоҷикӣ (адабӣ)</dd>
+
+            <dt>Санҷиши код</dt>
+            <dd>Муаллими ихтисосӣ</dd>
+
+            <dt>Шаҳодатнома</dt>
+            <dd>Тасдиқ бо QR-код</dd>
+          </dl>
+
+          <!-- Тугмаҳои амал аз рӯйи макети Figma -->
+          <div class="d-grid gap-2">
+            <a class="btn btn-primary btn-lg" href="courses.html">
+              Ба курс номнавис шудан
+            </a>
+            <a class="btn btn-outline-primary" href="courses.html">
+              Супоридани вазифа
+            </a>
+          </div>
+        </div>
+
+        <!-- Корти 2: Муаллими курс (Устод Аҳмад Раҳимов мутобиқи seed.sql) -->
+        <div class="card p-3 mb-4 shadow-sm">
+          <h3 class="h6 border-bottom pb-2 mb-3">Муаллими курс</h3>
+          <div class="d-flex align-items-center gap-3 mb-3">
+            <span class="avatar fs-5" role="img" aria-label="Акси Устод Аҳмад Раҳимов">АР</span>
+            <div>
+              <h4 class="h6 mb-0">Устод Аҳмад Раҳимов</h4>
+              <span class="text-small text-muted">Омӯзгори калон, муҳандис-барномасоз</span>
+            </div>
+          </div>
+          <p class="text-small text-muted mb-2">
+            Мутахассиси пешбари соҳаи таҳияи барномаҳои веб ва системаҳои иттилоотӣ бо таҷрибаи 10-сола дар PHP ва Laravel.
+          </p>
+          <div class="text-small text-muted">
+            <strong>Почта:</strong> <a href="mailto:ahmad@biyomuz.tj" class="text-decoration-none">ahmad@biyomuz.tj</a>
+          </div>
+        </div>
+
+        <!-- Корти 3: Кафолати сифат ва сертификатсия -->
+        <div class="card p-3 shadow-sm bg-light">
+          <h3 class="h6 mb-2">Шаҳодатномаи Biyomuz</h3>
+          <p class="text-small text-muted mb-0">
+            Баъди анҷоми ҳамаи модулҳо ва санҷиши мусбати супоришҳо аз ҷониби муаллим, ба донишҷӯ шаҳодатномаи рақамии дорои рамзи тасдиқкунанда супорида мешавад.
+          </p>
+        </div>
+
+      </aside>
+    </div>
+
+  </main>
+
+  <!-- ── 3. ПОЁНИ САҲИФА (Семантикаи <footer>) ─────────────────────────────────── -->
+  <footer class="app-footer">
+    <div class="container">
+      <div class="row g-4">
+        <!-- Сутуни 1: Бренд ва шарҳи лоиҳа -->
+        <div class="col-12 col-md-4">
+          <div class="d-flex align-items-center gap-2 mb-2">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iOCIgZmlsbD0iIzAwODc1QSIvPjx0ZXh0IHg9IjE2IiB5PSIyMSIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiI+QkE8L3RleHQ+PC9zdmc="
+                 alt="Нишони Biyomuz Academy дар поёни саҳифа" width="32" height="32" class="rounded">
+            <span class="h5 mb-0 text-white">Biyomuz Academy</span>
+          </div>
+          <p class="text-small text-white-50 mb-3">
+            Платформаи миллии онлайн-омӯзиши барномасозӣ ва технологияҳои веб бо забони тоҷикӣ.
+          </p>
+          <p class="text-small text-white-50 mb-0">
+            <em>«Имрӯз биёмӯз, фардо муваффақ шав!»</em>
+          </p>
+        </div>
+
+        <!-- Сутуни 2: Пайвандҳои фаврӣ -->
+        <div class="col-6 col-md-2">
+          <h3 class="h5">Пайвандҳо</h3>
+          <ul class="list-unstyled text-small mb-0">
+            <li class="mb-2"><a href="layout.html">Асосӣ</a></li>
+            <li class="mb-2"><a href="courses.html">Каталоги курсҳо</a></li>
+            <li class="mb-2"><a href="layout.html#categories">Категорияҳо</a></li>
+            <li class="mb-2"><a href="layout.html#about">Дар бораи лоиҳа</a></li>
+          </ul>
+        </div>
+
+        <!-- Сутуни 3: Ихтисосҳо -->
+        <div class="col-6 col-md-3">
+          <h3 class="h5">Ихтисосҳо</h3>
+          <ul class="list-unstyled text-small mb-0">
+            <li class="mb-2"><a href="courses.html?category_id=1">Барномасозии веб</a></li>
+            <li class="mb-2"><a href="courses.html?category_id=2">Тарҳрезии интерфейсҳо (UI/UX)</a></li>
+            <li class="mb-2"><a href="courses.html?category_id=3">Пойгоҳи додаҳои MariaDB</a></li>
+            <li class="mb-2"><a href="courses.html?category_id=4">Амнияти барномаҳо</a></li>
+          </ul>
+        </div>
+
+        <!-- Сутуни 4: Маълумот ва тамос -->
+        <div class="col-12 col-md-3">
+          <h3 class="h5">Тамос ва локализатсия</h3>
+          <address class="text-small text-white-50 not-italic mb-2">
+            Ҷумҳурии Тоҷикистон, ш. Душанбе<br>
+            Почта: <a class="text-white-50 text-decoration-underline" href="mailto:admin@biyomuz.tj">admin@biyomuz.tj</a>
+          </address>
+          <div class="d-flex align-items-center gap-2 mt-2">
+            <span class="role-badge">🇹🇯 Забони интерфейс: Тоҷикӣ</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Сатри поёнии ҳуқуқи муаллиф -->
+      <div class="app-footer-bottom d-flex flex-wrap align-items-center justify-content-between gap-2">
+        <p class="mb-0 text-white-50">
+          &copy; 2026 Biyomuz Academy. Ҳамаи ҳуқуқҳо маҳфузанд.
+        </p>
+        <p class="mb-0 text-white-50">
+          Лоиҳаи дипломии Ғаффоров Зуҳриддин (ХПИ ТТУ)
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ── 4. BOOTSTRAP 5.3.3 BUNDLE JS (Бо муҳофизати integrity барои менюи мобилӣ) ── -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>
