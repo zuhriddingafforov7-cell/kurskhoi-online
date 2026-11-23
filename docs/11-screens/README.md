@@ -40,6 +40,6 @@
 ## 3. Феҳристи 4 скриншоти воқеии браузер (`docs/11-screens/`)
 
 1. **`01-registration-validation-errors.png`** — Саҳифаи `register.html` пас аз санҷиши майдонҳои холӣ, Email-и нодуруст ва номувофиқатии рамзҳо (`setCustomValidity`): намоиши синфи `.is-invalid` ва паёмҳои хатогӣ ба забони русӣ дар зери майдонҳо.
-2. **`02-course-search-network.png`** — Саҳифаи `courses.html` дар канори панели воқеии **Chrome DevTools → Network → Fetch/XHR**: дархости ягонаи `courses?q=php` пас аз `debounce` (300 мс), статуси `200`, `1.1 kB`, ва ҷавоби JSON дар табақаи `Response`.
+2. **`02-course-search-network.png`** — Саҳифаи `courses.html` (бо натиҷаи тоҷикии «Курсҳои ёфтшуда: 2» ва ду корти курс) дар канори панели воқеии **Chrome DevTools → Network → Fetch/XHR**: дархости ягонаи `courses?q=php` пас аз `debounce` (300 мс), статуси `200`, `1.1 kB`, ва ҷавоби JSON дар табақаи `Response`.
 3. **`03-xss-safe-text.png`** — Намоиши сабти санҷишии XSS (`<img src=x onerror="alert('XSS')"> Тести Biyomuz`) дар каталоги `courses.html` ва ҷадвали он тавассути `textContent` ҳамчун матни одӣ (бе иҷрои HTML ва JS).
 4. **`04-delete-confirmation-modal.png`** — Саҳифаи `author-courses.html` пас аз ҷустуҷӯи зинда бо равзанаи кушодаи модалии `#confirm-delete-modal` ва намоиши номи курси интихобшуда.
