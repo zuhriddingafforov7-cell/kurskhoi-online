@@ -279,14 +279,14 @@ function createCourseTableRow(course, isAuthorMode) {
 
   const statusKey = course.status in STATUS_LABELS ? course.status : 'draft';
   const statusTd = document.createElement('td');
-  statusTd.setAttribute('data-label', isAuthorMode ? 'Статус' : 'Ҳолат');
+  statusTd.setAttribute('data-label', 'Ҳолат');
   const statusSpan = document.createElement('span');
   statusSpan.className = `badge-status status-${statusKey}`;
   statusSpan.textContent = STATUS_LABELS[statusKey];
   statusTd.append(statusSpan);
 
   const actionsTd = document.createElement('td');
-  actionsTd.setAttribute('data-label', 'Амал');
+  actionsTd.setAttribute('data-label', 'Амалҳо');
   actionsTd.className = 'text-end cell-actions';
 
   const openLink = document.createElement('a');
@@ -301,7 +301,7 @@ function createCourseTableRow(course, isAuthorMode) {
     deleteBtn.className = 'btn btn-sm btn-outline-danger ms-1';
     deleteBtn.dataset.deleteUrl = `/courses/${encodeURIComponent(course.id)}/delete`;
     deleteBtn.dataset.courseName = course.title ?? '';
-    deleteBtn.textContent = 'Удалить';
+    deleteBtn.textContent = 'Нест кардан';
     actionsTd.append(deleteBtn);
   }
 
@@ -322,7 +322,7 @@ function renderCourses(container, courses, tbody) {
     if (courses.length === 0) {
       const emptyBox = document.createElement('div');
       emptyBox.className = 'alert alert-light border text-muted mb-0';
-      emptyBox.textContent = 'Курсы не найдены (Курсҳо ёфт нашуданд).';
+      emptyBox.textContent = 'Курсҳо ёфт нашуданд.';
       container.replaceChildren(emptyBox);
     } else {
       const cards = courses.map((course) => createCourseCard(course));
@@ -337,7 +337,7 @@ function renderCourses(container, courses, tbody) {
       const emptyTd = document.createElement('td');
       emptyTd.colSpan = 6;
       emptyTd.className = 'text-center text-muted py-4';
-      emptyTd.textContent = 'Курсы не найдены (Курсҳо ёфт нашуданд).';
+      emptyTd.textContent = 'Курсҳо ёфт нашуданд.';
       emptyRow.append(emptyTd);
       tbody.replaceChildren(emptyRow);
     } else {
@@ -363,16 +363,17 @@ function initCourseSearch() {
 
   async function search(query) {
     controller?.abort();
-    controller = new AbortController();
+    const currentController = new AbortController();
+    controller = currentController;
 
     if (listContainer) listContainer.setAttribute('aria-busy', 'true');
     if (tbody) tbody.setAttribute('aria-busy', 'true');
-    setStatus('Поиск курсов… (Ҷустуҷӯ…)');
+    setStatus('Ҷустуҷӯи курсҳо идома дорад…');
 
     try {
       const response = await fetch(`/api/courses?q=${encodeURIComponent(query)}`, {
         headers: { Accept: 'application/json' },
-        signal: controller.signal,
+        signal: currentController.signal,
       });
 
       if (!response.ok) {
@@ -380,6 +381,8 @@ function initCourseSearch() {
       }
 
       const courses = await response.json();
+      if (currentController.signal.aborted) return;
+
       if (!Array.isArray(courses)) {
         throw new Error('Некорректный формат ответа API');
       }
@@ -387,16 +390,18 @@ function initCourseSearch() {
       renderCourses(listContainer, courses, tbody);
       setStatus(
         courses.length > 0
-          ? `Найдено курсов (Ёфт шуд): ${courses.length}`
-          : 'Курсы не найдены (Курсҳо ёфт нашуданд).'
+          ? `Курсҳои ёфтшуда: ${courses.length}`
+          : 'Курсҳо ёфт нашуданд.'
       );
     } catch (error) {
-      if (error.name === 'AbortError') return;
+      if (error.name === 'AbortError' || currentController.signal.aborted) return;
       console.error('Ошибка живого поиска курсов:', error);
-      setStatus('Не удалось выполнить поиск. Проверьте соединение с сервером и попробуйте ещё раз.');
+      setStatus('Ҷустуҷӯ иҷро нашуд. Пайвастшавиро бо сервер санҷед ва дубора кӯшиш кунед.');
     } finally {
-      if (listContainer) listContainer.removeAttribute('aria-busy');
-      if (tbody) tbody.removeAttribute('aria-busy');
+      if (controller === currentController) {
+        if (listContainer) listContainer.removeAttribute('aria-busy');
+        if (tbody) tbody.removeAttribute('aria-busy');
+      }
     }
   }
 
@@ -450,7 +455,11 @@ function initDeleteConfirm() {
   });
 
   // Защита от двойного нажатия при отправке формы
-  form.addEventListener('submit', () => {
+  form.addEventListener('submit', (event) => {
+    if (submitButton?.disabled) {
+      event.preventDefault();
+      return;
+    }
     if (submitButton) submitButton.disabled = true;
   });
 }
