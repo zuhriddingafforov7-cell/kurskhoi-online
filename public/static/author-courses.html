@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="tg">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Идоракунии курсҳои муаллиф — Biyomuz Academy</title>
+  <meta name="description" content="Саҳифаи муваққатии идоракунии курсҳои муаллиф дар Biyomuz Academy бо ҷустуҷӯи зинда ва равзанаи тасдиқи несткунӣ.">
+
+  <!-- Google Fonts: Noto Sans бо дастгирии комили алифбои кириллии тоҷикӣ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+  <!-- Bootstrap 5.3.3 CSS аз CDN бо кафолати integrity -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+  <!-- Стилҳои брендии Biyomuz Academy (ҳатман баъд аз Bootstrap пайваст мешавад) -->
+  <link href="../assets/css/app.css" rel="stylesheet">
+</head>
+<body>
+
+  <!-- ── 1. САРСАҲИФА / NAVBAR ─────────────────────────────────────────────────── -->
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-dark app-navbar" aria-label="Сарлавҳаи асосии сомона">
+      <div class="container">
+        <a class="navbar-brand" href="layout.html">
+          <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iOCIgZmlsbD0iIzAwODc1QSIvPjx0ZXh0IHg9IjE2IiB5PSIyMSIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiI+QkE8L3RleHQ+PC9zdmc+"
+               alt="Нишони Biyomuz Academy" width="32" height="32" class="d-inline-block align-text-top rounded me-2">
+          <span>Biyomuz Academy</span>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
+                aria-controls="mainNav" aria-expanded="false" aria-label="Кушодани менюи навигатсия">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="mainNav">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="layout.html">Асосӣ</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="courses.html">Курсҳо</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="author-courses.html">Идоракунии курсҳо</a>
+            </li>
+          </ul>
+
+          <div class="d-flex align-items-center gap-3">
+            <span class="role-badge">Муаллиф: Устод Аҳмад Раҳимов</span>
+            <a class="btn btn-sm btn-outline-light" href="courses.html">Каталог</a>
+            <a class="btn btn-sm btn-primary" href="register.html">Бақайдгирӣ</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ── 2. МУҲТАВОИ АСОСӢ ────────────────────────────────────────────────────── -->
+  <main class="container py-4 flex-grow-1">
+
+    <!-- Роҳнамои саҳифа (Breadcrumb) -->
+    <nav aria-label="Роҳнамои навигатсия" class="mb-3">
+      <ol class="breadcrumb mb-0">
+        <li class="breadcrumb-item"><a href="layout.html" class="text-decoration-none">Асосӣ</a></li>
+        <li class="breadcrumb-item"><a href="courses.html" class="text-decoration-none">Курсҳо</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Идоракунии курсҳои муаллиф</li>
+      </ol>
+    </nav>
+
+    <!-- Сарлавҳа ва тавсифи контексти муаллиф -->
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4 pb-2 border-bottom">
+      <div>
+        <h1 class="h2 mb-1">Идоракунии курсҳои муаллиф ва маъмур</h1>
+        <p class="text-muted text-small mb-0">
+          Рӯйхати курсҳо барои мудирият. Барои амали хатарноки несткунӣ тасдиқи модалӣ бо POST-дархост талаб карда мешавад.
+        </p>
+      </div>
+      <a href="courses.html" class="btn btn-outline-secondary">Бозгашт ба каталог</a>
+    </div>
+
+    <!-- Сатри ҷустуҷӯи зинда барои ҷадвали муаллиф -->
+    <div class="card p-3 mb-4 shadow-sm">
+      <form class="row g-3 align-items-end" method="get" action="author-courses.html">
+        <div class="col-12 col-md-8">
+          <label for="course-search" class="form-label fw-semibold">Ҷустуҷӯи зиндаи курсҳо</label>
+          <input type="search" id="course-search" name="q" class="form-control"
+                 placeholder="Номи курс, муаллиф ё калимаро ворид кунед..." autocomplete="off">
+        </div>
+        <div class="col-12 col-md-4 d-flex align-items-center justify-content-md-end">
+          <p id="course-search-status" class="text-small text-muted mb-0" aria-live="polite">
+            Найдено курсов (Ёфт шуд): 6
+          </p>
+        </div>
+      </form>
+    </div>
+
+    <!-- Ҷадвали курсҳо бо тугмаи несткунӣ (танҳо дар контексти муаллиф/маъмур) -->
+    <div class="card shadow-sm">
+      <div class="card-header bg-white py-3">
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-2">
+          <h2 class="h5 mb-0">Рӯйхати курсҳо барои идоракунӣ</h2>
+          <span class="badge bg-light text-dark border">Контексти муаллиф / маъмур</span>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="table table-hover align-middle table-cards mb-0">
+          <thead>
+            <tr>
+              <th scope="col">Номи курс</th>
+              <th scope="col">Категория</th>
+              <th scope="col">Муаллиф</th>
+              <th scope="col">Дарсҳо</th>
+              <th scope="col">Статус</th>
+              <th scope="col" class="text-end">Амал</th>
+            </tr>
+          </thead>
+          <tbody id="courses-tbody" data-manage-mode="author">
+            <tr>
+              <td data-label="Номи курс">
+                <div class="d-flex align-items-center gap-2">
+                  <span class="badge bg-success-subtle text-success border">LAR</span>
+                  <a class="fw-semibold text-dark text-decoration-none" href="course.html">Кор бо Laravel</a>
+                </div>
+              </td>
+              <td data-label="Категория">Барномасозӣ</td>
+              <td data-label="Муаллиф">Устод Аҳмад Раҳимов</td>
+              <td data-label="Дарсҳо">18 дарс</td>
+              <td data-label="Статус"><span class="badge-status status-published">Нашршуда</span></td>
+              <td data-label="Амал" class="text-end cell-actions">
+                <a class="btn btn-sm btn-outline-primary" href="course.html">Кушодан</a>
+                <button type="button" class="btn btn-sm btn-outline-danger ms-1"
+                        data-delete-url="/courses/3/delete"
+                        data-course-name="Кор бо Laravel">Удалить</button>
+              </td>
+            </tr>
+            <tr>
+              <td data-label="Номи курс">
+                <div class="d-flex align-items-center gap-2">
+                  <span class="badge bg-success-subtle text-success border">PHP</span>
+                  <a class="fw-semibold text-dark text-decoration-none" href="course.html">Омӯзиши забони PHP</a>
+                </div>
+              </td>
+              <td data-label="Категория">Барномасозӣ</td>
+              <td data-label="Муаллиф">Устод Аҳмад Раҳимов</td>
+              <td data-label="Дарсҳо">16 дарс</td>
+              <td data-label="Статус"><span class="badge-status status-published">Нашршуда</span></td>
+              <td data-label="Амал" class="text-end cell-actions">
+                <a class="btn btn-sm btn-outline-primary" href="course.html">Кушодан</a>
+                <button type="button" class="btn btn-sm btn-outline-danger ms-1"
+                        data-delete-url="/courses/2/delete"
+                        data-course-name="Омӯзиши забони PHP">Удалить</button>
+              </td>
+            </tr>
+            <tr>
+              <td data-label="Номи курс">
+                <div class="d-flex align-items-center gap-2">
+                  <span class="badge bg-success-subtle text-success border">DEV</span>
+                  <a class="fw-semibold text-dark text-decoration-none" href="course.html">Асосҳои барномасозӣ</a>
+                </div>
+              </td>
+              <td data-label="Категория">Барномасозӣ</td>
+              <td data-label="Муаллиф">Устод Аҳмад Раҳимов</td>
+              <td data-label="Дарсҳо">12 дарс</td>
+              <td data-label="Статус"><span class="badge-status status-published">Нашршуда</span></td>
+              <td data-label="Амал" class="text-end cell-actions">
+                <a class="btn btn-sm btn-outline-primary" href="course.html">Кушодан</a>
+                <button type="button" class="btn btn-sm btn-outline-danger ms-1"
+                        data-delete-url="/courses/1/delete"
+                        data-course-name="Асосҳои барномасозӣ">Удалить</button>
+              </td>
+            </tr>
+            <tr>
+              <td data-label="Номи курс">
+                <div class="d-flex align-items-center gap-2">
+                  <span class="badge bg-warning-subtle text-warning-emphasis border">SEC</span>
+                  <a class="fw-semibold text-dark text-decoration-none" href="course.html">Амнияти веб</a>
+                </div>
+              </td>
+              <td data-label="Категория">Барномасозӣ</td>
+              <td data-label="Муаллиф">Синои Ҳасан</td>
+              <td data-label="Дарсҳо">8 дарс</td>
+              <td data-label="Статус"><span class="badge-status status-pending">Мунтазир</span></td>
+              <td data-label="Амал" class="text-end cell-actions">
+                <a class="btn btn-sm btn-outline-primary" href="course.html">Кушодан</a>
+                <button type="button" class="btn btn-sm btn-outline-danger ms-1"
+                        data-delete-url="/courses/9/delete"
+                        data-course-name="Амнияти веб">Удалить</button>
+              </td>
+            </tr>
+            <tr>
+              <td data-label="Номи курс">
+                <div class="d-flex align-items-center gap-2">
+                  <span class="badge bg-secondary-subtle text-secondary border">PRJ</span>
+                  <a class="fw-semibold text-dark text-decoration-none" href="course.html">Сохтани лоиҳаи амалӣ</a>
+                </div>
+              </td>
+              <td data-label="Категория">Барномасозӣ</td>
+              <td data-label="Муаллиф">Устод Аҳмад Раҳимов</td>
+              <td data-label="Дарсҳо">15 дарс</td>
+              <td data-label="Статус"><span class="badge-status status-draft">Сиёҳнавис</span></td>
+              <td data-label="Амал" class="text-end cell-actions">
+                <a class="btn btn-sm btn-outline-primary" href="course.html">Кушодан</a>
+                <button type="button" class="btn btn-sm btn-outline-danger ms-1"
+                        data-delete-url="/courses/10/delete"
+                        data-course-name="Сохтани лоиҳаи амалӣ">Удалить</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ── МОДАЛЬНОЕ ОКНО ПОДТВЕРЖДЕНИЯ УДАЛЕНИЯ КУРСА ─────────────────────────── -->
+  <div class="modal fade" id="confirm-delete-modal" tabindex="-1" aria-labelledby="confirm-delete-title" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title h4" id="confirm-delete-title">Удалить курс?</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Закрыть"></button>
+        </div>
+        <div class="modal-body">
+          <p class="mb-0">
+            Курс <strong id="confirm-delete-name"></strong> будет удалён. Действие нельзя отменить.
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Отмена</button>
+          <form id="confirm-delete-form" method="post" action="#">
+            <button type="submit" class="btn btn-danger">Удалить</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 3. ПОЁНИ САҲИФА ──────────────────────────────────────────────────────── -->
+  <footer class="app-footer">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-12 col-md-4">
+          <div class="d-flex align-items-center gap-2 mb-2">
+            <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAzMiAzMiI+PHJlY3Qgd2lkdGg9IjMyIiBoZWlnaHQ9IjMyIiByeD0iOCIgZmlsbD0iIzAwODc1QSIvPjx0ZXh0IHg9IjE2IiB5PSIyMSIgZm9udC1zaXplPSIxNCIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IndoaXRlIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ic2Fucy1zZXJpZiI+QkE8L3RleHQ+PC9zdmc+"
+                 alt="Нишони Biyomuz Academy дар поёни саҳифа" width="32" height="32" class="rounded">
+            <span class="h5 mb-0 text-white">Biyomuz Academy</span>
+          </div>
+          <p class="text-small text-white-50 mb-3">
+            Платформаи миллии онлайн-омӯзиши барномасозӣ ва технологияҳои веб бо забони тоҷикӣ.
+          </p>
+          <p class="text-small text-white-50 mb-0">
+            <em>«Имрӯз биёмӯз, фардо муваффақ шав!»</em>
+          </p>
+        </div>
+
+        <div class="col-6 col-md-2">
+          <h3 class="h5">Пайвандҳо</h3>
+          <ul class="list-unstyled text-small mb-0">
+            <li class="mb-2"><a href="layout.html">Асосӣ</a></li>
+            <li class="mb-2"><a href="courses.html">Каталоги курсҳо</a></li>
+            <li class="mb-2"><a href="register.html">Бақайдгирӣ</a></li>
+            <li class="mb-2"><a href="author-courses.html">Кабинети муаллиф</a></li>
+          </ul>
+        </div>
+
+        <div class="col-6 col-md-3">
+          <h3 class="h5">Ихтисосҳо</h3>
+          <ul class="list-unstyled text-small mb-0">
+            <li class="mb-2"><a href="courses.html">Барномасозии веб</a></li>
+            <li class="mb-2"><a href="courses.html">Тарҳрезии интерфейсҳо (UI/UX)</a></li>
+            <li class="mb-2"><a href="courses.html">Пойгоҳи додаҳои MariaDB</a></li>
+            <li class="mb-2"><a href="courses.html">Амнияти барномаҳо</a></li>
+          </ul>
+        </div>
+
+        <div class="col-12 col-md-3">
+          <h3 class="h5">Тамос ва локализатсия</h3>
+          <address class="text-small text-white-50 not-italic mb-2">
+            Ҷумҳурии Тоҷикистон, ш. Душанбе<br>
+            Почта: <a class="text-white-50 text-decoration-underline" href="mailto:admin@biyomuz.tj">admin@biyomuz.tj</a>
+          </address>
+          <div class="d-flex align-items-center gap-2 mt-2">
+            <span class="role-badge">🇹🇯 Забони интерфейс: Тоҷикӣ</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="app-footer-bottom d-flex flex-wrap align-items-center justify-content-between gap-2">
+        <p class="mb-0 text-white-50">&copy; 2026 Biyomuz Academy. Ҳамаи ҳуқуқҳо маҳфузанд.</p>
+        <p class="mb-0 text-white-50">Лоиҳаи дипломии Ғаффоров Зуҳриддин (ХПИ ТТУ)</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ── 4. BOOTSTRAP 5.3.3 BUNDLE JS + ES MODULE APP.JS ───────────────────────── -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  <script type="module" src="/assets/js/app.js"></script>
+</body>
+</html>
