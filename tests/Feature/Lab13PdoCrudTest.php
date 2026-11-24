@@ -7,6 +7,8 @@ namespace Tests\Feature;
 use App\Models\Category;
 use App\Models\Course;
 use App\Models\Enrollment;
+use App\Models\Lesson;
+use App\Models\LessonProgress;
 use App\Models\Module;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -15,6 +17,7 @@ use PDO;
 use PDOException;
 use Src\Core\Database;
 use Src\Repositories\CourseRepository;
+use Src\Repositories\EnrollmentRepository;
 use Tests\TestCase;
 
 class Lab13PdoCrudTest extends TestCase
@@ -374,6 +377,9 @@ class Lab13PdoCrudTest extends TestCase
         $report = $this->get('/reports/courses');
         $report->assertOk();
         $report->assertSee('Шумораи курсҳо аз рӯйи категорияҳо');
+        $report->assertSee('Ҳисоботи таҳлилӣ');
+        $report->assertDontSee('GROUP BY + LEFT JOIN');
+        $report->assertDontSee('PDO Repository');
         $report->assertSee('Барномасозӣ');
         $report->assertSee('Амнияти иттилоотӣ');
         $report->assertSee('Ҷамъбасти умумӣ');
@@ -389,5 +395,113 @@ class Lab13PdoCrudTest extends TestCase
         $errorResp->assertSee('Хатои дохилии сервер');
         $errorResp->assertDontSee('SQLSTATE');
         $errorResp->assertDontSee('SECRET_TABLE');
+    }
+
+    public function test_enrollment_pdo_transaction_commits_two_tables_rolls_back_on_second_op_error_and_prevents_duplicates(): void
+    {
+        $course = Course::create([
+            'title'       => 'Курси транзаксияи PDO',
+            'description' => 'Курс бо ду дарс барои санҷиши транзаксияи PDO',
+            'category_id' => $this->catProg->id,
+            'author_id'   => $this->authorA->id,
+            'status'      => Course::STATUS_PUBLISHED,
+        ]);
+
+        $module = Module::create([
+            'course_id'   => $course->id,
+            'title'       => 'Модули транзаксия',
+            'order_index' => 1,
+        ]);
+
+        $lesson1 = Lesson::create([
+            'module_id'    => $module->id,
+            'title'        => 'Дарси 1 — Оғози кор',
+            'content_type' => 'text',
+            'order_index'  => 1,
+        ]);
+
+        $lesson2 = Lesson::create([
+            'module_id'    => $module->id,
+            'title'        => 'Дарси 2 — Коркарди PDO',
+            'content_type' => 'text',
+            'order_index'  => 2,
+        ]);
+
+        // 1. Ҳолати муваффақи транзаксия (Commit): enrollments + lesson_progress
+        $firstResp = $this->actingAs($this->student)->post("/student/courses/{$course->id}/enroll");
+        $firstResp->assertStatus(302);
+        $firstResp->assertSessionHas('success');
+
+        $this->assertDatabaseHas('enrollments', [
+            'user_id'   => $this->student->id,
+            'course_id' => $course->id,
+            'status'    => 'active',
+        ]);
+        $this->assertDatabaseHas('lesson_progress', [
+            'user_id'      => $this->student->id,
+            'lesson_id'    => $lesson1->id,
+            'is_completed' => false,
+        ]);
+        $this->assertDatabaseHas('lesson_progress', [
+            'user_id'      => $this->student->id,
+            'lesson_id'    => $lesson2->id,
+            'is_completed' => false,
+        ]);
+
+        // 2. Пешгирии номнависии такрорӣ (пахши дубора / HTTP POST дуюм)
+        $dupResp = $this->actingAs($this->student)->post("/student/courses/{$course->id}/enroll");
+        $dupResp->assertStatus(302);
+        $dupResp->assertSessionHas('info');
+        $this->assertSame(1, Enrollment::where('user_id', $this->student->id)->where('course_id', $course->id)->count());
+        $this->assertSame(2, LessonProgress::where('user_id', $this->student->id)->whereIn('lesson_id', [$lesson1->id, $lesson2->id])->count());
+
+        // 3. Хатогии амалиёти дуюм -> Rollback-и пурраи амалиёти якум (`enrollments`)
+        $student2 = User::factory()->create(['role' => 'student']);
+        $repo = app(EnrollmentRepository::class);
+
+        $threw = false;
+        try {
+            // Дохил кардани ID-и такрорӣ дар рӯйхати дарсҳо унвони UNIQUE-ро дар `lesson_progress` вайрон мекунад
+            $repo->enrollStudentWithProgress($student2->id, $course->id, [$lesson1->id, $lesson1->id]);
+        } catch (PDOException $e) {
+            $threw = true;
+        }
+
+        $this->assertTrue($threw, 'Амалиёти дуюм бояд PDOException диҳад.');
+        $this->assertDatabaseMissing('enrollments', [
+            'user_id'   => $student2->id,
+            'course_id' => $course->id,
+        ]);
+        $this->assertSame(0, LessonProgress::where('user_id', $student2->id)->count());
+    }
+
+    public function test_tajik_letters_gh_u_j_save_read_and_search_correctly(): void
+    {
+        $title = 'Омӯзиши Ҷадвалҳо ва Ғояҳои Пойгоҳи Додаҳо';
+        $desc = 'Омӯзиши амалии ҷадвалҳо, ғояҳои меъмории релятсионӣ ва ҷустуҷӯи маълумот бо utf8mb4.';
+
+        $store = $this->actingAs($this->admin)->post('/manage/courses', [
+            'title'       => $title,
+            'description' => $desc,
+            'category_id' => $this->catProg->id,
+            'status'      => 'published',
+        ]);
+        $store->assertStatus(302);
+
+        $course = Course::where('title', $title)->firstOrFail();
+        $repoCourse = app(CourseRepository::class)->find($course->id);
+        $this->assertNotNull($repoCourse);
+        $this->assertSame($title, $repoCourse['title']);
+        $this->assertSame($desc, $repoCourse['description']);
+
+        foreach (['Ғояҳои', 'Омӯзиши', 'Ҷадвалҳо'] as $queryWord) {
+            $catalog = $this->get('/courses?search=' . urlencode($queryWord));
+            $catalog->assertOk();
+            $catalog->assertSee($title);
+
+            $manage = $this->actingAs($this->admin)->get('/manage/courses?q=' . urlencode($queryWord));
+            $manage->assertOk();
+            $manage->assertSee($title);
+        }
     }
 }

@@ -7,6 +7,7 @@ use Src\Core\Database;
 use Src\Repositories\CategoryRepository;
 use Src\Repositories\CourseReportRepository;
 use Src\Repositories\CourseRepository;
+use Src\Repositories\EnrollmentRepository;
 use Src\Repositories\UserRepository;
 
 class AppServiceProvider extends ServiceProvider
@@ -20,6 +21,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(CategoryRepository::class, fn (): CategoryRepository => new CategoryRepository(Database::connection()));
         $this->app->bind(UserRepository::class, fn (): UserRepository => new UserRepository(Database::connection()));
         $this->app->bind(CourseReportRepository::class, fn (): CourseReportRepository => new CourseReportRepository(Database::connection()));
+        $this->app->bind(EnrollmentRepository::class, fn (): EnrollmentRepository => new EnrollmentRepository(Database::connection()));
     }
 
     /**

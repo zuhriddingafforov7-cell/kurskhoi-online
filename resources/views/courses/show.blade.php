@@ -98,10 +98,21 @@
                                 <span class="text-xs font-semibold uppercase tracking-wider text-slate-400 block mb-1">Арзиши курс</span>
                                 <span class="text-2xl sm:text-3xl font-black text-[#00875A]">Ройгон</span>
                             </div>
-                            <form method="POST" action="{{ route('student.courses.enroll', $course) }}">
+                            <form
+                                method="POST"
+                                action="{{ route('student.courses.enroll', $course) }}"
+                                x-data="{ submitting: false }"
+                                @submit="if (submitting) { $event.preventDefault(); return; } submitting = true"
+                            >
                                 @csrf
-                                <button type="submit" class="w-full px-6 py-3.5 bg-[#00875A] hover:bg-[#064E3B] text-white font-bold rounded-xl transition text-base shadow-sm shadow-[#00875A]/20">
-                                    Номнависӣ ба курс
+                                <button
+                                    type="submit"
+                                    :disabled="submitting"
+                                    :class="{ 'opacity-70 cursor-not-allowed': submitting }"
+                                    class="w-full px-6 py-3.5 bg-[#00875A] hover:bg-[#064E3B] text-white font-bold rounded-xl transition text-base shadow-sm shadow-[#00875A]/20"
+                                >
+                                    <span x-show="!submitting">Номнависӣ ба курс</span>
+                                    <span x-show="submitting" style="display: none;">Иҷро шуда истодааст...</span>
                                 </button>
                             </form>
                         @elseif(!auth()->check())

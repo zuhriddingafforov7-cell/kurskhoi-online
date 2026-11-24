@@ -1,6 +1,6 @@
 @if(!empty($fieldErrors))
     <div class="p-4 rounded-2xl bg-rose-50 border border-rose-200 text-rose-800 text-xs sm:text-sm mb-5" role="alert">
-        <div class="font-bold mb-1">Лутфан хатогиҳои зеринро ислоҳ кунед (HTTP 422):</div>
+        <div class="font-bold mb-1">Лутфан хатогиҳои зеринро ислоҳ кунед:</div>
         <ul class="list-disc list-inside space-y-0.5 text-xs">
             @foreach($fieldErrors as $messages)
                 @foreach($messages as $msg)
@@ -60,11 +60,11 @@
                 name="status"
                 class="w-full text-sm p-3 border {{ !empty($fieldErrors['status']) ? 'border-rose-400 bg-rose-50/40' : 'border-slate-300 bg-white' }} rounded-xl focus:ring-2 focus:ring-[#00875A] focus:outline-none"
             >
-                <option value="draft" {{ ($old['status'] ?? '') === 'draft' ? 'selected' : '' }}>Лоиҳа (Draft)</option>
-                <option value="pending" {{ ($old['status'] ?? 'pending') === 'pending' ? 'selected' : '' }}>Дар баррасӣ (Pending)</option>
+                <option value="draft" {{ ($old['status'] ?? '') === 'draft' ? 'selected' : '' }}>Лоиҳа</option>
+                <option value="pending" {{ ($old['status'] ?? 'pending') === 'pending' ? 'selected' : '' }}>Дар баррасӣ</option>
                 @if($isAdmin)
-                    <option value="published" {{ ($old['status'] ?? '') === 'published' ? 'selected' : '' }}>Нашршуда (Published)</option>
-                    <option value="rejected" {{ ($old['status'] ?? '') === 'rejected' ? 'selected' : '' }}>Радшуда (Rejected)</option>
+                    <option value="published" {{ ($old['status'] ?? '') === 'published' ? 'selected' : '' }}>Нашршуда</option>
+                    <option value="rejected" {{ ($old['status'] ?? '') === 'rejected' ? 'selected' : '' }}>Радшуда</option>
                 @endif
             </select>
             @if(!empty($fieldErrors['status']))

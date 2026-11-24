@@ -3,10 +3,10 @@
         <div class="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <div>
                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#ECFDF5] text-[#00875A] border border-[#A7F3D0] mb-2">
-                    PDO CRUD • CREATE
+                    Идоракунии курсҳо
                 </span>
                 <h1 class="text-2xl font-bold text-[#1E293B]">Иловаи курси нав</h1>
-                <p class="text-xs text-slate-500 mt-1">Майдонҳоро пур кунед; санҷиши пурра дар сервер (HTTP 422) ва ягонагии ном дар база иҷро мешавад.</p>
+                <p class="text-xs text-slate-500 mt-1">Маълумоти курси навро пур карда захира намоед.</p>
             </div>
             <a href="{{ route('manage.courses.index') }}" class="px-4 py-2 border border-slate-200 text-xs font-semibold rounded-xl text-slate-600 hover:bg-slate-50 transition shrink-0">
                 ← Бозгашт ба рӯйхат

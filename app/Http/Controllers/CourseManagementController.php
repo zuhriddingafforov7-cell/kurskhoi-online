@@ -186,7 +186,7 @@ class CourseManagementController extends Controller
 
         return redirect()
             ->route('manage.courses.show', $newCourseId)
-            ->with('success', 'Курси нав бо муваффақият тавассути PDO сабт шуд!');
+            ->with('success', 'Курси нав бо муваффақият сабт шуд!');
     }
 
     /**

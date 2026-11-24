@@ -11,10 +11,15 @@ use App\Support\ModelMeta;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
+use Src\Repositories\EnrollmentRepository;
 
 class CourseController extends Controller
 {
+    public function __construct(private readonly EnrollmentRepository $enrollments)
+    {
+    }
     /**
      * Каталоги курсҳои нашршуда.
      */
@@ -101,7 +106,7 @@ class CourseController extends Controller
     }
 
     /**
-     * Номнависии донишҷӯ ба курс.
+     * Номнависии донишҷӯ ба курс ва сохтани пешрафти аввалия дар як транзаксияи PDO.
      */
     public function enroll(Course $course): RedirectResponse
     {
@@ -111,15 +116,21 @@ class CourseController extends Controller
 
         $user = auth()->user();
 
-        if ($user->isEnrolledIn($course->id)) {
-            return back()->with('info', 'Шумо аллакай ба ин курс номнавис шудаед.');
+        try {
+            $result = $this->enrollments->enrollStudentWithProgress((int) $user->id, (int) $course->id);
+        } catch (\Throwable $e) {
+            Log::error('Хатогӣ дар транзаксияи номнависии донишҷӯ ба курс.', [
+                'user_id'   => $user->id,
+                'course_id' => $course->id,
+                'error'     => $e->getMessage(),
+            ]);
+
+            return back()->with('error', 'Ҳангоми номнависӣ ба курс хатогӣ рух дод. Тағйирот бекор карда шуданд.');
         }
 
-        Enrollment::create([
-            'user_id'   => $user->id,
-            'course_id' => $course->id,
-            'status'    => 'active',
-        ]);
+        if ($result['already_enrolled']) {
+            return back()->with('info', 'Шумо аллакай ба ин курс номнавис шудаед.');
+        }
 
         return redirect()
             ->route('student.courses.show', $course)

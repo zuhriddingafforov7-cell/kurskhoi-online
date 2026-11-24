@@ -133,10 +133,21 @@
                             </a>
                         @endif
                     @else
-                        <form method="POST" action="{{ route('student.courses.enroll', $course) }}">
+                        <form
+                            method="POST"
+                            action="{{ route('student.courses.enroll', $course) }}"
+                            x-data="{ submitting: false }"
+                            @submit="if (submitting) { $event.preventDefault(); return; } submitting = true"
+                        >
                             @csrf
-                            <button type="submit" class="w-full flex items-center justify-center px-5 py-3 bg-[#00875A] hover:bg-[#064E3B] text-white text-sm font-semibold rounded-xl shadow-sm transition">
-                                Номнавис шудан ба курс
+                            <button
+                                type="submit"
+                                :disabled="submitting"
+                                :class="{ 'opacity-70 cursor-not-allowed': submitting }"
+                                class="w-full flex items-center justify-center px-5 py-3 bg-[#00875A] hover:bg-[#064E3B] text-white text-sm font-semibold rounded-xl shadow-sm transition"
+                            >
+                                <span x-show="!submitting">Номнавис шудан ба курс</span>
+                                <span x-show="submitting" style="display: none;">Иҷро шуда истодааст...</span>
                             </button>
                         </form>
                     @endif

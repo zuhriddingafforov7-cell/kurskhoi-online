@@ -42,12 +42,12 @@
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
-                <div class="text-xs text-slate-400 font-semibold uppercase">Категория (JOIN)</div>
+                <div class="text-xs text-slate-400 font-semibold uppercase">Категория</div>
                 <div class="text-base font-bold text-[#1E293B] mt-1">{{ $course['category_title'] }}</div>
                 <div class="text-xs text-slate-400 mt-0.5">ID категория: #{{ $course['category_id'] ?? '—' }}</div>
             </div>
             <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs">
-                <div class="text-xs text-slate-400 font-semibold uppercase">Муаллиф (JOIN)</div>
+                <div class="text-xs text-slate-400 font-semibold uppercase">Муаллиф</div>
                 <div class="text-base font-bold text-[#1E293B] mt-1">{{ $course['author_name'] }}</div>
                 <div class="text-xs text-slate-400 mt-0.5">{{ $course['author_email'] }}</div>
             </div>

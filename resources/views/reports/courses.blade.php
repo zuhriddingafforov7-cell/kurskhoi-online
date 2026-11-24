@@ -4,7 +4,7 @@
         <div class="bg-gradient-to-br from-[#064E3B] via-[#00875A] to-[#10B981] rounded-2xl p-6 sm:p-8 text-white shadow-md flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
                 <span class="inline-flex px-3 py-1 rounded-full text-xs font-semibold bg-white/20 backdrop-blur-sm mb-3">
-                    GROUP BY + LEFT JOIN • PDO Repository
+                    Ҳисоботи таҳлилӣ
                 </span>
                 <h1 class="text-2xl sm:text-3xl font-black leading-tight">
                     Шумораи курсҳо аз рӯйи категорияҳо

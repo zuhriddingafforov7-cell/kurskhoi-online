@@ -12,11 +12,11 @@
         <div class="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200 shadow-xs flex flex-col lg:flex-row lg:items-center justify-between gap-4">
             <div>
                 <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-[#ECFDF5] text-[#00875A] border border-[#A7F3D0] mb-2">
-                    {{ $isAdmin ? __('Панели маъмур') : __('Панели муаллиф') }} • PDO Repository
+                    {{ $isAdmin ? __('Панели маъмур') : __('Панели муаллиф') }}
                 </span>
                 <h1 class="text-2xl font-bold text-[#1E293B]">{{ __('Идоракунии курсҳо') }}</h1>
                 <p class="mt-1 text-xs sm:text-sm text-slate-500">
-                    Рӯйхати курсҳо аз пойгоҳи додаи MariaDB бо ҷустуҷӯ, филтрҳо, JOIN ва саҳифабандӣ (10 курс дар як саҳифа).
+                    Идоракунӣ, ҷустуҷӯ, филтркунӣ ва таҳрири курсҳои таълимӣ.
                 </p>
             </div>
 
@@ -47,7 +47,7 @@
                 <div class="text-xl font-extrabold text-amber-600 mt-1">{{ $statusCounts['pending'] }}</div>
             </div>
             <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-xs">
-                <div class="text-xs text-slate-500">Лоиҳа (Draft)</div>
+                <div class="text-xs text-slate-500">Лоиҳа</div>
                 <div class="text-xl font-extrabold text-slate-700 mt-1">{{ $statusCounts['draft'] }}</div>
             </div>
             <div class="bg-white p-4 rounded-2xl border border-rose-200/80 shadow-xs col-span-2 sm:col-span-1">

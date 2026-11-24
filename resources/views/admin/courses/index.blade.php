@@ -11,7 +11,7 @@
                     <p class="text-sm text-slate-500 mt-1">Санҷиши сифати маводҳо, тасдиқ ва рад намудани курсҳои пешниҳодшуда.</p>
                     <div class="flex flex-wrap items-center gap-2 mt-3">
                         <a href="{{ route('manage.courses.index') }}" class="px-3.5 py-1.5 bg-[#00875A] hover:bg-[#064E3B] text-white text-xs font-semibold rounded-xl transition">
-                            Идоракунии пурраи CRUD →
+                            Идоракунии курсҳо →
                         </a>
                         <a href="{{ route('reports.courses') }}" class="px-3.5 py-1.5 bg-[#ECFDF5] text-[#00875A] hover:bg-[#D1FAE5] border border-[#A7F3D0] text-xs font-semibold rounded-xl transition">
                             Ҳисобот аз рӯйи категорияҳо
