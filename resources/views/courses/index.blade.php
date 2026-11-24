@@ -1,7 +1,22 @@
 <x-app-layout :title="__('Каталоги курсҳо')">
-    <div class="mb-6 sm:mb-8">
-        <h1 class="text-2xl sm:text-3xl font-extrabold text-[#1E293B]">{{ __('Каталоги курсҳо') }}</h1>
-        <p class="mt-1 text-xs sm:text-sm text-slate-500">Курси мувофиқро бо ҷустуҷӯ, категория, сатҳи омӯзиш ва муаллиф интихоб кунед</p>
+    <div class="mb-6 sm:mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+            <h1 class="text-2xl sm:text-3xl font-extrabold text-[#1E293B]">{{ __('Каталоги курсҳо') }}</h1>
+            <p class="mt-1 text-xs sm:text-sm text-slate-500">Курси мувофиқро бо ҷустуҷӯ, категория, сатҳи омӯзиш ва муаллиф интихоб кунед</p>
+        </div>
+
+        <div class="flex flex-wrap items-center gap-2 shrink-0">
+            <a href="{{ route('reports.courses') }}" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl border border-[#00875A]/30 bg-[#ECFDF5] text-[#00875A] hover:bg-[#D1FAE5] text-xs font-semibold transition">
+                <span>{{ __('Ҳисоботи курсҳо') }}</span>
+            </a>
+            @auth
+                @if(auth()->user()->isAdmin() || auth()->user()->isAuthor())
+                    <a href="{{ route('manage.courses.index') }}" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#00875A] hover:bg-[#064E3B] text-white text-xs font-semibold transition">
+                        <span>{{ __('Идоракунии курсҳо') }}</span>
+                    </a>
+                @endif
+            @endauth
+        </div>
     </div>
 
     {{-- Филтрҳо ва мураттабсозӣ --}}
@@ -59,7 +74,7 @@
                 Натиҷа: <strong class="text-[#1E293B]">{{ $courses->total() }}</strong> курс
             </span>
             <div class="flex items-center gap-2">
-                @if(request()->hasAny(['search', 'category', 'level', 'author', 'sort']))
+                @if(request()->hasAny(['search', 'q', 'category', 'category_id', 'level', 'author', 'author_id', 'sort']))
                     <a href="{{ route('courses.index') }}" class="px-4 py-2 border border-slate-200 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-50 transition">
                         {{ __('Тоза') }}
                     </a>

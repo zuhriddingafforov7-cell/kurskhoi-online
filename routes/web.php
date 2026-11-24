@@ -15,6 +15,8 @@ use App\Http\Controllers\Author\LessonController as AuthorLessonController;
 use App\Http\Controllers\Author\ModuleController as AuthorModuleController;
 use App\Http\Controllers\Author\SubmissionController as AuthorSubmissionController;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\CourseManagementController;
+use App\Http\Controllers\CourseReportController;
 use App\Http\Controllers\MaterialAccessController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Student\CertificateController as StudentCertificateController;
@@ -82,6 +84,22 @@ Route::get('/locale/{locale}', function (string $locale) {
 Route::get('/courses', [CourseController::class, 'index'])->name('courses.index');
 Route::get('/courses/{course}', [CourseController::class, 'show'])->name('courses.show');
 Route::get('/courses/{course}/cover', [MaterialAccessController::class, 'courseCover'])->name('courses.cover');
+Route::get('/reports/courses', [CourseReportController::class, 'index'])->name('reports.courses');
+
+/*
+|--------------------------------------------------------------------------
+| PDO CRUD Course Management Routes (admin ва author)
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'role:admin,author'])->prefix('manage')->name('manage.')->group(function () {
+    Route::get('/courses', [CourseManagementController::class, 'index'])->name('courses.index');
+    Route::get('/courses/create', [CourseManagementController::class, 'create'])->name('courses.create');
+    Route::post('/courses', [CourseManagementController::class, 'store'])->name('courses.store');
+    Route::get('/courses/{id}', [CourseManagementController::class, 'show'])->name('courses.show');
+    Route::get('/courses/{id}/edit', [CourseManagementController::class, 'edit'])->name('courses.edit');
+    Route::post('/courses/{id}/update', [CourseManagementController::class, 'update'])->name('courses.update');
+    Route::post('/courses/{id}/delete', [CourseManagementController::class, 'destroy'])->name('courses.delete');
+});
 
 /*
 |--------------------------------------------------------------------------

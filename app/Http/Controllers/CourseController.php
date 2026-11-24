@@ -1,100 +1,111 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers;
 
-use App\Models\Category;
 use App\Models\Course;
-use App\Models\User;
+use App\Support\CoursePresenter;
 use App\Support\ModelMeta;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\View\View;
+use Src\Repositories\CategoryRepository;
+use Src\Repositories\CourseRepository;
+use Src\Repositories\UserRepository;
 
 class CourseController extends Controller
 {
+    public function __construct(
+        private readonly CourseRepository $courses,
+        private readonly CategoryRepository $categories,
+        private readonly UserRepository $users,
+    ) {
+    }
+
     /**
-     * Саҳифаи каталоги оммавии курсҳо бо ҷустуҷӯ, филтр ва мураттабсозӣ.
+     * Саҳифаи каталоги оммавии курсҳо бо ҷустуҷӯ, филтр, пагинация ва JOIN тавассути PDO Repository.
      */
     public function index(Request $request): View
     {
-        $query = Course::published()
-            ->with(['author', 'category'])
-            ->withCount(['enrollments', 'modules']);
+        $page = CoursePresenter::parsePage($request);
+        $perPage = 10;
 
-        if ($request->filled('category')) {
-            $query->where('category_id', $request->category);
-        }
+        $categoryId = CoursePresenter::parsePositiveInt($request->query('category', $request->query('category_id')));
+        $authorId = CoursePresenter::parsePositiveInt($request->query('author', $request->query('author_id')));
+        $search = trim((string) ($request->query('search', $request->query('q', ''))));
+        $sort = (string) $request->query('sort', 'latest');
+        $level = (string) $request->query('level', '');
 
-        if ($request->filled('author')) {
-            $query->where('author_id', $request->author);
-        }
+        $filters = [
+            'status'      => Course::STATUS_PUBLISHED,
+            'category_id' => $categoryId,
+            'author_id'   => $authorId,
+            'q'           => $search,
+        ];
 
-        if ($request->filled('search')) {
-            $search = $request->search;
-            $query->where(function ($q) use ($search) {
-                $q->where('title', 'like', "%{$search}%")
-                    ->orWhere('description', 'like', "%{$search}%");
-            });
-        }
-
-        $sort = $request->input('sort', 'latest');
-        if ($sort === 'popular') {
-            $query->orderByDesc('enrollments_count')->latest();
-        } elseif ($sort === 'title') {
-            $query->orderBy('title');
-        } else {
-            $query->latest();
-        }
-
-        $level = $request->input('level');
         if (in_array($level, ['beginner', 'intermediate', 'advanced'], true)) {
-            $filtered = $query->get()->filter(
-                fn (Course $course) => ModelMeta::inferCourseLevel($course->title ?? '', $course->id) === $level
-            )->values();
+            $allMatching = array_values(array_filter(
+                $this->courses->all($filters, $sort),
+                static fn (array $row): bool => ModelMeta::inferCourseLevel((string) $row['title'], (int) $row['id']) === $level
+            ));
 
-            $perPage = 12;
-            $page = LengthAwarePaginator::resolveCurrentPage();
-            $courses = new LengthAwarePaginator(
-                $filtered->forPage($page, $perPage)->values(),
-                $filtered->count(),
-                $perPage,
-                $page,
-                ['path' => $request->url(), 'query' => $request->query()]
-            );
+            $total = count($allMatching);
+            $pages = max(1, (int) ceil($total / $perPage));
+            $clampedPage = max(1, min($page, $pages));
+            $slice = array_slice($allMatching, ($clampedPage - 1) * $perPage, $perPage);
+            $hydrated = array_map([CoursePresenter::class, 'hydrateCourse'], $slice);
+
+            $courses = CoursePresenter::paginator($hydrated, $total, $perPage, $clampedPage, $request);
         } else {
-            $courses = $query->paginate(12)->withQueryString();
+            $result = $this->courses->paginate($filters, $page, $perPage, $sort);
+            $hydrated = array_map([CoursePresenter::class, 'hydrateCourse'], $result['items']);
+            $courses = CoursePresenter::paginator($hydrated, $result['total'], $result['per_page'], $result['page'], $request);
         }
 
-        $categories = Category::withCount(['courses' => fn ($q) => $q->where('status', 'published')])
-            ->orderBy('title')
-            ->get();
-
-        $authors = User::where('role', 'author')
-            ->whereHas('courses', fn ($q) => $q->where('status', Course::STATUS_PUBLISHED))
-            ->orderBy('name')
-            ->get();
+        $categories = CoursePresenter::hydrateCategoryList($this->categories->allWithPublishedCount());
+        $authors = CoursePresenter::hydrateUserList($this->users->publishedAuthors());
 
         return view('courses.index', compact('courses', 'categories', 'authors'));
     }
 
     /**
-     * Муфассали курс барои омма / меҳмонон.
+     * Муфассали курс барои омма / меҳмонон бо маълумоти вобаста (JOIN) аз Repository.
      */
-    public function show(Course $course): View
+    public function show(string $course): View
     {
-        if ($course->status !== Course::STATUS_PUBLISHED && (!auth()->check() || (auth()->id() !== $course->author_id && !auth()->user()->isAdmin()))) {
+        $courseId = CoursePresenter::parsePositiveInt($course);
+        if ($courseId === null) {
             abort(404);
         }
 
-        $course->load(['author', 'category', 'modules.lessons'])->loadCount('enrollments');
+        $courseRow = $this->courses->find($courseId);
+        if ($courseRow === null) {
+            abort(404);
+        }
+
+        if (
+            $courseRow['status'] !== Course::STATUS_PUBLISHED
+            && (!auth()->check() || ((int) auth()->id() !== (int) $courseRow['author_id'] && !auth()->user()->isAdmin()))
+        ) {
+            abort(404);
+        }
+
+        $courseModel = CoursePresenter::hydrateCourse($courseRow);
+        $courseModel->load(['modules.lessons']);
+
         $isEnrolled = false;
         $enrollment = null;
 
         if (auth()->check()) {
-            $enrollment = auth()->user()->enrollments()->where('course_id', $course->id)->first();
+            $enrollment = auth()->user()->enrollments()->where('course_id', $courseId)->first();
             $isEnrolled = $enrollment !== null;
         }
 
-        return view('courses.show', compact('course', 'isEnrolled', 'enrollment'));
+        return view('courses.show', [
+            'course'     => $courseModel,
+            'courseRow'  => $courseRow,
+            'isEnrolled' => $isEnrolled,
+            'enrollment' => $enrollment,
+        ]);
     }
 }

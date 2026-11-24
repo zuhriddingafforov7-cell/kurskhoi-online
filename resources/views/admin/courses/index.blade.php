@@ -9,6 +9,14 @@
                     </span>
                     <h1 class="text-2xl font-bold text-[#1E293B]">Модератсия ва идоракунии курсҳо</h1>
                     <p class="text-sm text-slate-500 mt-1">Санҷиши сифати маводҳо, тасдиқ ва рад намудани курсҳои пешниҳодшуда.</p>
+                    <div class="flex flex-wrap items-center gap-2 mt-3">
+                        <a href="{{ route('manage.courses.index') }}" class="px-3.5 py-1.5 bg-[#00875A] hover:bg-[#064E3B] text-white text-xs font-semibold rounded-xl transition">
+                            Идоракунии пурраи CRUD →
+                        </a>
+                        <a href="{{ route('reports.courses') }}" class="px-3.5 py-1.5 bg-[#ECFDF5] text-[#00875A] hover:bg-[#D1FAE5] border border-[#A7F3D0] text-xs font-semibold rounded-xl transition">
+                            Ҳисобот аз рӯйи категорияҳо
+                        </a>
+                    </div>
                 </div>
 
                 <!-- Филтри ҳолат -->
@@ -28,7 +36,7 @@
                 </div>
             </div>
 
-            <!-- Сатри ҷустуҷӯ -->
+            <!-- Сатри ҷустуҷӯ ва филтри категория -->
             <form method="GET" action="{{ route('admin.courses.index') }}" class="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 pt-3 border-t border-slate-100">
                 @if(request('status'))
                     <input type="hidden" name="status" value="{{ request('status') }}">
@@ -37,14 +45,22 @@
                     type="text"
                     name="search"
                     value="{{ request('search') }}"
-                    placeholder="Ҷустуҷӯи курс ё муаллиф..."
-                    class="text-sm px-4 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#00875A] focus:outline-none w-full sm:w-80 bg-slate-50/50 focus:bg-white"
+                    placeholder="Ҷустуҷӯи курс..."
+                    class="text-sm px-4 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#00875A] focus:outline-none w-full sm:w-72 bg-slate-50/50 focus:bg-white"
                 >
+                <select name="category_id" class="text-sm px-3 py-2 border border-slate-300 rounded-xl focus:ring-2 focus:ring-[#00875A] focus:outline-none bg-white">
+                    <option value="">{{ __('Ҳамаи категорияҳо') }}</option>
+                    @foreach($categories ?? [] as $cat)
+                        <option value="{{ $cat->id }}" {{ (int) request('category_id') === (int) $cat->id ? 'selected' : '' }}>
+                            {{ $cat->title }}
+                        </option>
+                    @endforeach
+                </select>
                 <div class="flex items-center gap-2">
                     <button type="submit" class="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white text-xs sm:text-sm font-semibold rounded-xl transition whitespace-nowrap">
                         Ёфтан
                     </button>
-                    @if(request('search'))
+                    @if(request('search') || request('category_id'))
                         <a href="{{ route('admin.courses.index', array_filter(['status' => request('status')])) }}" class="px-3 py-2 text-xs sm:text-sm font-medium text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 rounded-xl transition whitespace-nowrap">
                             Тоза
                         </a>

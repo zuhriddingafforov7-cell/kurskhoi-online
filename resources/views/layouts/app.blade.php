@@ -27,7 +27,7 @@
             <div class="flex justify-between h-16 sm:h-20 items-center gap-3 lg:gap-6">
 
                 {{-- Чап: Логотип ва Навигатсия --}}
-                <div class="flex items-center gap-5 lg:gap-7 shrink-0">
+                <div class="flex items-center gap-3 xl:gap-5 min-w-0">
                     <a href="{{ url('/') }}" class="flex items-center gap-2.5 group shrink-0">
                         <span class="flex h-9 w-9 sm:h-10 sm:w-10 items-center justify-center rounded-xl bg-[#00875A] text-white font-black text-lg sm:text-xl shadow-sm shadow-[#00875A]/20 group-hover:scale-105 transition-transform duration-200">
                             B
@@ -41,21 +41,24 @@
                         </div>
                     </a>
 
-                    <nav class="hidden lg:flex items-center gap-1 text-sm font-semibold text-slate-600" aria-label="Навигатсияи асосӣ">
-                        <a href="{{ route('courses.index') }}" class="px-3 py-2 rounded-xl hover:bg-[#ECFDF5] hover:text-[#00875A] transition {{ request()->routeIs('courses.*') ? 'bg-[#ECFDF5] text-[#00875A]' : '' }}">
+                    <nav class="hidden lg:flex items-center gap-0.5 xl:gap-1 text-xs xl:text-sm font-semibold text-slate-600" aria-label="Навигатсияи асосӣ">
+                        <a href="{{ route('courses.index') }}" class="px-2.5 py-2 rounded-xl whitespace-nowrap hover:bg-[#ECFDF5] hover:text-[#00875A] transition {{ request()->routeIs('courses.*') ? 'bg-[#ECFDF5] text-[#00875A]' : '' }}">
                             {{ __('Каталоги курсҳо') }}
                         </a>
-                        <a href="{{ url('/#about') }}" class="px-3 py-2 rounded-xl hover:bg-[#ECFDF5] hover:text-[#00875A] transition">
+                        <a href="{{ route('reports.courses') }}" class="px-2.5 py-2 rounded-xl whitespace-nowrap hover:bg-[#ECFDF5] hover:text-[#00875A] transition {{ request()->routeIs('reports.*') ? 'bg-[#ECFDF5] text-[#00875A]' : '' }}">
+                            {{ __('Ҳисоботи курсҳо') }}
+                        </a>
+                        <a href="{{ url('/#about') }}" class="px-2.5 py-2 rounded-xl whitespace-nowrap hover:bg-[#ECFDF5] hover:text-[#00875A] transition">
                             {{ __('Дар бораи мо') }}
                         </a>
-                        <a href="{{ url('/#contact') }}" class="px-3 py-2 rounded-xl hover:bg-[#ECFDF5] hover:text-[#00875A] transition">
+                        <a href="{{ url('/#contact') }}" class="px-2.5 py-2 rounded-xl whitespace-nowrap hover:bg-[#ECFDF5] hover:text-[#00875A] transition">
                             {{ __('Тамос') }}
                         </a>
                     </nav>
                 </div>
 
                 {{-- Марказ: Сатри ҷустуҷӯи курсҳо --}}
-                <div class="flex-1 min-w-[200px] max-w-xs hidden xl:block mx-2">
+                <div class="flex-1 min-w-0 max-w-xs hidden 2xl:block mx-2">
                     <form action="{{ route('courses.index') }}" method="GET" class="relative w-full">
                         <div class="relative flex items-center">
                             <svg class="w-4 h-4 text-[#00875A] absolute left-3.5 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -184,11 +187,13 @@
                                 <div class="py-1 text-xs">
                                     @if(auth()->user()->role === 'admin')
                                         <a href="{{ route('admin.dashboard') }}" class="block px-4 py-2 text-slate-700 hover:bg-[#ECFDF5] hover:text-[#00875A]">{{ __('Панели маъмур') }}</a>
+                                        <a href="{{ route('manage.courses.index') }}" class="block px-4 py-2 text-slate-700 hover:bg-[#ECFDF5] hover:text-[#00875A]">{{ __('Идоракунии курсҳо') }}</a>
                                         <a href="{{ route('admin.courses.index') }}" class="block px-4 py-2 text-slate-700 hover:bg-[#ECFDF5] hover:text-[#00875A]">{{ __('Модератсияи курсҳо') }}</a>
                                         <a href="{{ route('admin.categories.index') }}" class="block px-4 py-2 text-slate-700 hover:bg-[#ECFDF5] hover:text-[#00875A]">{{ __('Категорияҳо') }}</a>
                                         <a href="{{ route('admin.users.index') }}" class="block px-4 py-2 text-slate-700 hover:bg-[#ECFDF5] hover:text-[#00875A]">{{ __('Идоракунии корбарон') }}</a>
                                     @elseif(auth()->user()->role === 'author')
                                         <a href="{{ route('author.dashboard') }}" class="block px-4 py-2 text-slate-700 hover:bg-[#ECFDF5] hover:text-[#00875A]">{{ __('Панели муаллиф') }}</a>
+                                        <a href="{{ route('manage.courses.index') }}" class="block px-4 py-2 text-slate-700 hover:bg-[#ECFDF5] hover:text-[#00875A]">{{ __('Идоракунии курсҳо') }}</a>
                                         <a href="{{ route('author.courses.index') }}" class="block px-4 py-2 text-slate-700 hover:bg-[#ECFDF5] hover:text-[#00875A]">{{ __('Курсҳои ман') }}</a>
                                         <a href="{{ route('author.submissions.index') }}" class="block px-4 py-2 text-slate-700 hover:bg-[#ECFDF5] hover:text-[#00875A]">{{ __('Санҷиши супоришҳо') }}</a>
                                     @else
@@ -196,6 +201,7 @@
                                         <a href="{{ route('student.my-courses') }}" class="block px-4 py-2 text-slate-700 hover:bg-[#ECFDF5] hover:text-[#00875A]">{{ __('Курсҳои ман') }}</a>
                                     @endif
                                     <a href="{{ route('courses.index') }}" class="block px-4 py-2 text-slate-700 hover:bg-[#ECFDF5] hover:text-[#00875A]">{{ __('Каталоги курсҳо') }}</a>
+                                    <a href="{{ route('reports.courses') }}" class="block px-4 py-2 text-slate-700 hover:bg-[#ECFDF5] hover:text-[#00875A]">{{ __('Ҳисоботи курсҳо') }}</a>
                                     <a href="{{ route('profile.edit') }}" class="block px-4 py-2 text-slate-700 hover:bg-[#ECFDF5] hover:text-[#00875A]">{{ __('Профили ман') }}</a>
                                 </div>
 
@@ -286,11 +292,13 @@
 
                     @if(auth()->user()->role === 'admin')
                         <a href="{{ route('admin.dashboard') }}" @click="mobileOpen = false" class="block px-3.5 py-2.5 rounded-xl text-sm font-medium {{ request()->routeIs('admin.dashboard') ? 'bg-[#ECFDF5] text-[#00875A] font-semibold' : 'text-slate-700 hover:bg-slate-50' }}">{{ __('Панели маъмур') }}</a>
+                        <a href="{{ route('manage.courses.index') }}" @click="mobileOpen = false" class="block px-3.5 py-2.5 rounded-xl text-sm font-medium {{ request()->routeIs('manage.courses.*') ? 'bg-[#ECFDF5] text-[#00875A] font-semibold' : 'text-slate-700 hover:bg-slate-50' }}">{{ __('Идоракунии курсҳо') }}</a>
                         <a href="{{ route('admin.courses.index') }}" @click="mobileOpen = false" class="block px-3.5 py-2.5 rounded-xl text-sm font-medium {{ request()->routeIs('admin.courses.*') ? 'bg-[#ECFDF5] text-[#00875A] font-semibold' : 'text-slate-700 hover:bg-slate-50' }}">{{ __('Модератсияи курсҳо') }}</a>
                         <a href="{{ route('admin.categories.index') }}" @click="mobileOpen = false" class="block px-3.5 py-2.5 rounded-xl text-sm font-medium {{ request()->routeIs('admin.categories.*') ? 'bg-[#ECFDF5] text-[#00875A] font-semibold' : 'text-slate-700 hover:bg-slate-50' }}">{{ __('Категорияҳо') }}</a>
                         <a href="{{ route('admin.users.index') }}" @click="mobileOpen = false" class="block px-3.5 py-2.5 rounded-xl text-sm font-medium {{ request()->routeIs('admin.users.*') ? 'bg-[#ECFDF5] text-[#00875A] font-semibold' : 'text-slate-700 hover:bg-slate-50' }}">{{ __('Идоракунии корбарон') }}</a>
                     @elseif(auth()->user()->role === 'author')
                         <a href="{{ route('author.dashboard') }}" @click="mobileOpen = false" class="block px-3.5 py-2.5 rounded-xl text-sm font-medium {{ request()->routeIs('author.dashboard') ? 'bg-[#ECFDF5] text-[#00875A] font-semibold' : 'text-slate-700 hover:bg-slate-50' }}">{{ __('Панели муаллиф') }}</a>
+                        <a href="{{ route('manage.courses.index') }}" @click="mobileOpen = false" class="block px-3.5 py-2.5 rounded-xl text-sm font-medium {{ request()->routeIs('manage.courses.*') ? 'bg-[#ECFDF5] text-[#00875A] font-semibold' : 'text-slate-700 hover:bg-slate-50' }}">{{ __('Идоракунии курсҳо') }}</a>
                         <a href="{{ route('author.courses.index') }}" @click="mobileOpen = false" class="block px-3.5 py-2.5 rounded-xl text-sm font-medium {{ request()->routeIs('author.courses.*') ? 'bg-[#ECFDF5] text-[#00875A] font-semibold' : 'text-slate-700 hover:bg-slate-50' }}">{{ __('Курсҳои ман') }}</a>
                         <a href="{{ route('author.submissions.index') }}" @click="mobileOpen = false" class="block px-3.5 py-2.5 rounded-xl text-sm font-medium {{ request()->routeIs('author.submissions.*') ? 'bg-[#ECFDF5] text-[#00875A] font-semibold' : 'text-slate-700 hover:bg-slate-50' }}">{{ __('Санҷиши супоришҳо') }}</a>
                     @else
@@ -299,6 +307,7 @@
                     @endif
 
                     <a href="{{ route('courses.index') }}" @click="mobileOpen = false" class="block px-3.5 py-2.5 rounded-xl text-sm font-medium {{ request()->routeIs('courses.*') ? 'bg-[#ECFDF5] text-[#00875A] font-semibold' : 'text-slate-700 hover:bg-slate-50' }}">{{ __('Каталоги курсҳо') }}</a>
+                    <a href="{{ route('reports.courses') }}" @click="mobileOpen = false" class="block px-3.5 py-2.5 rounded-xl text-sm font-medium {{ request()->routeIs('reports.*') ? 'bg-[#ECFDF5] text-[#00875A] font-semibold' : 'text-slate-700 hover:bg-slate-50' }}">{{ __('Ҳисоботи курсҳо') }}</a>
                     <a href="{{ route('profile.edit') }}" @click="mobileOpen = false" class="block px-3.5 py-2.5 rounded-xl text-sm font-medium {{ request()->routeIs('profile.*') ? 'bg-[#ECFDF5] text-[#00875A] font-semibold' : 'text-slate-700 hover:bg-slate-50' }}">{{ __('Профили ман') }}</a>
 
                     <div class="border-t border-slate-100 my-2 pt-3">
@@ -320,6 +329,7 @@
                     </div>
                 @else
                     <a href="{{ route('courses.index') }}" @click="mobileOpen = false" class="block px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-700 hover:bg-slate-50">{{ __('Каталоги курсҳо') }}</a>
+                    <a href="{{ route('reports.courses') }}" @click="mobileOpen = false" class="block px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-700 hover:bg-slate-50">{{ __('Ҳисоботи курсҳо') }}</a>
                     <a href="{{ url('/#about') }}" @click="mobileOpen = false" class="block px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-700 hover:bg-slate-50">{{ __('Дар бораи мо') }}</a>
                     <a href="{{ url('/#contact') }}" @click="mobileOpen = false" class="block px-3.5 py-2.5 rounded-xl text-sm font-medium text-slate-700 hover:bg-slate-50">{{ __('Тамос') }}</a>
 
@@ -396,6 +406,10 @@
                                     <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
                                     <span>{{ __('Панели маъмур') }}</span>
                                 </a>
+                                <a href="{{ route('manage.courses.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-200 {{ request()->routeIs('manage.courses.*') ? 'bg-[#00875A] text-white font-bold shadow-sm' : 'text-slate-600 hover:text-[#00875A] hover:bg-[#ECFDF5]' }}">
+                                    <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                                    <span>{{ __('Идоракунии курсҳо') }}</span>
+                                </a>
                                 <a href="{{ route('admin.courses.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-200 {{ request()->routeIs('admin.courses.*') ? 'bg-[#00875A] text-white font-bold shadow-sm' : 'text-slate-600 hover:text-[#00875A] hover:bg-[#ECFDF5]' }}">
                                     <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
                                     <span>{{ __('Модератсияи курсҳо') }}</span>
@@ -412,6 +426,10 @@
                                 <a href="{{ route('author.dashboard') }}" class="flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-200 {{ request()->routeIs('author.dashboard') ? 'bg-[#00875A] text-white font-bold shadow-sm' : 'text-slate-600 hover:text-[#00875A] hover:bg-[#ECFDF5]' }}">
                                     <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
                                     <span>{{ __('Панели муаллиф') }}</span>
+                                </a>
+                                <a href="{{ route('manage.courses.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-200 {{ request()->routeIs('manage.courses.*') ? 'bg-[#00875A] text-white font-bold shadow-sm' : 'text-slate-600 hover:text-[#00875A] hover:bg-[#ECFDF5]' }}">
+                                    <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+                                    <span>{{ __('Идоракунии курсҳо') }}</span>
                                 </a>
                                 <a href="{{ route('author.courses.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-200 {{ request()->routeIs('author.courses.*') ? 'bg-[#00875A] text-white font-bold shadow-sm' : 'text-slate-600 hover:text-[#00875A] hover:bg-[#ECFDF5]' }}">
                                     <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
@@ -435,6 +453,11 @@
                             <a href="{{ route('courses.index') }}" class="flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-200 {{ request()->routeIs('courses.*') ? 'bg-[#00875A] text-white font-bold shadow-sm' : 'text-slate-600 hover:text-[#00875A] hover:bg-[#ECFDF5]' }}">
                                 <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
                                 <span>{{ __('Каталоги курсҳо') }}</span>
+                            </a>
+
+                            <a href="{{ route('reports.courses') }}" class="flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-200 {{ request()->routeIs('reports.*') ? 'bg-[#00875A] text-white font-bold shadow-sm' : 'text-slate-600 hover:text-[#00875A] hover:bg-[#ECFDF5]' }}">
+                                <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                                <span>{{ __('Ҳисоботи курсҳо') }}</span>
                             </a>
 
                             <a href="{{ route('profile.edit') }}" class="flex items-center gap-3 px-4 py-3 rounded-2xl transition-all duration-200 {{ request()->routeIs('profile.*') ? 'bg-[#00875A] text-white font-bold shadow-sm' : 'text-slate-600 hover:text-[#00875A] hover:bg-[#ECFDF5]' }}">
@@ -479,6 +502,7 @@
                     <h4 class="font-bold text-sm text-white uppercase tracking-wider mb-3 sm:mb-4">{{ __('Пайвандҳои муфид') }}</h4>
                     <ul class="space-y-2.5 text-sm text-[#A7F3D0]">
                         <li><a href="{{ route('courses.index') }}" class="hover:text-white transition-colors flex items-center gap-1.5"><span>→</span> {{ __('Каталоги курсҳо') }}</a></li>
+                        <li><a href="{{ route('reports.courses') }}" class="hover:text-white transition-colors flex items-center gap-1.5"><span>→</span> {{ __('Ҳисоботи курсҳо') }}</a></li>
                         <li><a href="{{ url('/#about') }}" class="hover:text-white transition-colors flex items-center gap-1.5"><span>→</span> {{ __('Дар бораи мо') }}</a></li>
                         <li><a href="{{ url('/#contact') }}" class="hover:text-white transition-colors flex items-center gap-1.5"><span>→</span> {{ __('Тамос') }}</a></li>
                         @guest
