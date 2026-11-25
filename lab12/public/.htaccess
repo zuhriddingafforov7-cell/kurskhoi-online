@@ -1,0 +1,6 @@
+# Apache (XAMPP): ҳамаи дархостҳоеро, ки файл ё ҷузвдони мавҷуд нестанд,
+# бо нигоҳдории параметрҳои Query String ба front controller index.php равона мекунем.
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.php [QSA,L]

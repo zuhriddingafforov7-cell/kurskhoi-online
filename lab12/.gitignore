@@ -1,0 +1,9 @@
+/vendor/
+/config/config.php
+.env
+/public/uploads/*
+!/public/uploads/.gitkeep
+.phpunit.cache/
+.phpunit.result.cache
+.idea/
+.vscode/

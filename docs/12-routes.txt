@@ -1,0 +1,203 @@
+================================================================================
+BIYOMUZ ACADEMY — КОРИ ЛАБОРАТОРИИ №12
+ҲИСОБОТИ МАСИРҲО, САНҶИШҲО ВА ҲУҶҶАТГУЗОРӢ (docs/12-routes.txt)
+================================================================================
+
+1. МАЪЛУМОТИ УМУМИИ ЛОИҲА
+--------------------------------------------------------------------------------
+Номи лоиҳа: Biyomuz Academy (Платформаи таълими фосилавии курсҳои барномасозӣ)
+Кори лабораторӣ: №12 — BACKEND (1): Composer, Front Controller, Routing, Templates
+Навъи лоиҳа: Зерлоиҳаи мустақили PHP 8 бе фреймворк дар нақшаи меъмории MVC
+Ҷузвдони зерлоиҳа: lab12/
+Нуқтаи ягонаи воридшавӣ (Front Controller): lab12/public/index.php
+
+Суроғаҳои дастрасӣ (Entry Points):
+  - PHP Built-in Server:  http://127.0.0.1:8001/
+  - Apache / XAMPP:       http://localhost/kurskhoi-online/lab12/public/
+
+Муҳити санҷидашуда:
+  - PHP: 8.2+ / 8.5 (CLI / Server)
+  - Composer: 2.7+ (бо танзими PSR-4: "App\\" -> "src/")
+  - Веб-сервер: Apache 2.4 (mod_rewrite / .htaccess) ва PHP CLI Built-in server
+  - Сарчашмаи услуб: Bootstrap 5.3.3 + CSS/JS-и расмии лоиҳа аз Лабораторияи №10
+
+
+2. ҶАДВАЛИ ПУРРАИ МАСИРҲО (ROUTE TABLE)
+--------------------------------------------------------------------------------
+| Тартиб | Метод | Масир (URI Path) | Синф ва Метод (Action)             | Тавсифи саҳифа ва нақш                              |
+|--------|-------|------------------|------------------------------------|------------------------------------------------------|
+| 1      | GET   | /                | App\Controllers\HomeController@index   | Саҳифаи асосӣ (Hero-баннер, омор, курсҳои фаъол)    |
+| 2      | GET   | /courses         | App\Controllers\CourseController@index | Каталоги курсҳо бо филтр аз рӯи бахш ва ҷустуҷӯ     |
+| 3      | GET   | /courses/{id}    | App\Controllers\CourseController@show  | Муфассали курс (силлабус, дарсҳо, маълумоти муаллиф)|
+| 4      | GET   | /categories      | App\Controllers\CategoryController@index| Рӯйхати бахшҳо ва категорияҳои мавҷуда              |
+| 5      | GET   | /login           | App\Controllers\AuthController@showLogin| Саҳифаи воридшавӣ ба низом (формаи воридшавӣ)       |
+| 6      | GET   | /register        | App\Controllers\AuthController@showRegister| Саҳифаи сабти номи корбари нав                   |
+
+
+3. ҲОЛАТҲОИ ИСТИСНОӢ ВА ХАТОГИҲО (EXCEPTION & ERROR ROUTING)
+--------------------------------------------------------------------------------
+| Ҳолат  | Метод | Намунаи дархост   | Рафтори низом ва ҷавоб                                                              |
+|--------|-------|-------------------|-------------------------------------------------------------------------------------|
+| 404    | GET   | /not-found        | HTTP 404 Not Found, саҳифаи ягонаи хатогӣ дар дохили layout.php бо тавзеҳот         |
+| 404    | GET   | /courses/abc      | HTTP 404 Not Found (масири /courses/{id} танҳо ID-и рақамиро \d+ қабул мекунад)     |
+| 404    | GET   | /courses/99999    | HTTP 404 Not Found (курси мавҷуднабуда, CourseController::show() даъвати abort(404))|
+| 405    | POST  | /courses          | HTTP 405 Method Not Allowed, сарлавҳаи ҳатмии "Allow: GET" дар HTTP response header|
+| 405    | POST  | /                 | HTTP 405 Method Not Allowed, сарлавҳаи ҳатмии "Allow: GET"                          |
+
+
+4. САНҶИШИ ВОҚЕИИ ДАРХОСТҲОИ HTTP (CURL VERIFICATION LOGS)
+--------------------------------------------------------------------------------
+Ҳамаи санҷишҳо дар сервери http://127.0.0.1:8001/ бо истифода аз curl.exe иҷро шуданд.
+
+4.1. САНҶИШҲОИ ВОҚЕИИ ДАРХОСТҲОИ GET
+(Бо калидҳои -sS -o NUL -w "HTTP %{http_code}\n", ки дархости воқеии HTTP GET мефиристанд):
+
+[САНҶИШ 1: Саҳифаи асосӣ GET /]
+$ curl.exe -sS -o NUL -w "HTTP %{http_code}\n" http://127.0.0.1:8001/
+HTTP 200
+
+[САНҶИШ 2: Каталоги курсҳо GET /courses]
+$ curl.exe -sS -o NUL -w "HTTP %{http_code}\n" http://127.0.0.1:8001/courses
+HTTP 200
+
+[САНҶИШ 3: Муфассали курс GET /courses/1]
+$ curl.exe -sS -o NUL -w "HTTP %{http_code}\n" http://127.0.0.1:8001/courses/1
+HTTP 200
+
+[САНҶИШ 4: Курси номавҷуд GET /courses/99999]
+$ curl.exe -sS -o NUL -w "HTTP %{http_code}\n" http://127.0.0.1:8001/courses/99999
+HTTP 404
+
+[САНҶИШ 5: Параметри нодурусти ID GET /courses/abc]
+$ curl.exe -sS -o NUL -w "HTTP %{http_code}\n" http://127.0.0.1:8001/courses/abc
+HTTP 404
+
+[САНҶИШ 6: Рӯйхати категорияҳо GET /categories]
+$ curl.exe -sS -o NUL -w "HTTP %{http_code}\n" http://127.0.0.1:8001/categories
+HTTP 200
+
+[САНҶИШ 7: Формаи воридшавӣ GET /login]
+$ curl.exe -sS -o NUL -w "HTTP %{http_code}\n" http://127.0.0.1:8001/login
+HTTP 200
+
+[САНҶИШ 8: Формаи сабти ном GET /register]
+$ curl.exe -sS -o NUL -w "HTTP %{http_code}\n" http://127.0.0.1:8001/register
+HTTP 200
+
+[САНҶИШ 9: Саҳифаи номавҷуд GET /not-found]
+$ curl.exe -sS -o NUL -w "HTTP %{http_code}\n" http://127.0.0.1:8001/not-found
+HTTP 404
+
+4.2. САНҶИШИ ҲАТМИИ 405 METHOD NOT ALLOWED ВА САРЛАВҲАИ ALLOW
+$ curl.exe -i -X POST http://127.0.0.1:8001/courses
+HTTP/1.1 405 Method Not Allowed
+Host: 127.0.0.1:8001
+Date: Wed, 25 Nov 2026 19:06:16 GMT
+Connection: close
+X-Powered-By: PHP/8.5.10
+Allow: GET
+Content-type: text/html; charset=UTF-8
+
+<!doctype html>
+<html lang="tg">
+...
+<h1 id="error-title" class="h2 mb-3">Усули дархост иҷозатдода нест</h1>
+<p class="text-muted mb-4">Усули HTTP POST барои ин суроға иҷозатдода нест. Усулҳои иҷозатдода: GET.</p>
+...
+</html>
+
+4.3. САНҶИШИ ИЛОВАГИИ ДАРХОСТҲОИ HEAD (CURL.EXE -I)
+Дар барномасозии веб, парчами curl -I дархости HTTP HEAD мефиристад (танҳо сарлавҳаҳои посух).
+Дар Router.php (сатри 44) дархостҳои HEAD ба таври мантиқӣ ба усулҳои GET мутобиқ карда мешаванд:
+$matchMethod = $normalizedMethod === 'HEAD' ? 'GET' : $normalizedMethod;
+
+Натиҷаи воқеии санҷиши HEAD:
+$ curl.exe -sS -I http://127.0.0.1:8001/ | findstr "HTTP/"
+HTTP/1.1 200 OK
+
+$ curl.exe -sS -I http://127.0.0.1:8001/courses | findstr "HTTP/"
+HTTP/1.1 200 OK
+
+$ curl.exe -sS -I http://127.0.0.1:8001/courses/1 | findstr "HTTP/"
+HTTP/1.1 200 OK
+
+$ curl.exe -sS -I http://127.0.0.1:8001/courses/99999 | findstr "HTTP/"
+HTTP/1.1 404 Not Found
+
+4.4. САНҶИШИ ФАЙЛҲОИ СТАТИКӢ ВА ҲИМОЯИ XSS
+$ curl.exe -sS -o NUL -w "HTTP %{http_code}\n" http://127.0.0.1:8001/assets/css/app.css
+HTTP 200
+
+$ curl.exe -sS -o NUL -w "HTTP %{http_code}\n" http://127.0.0.1:8001/assets/js/app.js
+HTTP 200
+
+Санҷиши ҳимоя аз ҳамлаи XSS дар сатри ҷустуҷӯ:
+$ curl.exe -s "http://127.0.0.1:8001/courses?search=%3Cscript%3Ealert(1)%3C/script%3E" | findstr "alert"
+value="&lt;script&gt;alert(1)&lt;/script&gt;"
+Шарҳ: Аломатҳои хатарнок тавассути View::e() (htmlspecialchars ENT_QUOTES) безарар гардонида шуданд.
+
+
+5. САНҶИШИ COMPOSER ВА АВТОЛОДИНГ (PSR-4)
+--------------------------------------------------------------------------------
+$ cd lab12
+$ composer validate
+./composer.json is valid
+
+$ composer dump-autoload
+Generating autoload files
+Generated autoload files
+
+Санҷиши мустақими автолодинги синфҳо дар PHP:
+> require_once 'lab12/vendor/autoload.php';
+> class_exists('App\Core\Router'); // true
+> class_exists('App\Core\View'); // true
+> class_exists('App\Controllers\CourseController'); // true
+Ҳамаи синфҳои зери фазои номии App\ мувофиқи стандарти PSR-4 бе ягон масъала бор мешаванд.
+
+
+6. САНҶИШИ СИНТАКСИСИ PHP (PHP -L)
+--------------------------------------------------------------------------------
+Фармони иҷрошуда:
+Get-ChildItem -Path lab12 -Filter *.php -Recurse | Where-Object { $_.FullName -notmatch 'vendor' } | ForEach-Object { php -l $_.FullName }
+
+Натиҷаи дақиқ:
+No syntax errors detected in lab12\public\index.php
+No syntax errors detected in lab12\src\Controllers\AuthController.php
+No syntax errors detected in lab12\src\Controllers\CategoryController.php
+No syntax errors detected in lab12\src\Controllers\Controller.php
+No syntax errors detected in lab12\src\Controllers\CourseController.php
+No syntax errors detected in lab12\src\Controllers\HomeController.php
+No syntax errors detected in lab12\src\Core\Router.php
+No syntax errors detected in lab12\src\Core\View.php
+No syntax errors detected in lab12\views\layout.php
+No syntax errors detected in lab12\views\auth\login.php
+No syntax errors detected in lab12\views\auth\register.php
+No syntax errors detected in lab12\views\categories\index.php
+No syntax errors detected in lab12\views\courses\index.php
+No syntax errors detected in lab12\views\courses\show.php
+No syntax errors detected in lab12\views\dashboard\index.php
+No syntax errors detected in lab12\views\errors\error.php
+No syntax errors detected in lab12\views\partials\course-card.php
+No syntax errors detected in lab12\views\partials\footer.php
+No syntax errors detected in lab12\views\partials\nav.php
+
+Ҳамагӣ: 19 файли PHP тафтиш шуданд. 0 хатогии синтаксисӣ.
+
+
+7. САНҶИШИ ГИТ (GIT DIFF --CHECK)
+--------------------------------------------------------------------------------
+$ git diff --check
+Exit code: 0 (Ягон хатогии фосила, whitespace ё аломати нодуруст ёфт нашуд).
+
+Қайди муҳим оид ба файлҳои untracked:
+Фармони git diff --check танҳо тағйироти файлҳои пайгиришавандаро месанҷад. Барои файлҳои нав (lab12/ ва docs/12-routes.txt) сканкунии сатр ба сатр иҷро гардида, набудани trailing whitespace (0 хатогӣ) тасдиқ гардид.
+
+
+8. САНҶИШИ ДАХЛНОПАЗИРИИ ЛОИҲАИ АСОСӢ ВА БАЗАИ МАЪЛУМОТ
+--------------------------------------------------------------------------------
+1. Сервери асосии Laravel (127.0.0.1:8000, PID 15892) фаъол ва дахлнопазир монд.
+2. Базаи маълумоти воқеии MariaDB (kurskhoi_online, PID 8696) бе ягон тағйирот монд.
+3. Ҳеҷ гуна дархости INSERT, UPDATE, DELETE, ALTER, DROP, migration ё seed дар база иҷро нашуд.
+4. Файлҳои аслии Laravel (composer.json, public/index.php, routes/web.php, bootstrap/app.php, .env) дахлнопазиранд.
+5. Ҳамаи тағйирот ва кодҳои нави Лабораторияи №12 танҳо дар дохили ҷузвдони мустақили lab12/ ва ҳуҷҷати docs/12-routes.txt ҷойгир карда шудаанд.
+================================================================================
